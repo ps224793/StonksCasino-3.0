@@ -125,7 +125,7 @@ namespace StonksCasino.Views.poker
             Game.WagerRound(Game.Players[0]);
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (this.IsActive == true && !back2Library)
             {
@@ -136,8 +136,11 @@ namespace StonksCasino.Views.poker
                 }
                 else if (leaving == MessageBoxResult.Yes)
                 {
-                    Application.Current.Shutdown();
-
+                    if (!back2Library)
+                    {
+                        await ApiWrapper.Logout();
+                        Application.Current.Shutdown();
+                    }
                 }
             }
         }
