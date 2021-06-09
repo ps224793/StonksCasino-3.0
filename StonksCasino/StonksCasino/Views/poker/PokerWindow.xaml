@@ -21,11 +21,12 @@
                 <Button x:Name="BtnGeldStorten" Content="Geld storten" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="Uitloggen" Content="Uitloggen" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" Click="Uitloggen_Click" />
                 <Image Source="/Img/Main/Account.png" Margin="5,0" Height="40"></Image>
-                <TextBlock Text="{Binding user.MyName, Mode=OneWay}" FontSize="20" Foreground="White" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Username, Mode=OneWay}" FontSize="20" Foreground="White" VerticalAlignment="Center"/>
                 <Image Source="/Img/Main/streep.png"></Image>
                 <Image Source="/Img/Main/Token.png" Height="40"></Image>
-                <TextBlock Text="{Binding user.MyTokens, Mode=OneWay}" Padding="10" Foreground="White" FontSize="20" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Tokens, Mode=OneWay}" Padding="10" Foreground="White" FontSize="20" VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2">
