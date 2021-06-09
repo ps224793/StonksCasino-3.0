@@ -1,0 +1,62 @@
+﻿<Window x:Class="StonksCasino.Views.slotmachine.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StonksCasino.Views.slotmachine"
+        mc:Ignorable="d"
+        Title="HelpWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Img/Main/background.png"></ImageBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Foreground="White" FontSize="20px">Dit zijn de combinaties die mogelijk zijn</TextBlock>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Image Source="/Img/Slotmachine/Seven.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Seven.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Seven.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="50" Foreground="White" Width="165"><Bold>=</Bold> 1500</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Image Source="/Img/Slotmachine/Bar.png" Width="71" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Bar.png" Width="71" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Bar.png" Width="71" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="50" Foreground="White" Width="165"><Bold>=</Bold> 600</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Image Source="/Img/Slotmachine/Diamond.png" Width="71" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Diamond.png" Width="71" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Diamond.png" Width="71" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="50" Foreground="White" Width="165"><Bold>=</Bold> 400</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <Image Source="/Img/Slotmachine/Star.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Star.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/Star.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="50" Foreground="White" Width="165"><Bold>=</Bold> 300</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <Image Source="/Img/Slotmachine/bell.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/bell.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image Source="/Img/Slotmachine/bell.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="50" Foreground="White" Width="165"><Bold>=</Bold> 200</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <Image x:Name="Fruit" Source="/Img/Slotmachine/Cherry.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image x:Name="Fruit1" Source="/Img/Slotmachine/Cherry.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <Image x:Name="Fruit2" Source="/Img/Slotmachine/Cherry.png" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="50" Foreground="White" Width="165"><Bold>=</Bold> 100</TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

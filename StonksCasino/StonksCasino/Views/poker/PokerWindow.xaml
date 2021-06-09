@@ -1,0 +1,760 @@
+﻿<Window x:Class="StonksCasino.Views.poker.PokerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StonksCasino.Views.poker"
+        mc:Ignorable="d"
+        Title="PokerWindow" Height="600" MinHeight="600" Width="800" MinWidth="800"
+        WindowState="Maximized" Closing="Window_Closing"
+        SizeChanged="Window_SizeChanged"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Background="#262626" Grid.Row="0" Grid.Column="0">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnBibliotheek" Content="Bibliotheek" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" Click="btnBibliotheek_Click" />
+                <Button x:Name="btnWinkel" Content="Winkel" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" />
+                <Button x:Name="BtnGeldStorten" Content="Geld storten" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Image Source="/Img/Main/Account.png" Margin="5,0" Height="40"></Image>
+                <TextBlock Text="{Binding user.MyName, Mode=OneWay}" FontSize="20" Foreground="White" VerticalAlignment="Center"/>
+                <Image Source="/Img/Main/streep.png"></Image>
+                <Image Source="/Img/Main/Token.png" Height="40"></Image>
+                <TextBlock Text="{Binding user.MyTokens, Mode=OneWay}" Padding="10" Foreground="White" FontSize="20" VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.Background>
+                <ImageBrush ImageSource="/Img/Main/background.png" />
+            </Grid.Background>
+            <Grid Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.75*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1.75*"/>
+                </Grid.RowDefinitions>
+
+                <!-- table cards -->
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Image x:Name="one" Margin="10,0" Grid.Column="0" Grid.Row="1" Source="{Binding Game.MyTable[0].ActiveURL, Mode=OneWay}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform X="2000" Y="-2000"/>
+                                <ScaleTransform ScaleX="1"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="two" Margin="10,0" Grid.Column="1" Grid.Row="1" Source="{Binding Game.MyTable[1].ActiveURL, Mode=OneWay}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform X="2000" Y="-2000"/>
+                                <ScaleTransform ScaleX="1"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="three" Margin="10,0" Grid.Column="2" Grid.Row="1" Source="{Binding Game.MyTable[2].ActiveURL, Mode=OneWay}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform X="2000" Y="-2000"/>
+                                <ScaleTransform ScaleX="1"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="four" Margin="10,0" Grid.Column="3" Grid.Row="1" Source="{Binding Game.MyTable[3].ActiveURL, Mode=OneWay}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform X="2000" Y="-2000"/>
+                                <ScaleTransform ScaleX="1"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="five" Margin="10,0" Grid.Column="4" Grid.Row="1" Source="{Binding Game.MyTable[4].ActiveURL, Mode=OneWay}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform X="2000" Y="-2000"/>
+                                <ScaleTransform ScaleX="1"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                </Grid>
+
+                <Grid  Grid.Row="2" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1.5*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="player0_Left" Visibility="{Binding Game.Player0_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,10,0" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Source="{Binding Game.Players[0].Hand[0].ActiveURL}" Opacity="{Binding Game.PlayerCardOpacity}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform Y="1000"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="player0_Right" Visibility="{Binding Game.Player0_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="10,0,0,0" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Source="{Binding Game.Players[0].Hand[1].ActiveURL}" Opacity="{Binding Game.PlayerCardOpacity}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform Y="1000"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <Grid  Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="1" Margin="0,10,0,0" Source="/Img/Main/Token.png" />
+                        <Image Grid.Column="0" Margin="0,10,0,0" HorizontalAlignment="Left" Source="{Binding Game.Players[0].ButtonImageURL}" />
+                    </Grid>
+
+                    <TextBlock Margin="0,10,0,0" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[0].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+
+                <!--top-->
+                <Grid  Grid.Row="0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="player2_Left" Visibility="{Binding Game.Player2_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,10,0" Grid.Column="1" HorizontalAlignment="Right" Source="{Binding Game.Players[2].Hand[1].ActiveURL}" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="1"/>
+                                <TranslateTransform Y="-1000"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="player2_Right" Visibility="{Binding Game.Player2_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="10,0,0,0" Grid.Column="2" HorizontalAlignment="Left" Source="{Binding Game.Players[2].Hand[0].ActiveURL}" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="1"/>
+                                <TranslateTransform Y="-1000"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <Grid  Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="1" Margin="0,0,0,10" Source="/Img/Main/Token.png" />
+                        <Image Grid.Column="2" Margin="0,0,0,10" HorizontalAlignment="Right" Source="{Binding Game.Players[2].ButtonImageURL}" />
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Right">
+                        <Image HorizontalAlignment="Center" Grid.Column="0" Source="/Img/Main/Token.png" MaxWidth="140"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[2].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                    </Grid>
+
+                    <TextBlock Margin="0,0,0,10" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[2].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+
+                <!--Left-->
+                <Grid  Grid.Row="0" Grid.RowSpan="3" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1.5*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="player1_Left" Visibility="{Binding Game.Player1_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,0,-10" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Source="{Binding Game.Players[1].Hand[0].ActiveURL}" RenderTransformOrigin="0.5,0.5">
+                        <Image.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0"/>
+                            </TransformGroup>
+                        </Image.LayoutTransform>
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="1"/>
+                                <TranslateTransform Y="1000"/>
+                                <RotateTransform Angle="90"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="player1_Right" Visibility="{Binding Game.Player1_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,-10,0,0" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Source="{Binding Game.Players[1].Hand[1].ActiveURL}" RenderTransformOrigin="0.5,0.5">
+                        <Image.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0"/>
+                            </TransformGroup>
+                        </Image.LayoutTransform>
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <TranslateTransform Y="1000"/>
+                                <RotateTransform Angle="90"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <Grid  Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Left" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="1" Margin="0,0,10,0" Source="/Img/Main/Token.png" />
+                        <Image Grid.Row="0" Margin="0,0,10,0" VerticalAlignment="Bottom" Source="{Binding Game.Players[1].ButtonImageURL}" />
+                        <TextBlock Margin="0,0,10,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[1].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Top">
+                        <Image HorizontalAlignment="Center" Source="/Img/Main/Token.png" MaxWidth="140"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[1].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                    </Grid>
+                </Grid>
+
+                <!--right-->
+                <Grid  Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="180"/>
+                    </Grid.RenderTransform>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1.5*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="player3_Right" Visibility="{Binding Game.Player3_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,0,-10" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Source="{Binding Game.Players[3].Hand[1].ActiveURL}" RenderTransformOrigin="0.5,0.5">
+                        <Image.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0"/>
+                            </TransformGroup>
+                        </Image.LayoutTransform>
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="1"/>
+                                <TranslateTransform Y="1000"/>
+                                <RotateTransform Angle="90"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image x:Name="player3_Left" Visibility="{Binding Game.Player3_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,-10,0,0" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Source="{Binding Game.Players[3].Hand[0].ActiveURL}" RenderTransformOrigin="0.5,0.5">
+                        <Image.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0"/>
+                            </TransformGroup>
+                        </Image.LayoutTransform>
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <TranslateTransform Y="1000"/>
+                                <RotateTransform Angle="90"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <Grid  Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Left" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="1" Margin="0,0,10,0" Source="/Img/Main/Token.png" />
+                        <Image Grid.Row="0" Margin="0,0,10,0" VerticalAlignment="Bottom" Source="{Binding Game.Players[3].ButtonImageURL}">
+                            <Image.LayoutTransform>
+                                <RotateTransform Angle="180"/>
+                            </Image.LayoutTransform>
+                        </Image>
+                        <TextBlock Margin="0,0,10,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[3].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <RotateTransform Angle="180"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Top">
+                        <Image HorizontalAlignment="Center" Source="/Img/Main/Token.png" MaxWidth="140"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[3].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <RotateTransform Angle="180"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="2" Grid.Column="2" CornerRadius="5" BorderBrush="#282929" BorderThickness="10">
+                        <Grid Grid.Row="2" Grid.Column="3" Background="#282929">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="22*"/>
+                                <RowDefinition Height="79*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="1" Margin="0,10" Grid.RowSpan="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2.5*"/>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <Button x:Name="btnRaise" Content="{Binding Game.RaiseOrAllIn, Mode=OneWay}" Click="Raise_Bet" IsEnabled="{Binding Game.EnablePlayerInput, Mode=OneWay}"></Button>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="0" Content="-" Click="Lower_Raise"/>
+                                        <TextBox Grid.Column="1" Text="{Binding Game.Players[0].RaiseBet}" TextAlignment="Center"/>
+
+                                        <Button x:Name="btnPlus" Grid.Column="2" Content="+" Click="Higher_Raise"/>
+                                    </Grid>
+                                </StackPanel>
+
+                                <Button x:Name="btnFold" Grid.Row="1" Content="Fold" Click="btnFold_Click" IsEnabled="{Binding Game.EnablePlayerInput, Mode=OneWay}"></Button>
+                                <Button Grid.Row="2" Content="{Binding Game.CallOrCheck, Mode=OneWay}" Click="Call_Click" IsEnabled="{Binding Game.EnablePlayerInput, Mode=OneWay}"></Button>
+                            </Grid>
+
+                            <Image Grid.Column="0" Source="/Img/Main/Token.png" Grid.RowSpan="2"></Image>
+                            <TextBlock Text="{Binding Game.Players[0].Balance}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Grid.Row="0" Grid.RowSpan="2" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+            <Button Content="Start" HorizontalAlignment="Left" Margin="510,400,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        </Grid>
+    </Grid>
+
+    <Window.Resources>
+        <Storyboard x:Key="sbTableIn">
+            <DoubleAnimation x:Name="oneX"
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="0"
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="one">
+            </DoubleAnimation>
+            <DoubleAnimation x:Name="oneY"
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="one" />
+
+            <DoubleAnimation x:Name="twoX"
+                BeginTime="0:0:0.25"
+                Duration="0:0:1"
+                 To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="two" />
+            <DoubleAnimation x:Name="twoY"
+                BeginTime="0:0:0.25"
+                Duration="0:0:1"
+                To="0"  
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="two" />
+
+            <DoubleAnimation x:Name="threeX"
+                BeginTime="0:0:0.5"
+                Duration="0:0:1"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="three" />
+            <DoubleAnimation x:Name="threeY"
+                BeginTime="0:0:0.5"
+                Duration="0:0:1"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="three" />
+
+            <DoubleAnimation x:Name="fourX"
+                BeginTime="0:0:0.75"
+                Duration="0:0:1"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="four" />
+            <DoubleAnimation x:Name="fourY"
+                BeginTime="0:0:0.75"
+                Duration="0:0:1"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="four" />
+
+            <DoubleAnimation x:Name="fiveX"
+                BeginTime="0:0:1"
+                Duration="0:0:1"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="five" />
+            <DoubleAnimation x:Name="fiveY"
+                BeginTime="0:0:1"
+                Duration="0:0:1"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="five" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbTableOut">
+            <DoubleAnimation x:Name="Reset_oneX"
+                BeginTime="0:0:0"
+                Duration="0:0:0.1"
+                To="2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="one" />
+            <DoubleAnimation x:Name="Reset_oneY"
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="-2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="one" />
+
+            <DoubleAnimation x:Name="Reset_twoX"
+                BeginTime="0:0:0"
+                Duration="0:0:0.1"
+                To="2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="two" />
+            <DoubleAnimation x:Name="Reset_twoY"
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="-2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="two" />
+
+            <DoubleAnimation x:Name="Reset_threeX"
+                BeginTime="0:0:0"
+                Duration="0:0:0.1"
+                To="2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="three" />
+            <DoubleAnimation x:Name="Reset_threeY"
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="-2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="three" />
+
+            <DoubleAnimation x:Name="Reset_fourX"
+                BeginTime="0:0:0"
+                Duration="0:0:0.1"
+                To="2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="four" />
+            <DoubleAnimation x:Name="Reset_fourY"
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="-2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="four" />
+
+            <DoubleAnimation x:Name="Reset_fiveX"
+                BeginTime="0:0:0"
+                Duration="0:0:0.1"
+                To="2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].X"
+                Storyboard.TargetName="five" />
+            <DoubleAnimation x:Name="Reset_fiveY"
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="-2000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="five" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer0_In">
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="player0_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:1"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="player0_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer1_In">
+            <DoubleAnimation
+                BeginTime="0:0:0.25"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player1_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:1.25"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player1_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer2_In">
+            <DoubleAnimation
+                BeginTime="0:0:0.5"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player2_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:1.5"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player2_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer3_In">
+            <DoubleAnimation
+                BeginTime="0:0:0.75"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player3_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:1.75"
+                Duration="0:0:0.5"
+                To="0" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player3_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer0_Out">
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="player0_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[0].Y"
+                Storyboard.TargetName="player0_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer1_Out">
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player1_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player1_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer2_Out">
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="-1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player2_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="-1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player2_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer3_Out">
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player3_Left" />
+            <DoubleAnimation
+                BeginTime="0:0:0"
+                Duration="0:0:1"
+                To="1000" 
+                Storyboard.TargetProperty="RenderTransform.Children[1].Y"
+                Storyboard.TargetName="player3_Right" />
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbFlop">
+            <DoubleAnimationUsingKeyFrames x:Name="ScaleOneX"
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX"
+                Storyboard.TargetName="one">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames x:Name="ScaleTwoX"
+                BeginTime="0:0:0.5"
+                Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX"
+                Storyboard.TargetName="two">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames x:Name="ScaleThreeX"
+                BeginTime="0:0:1"
+                Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX"
+                Storyboard.TargetName="three">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbTurn">
+            <DoubleAnimationUsingKeyFrames x:Name="ScaleFourX"
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX"
+                Storyboard.TargetName="four">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbRiver">
+            <DoubleAnimationUsingKeyFrames x:Name="ScaleFiveX"
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX"
+                Storyboard.TargetName="five">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer1">
+            <DoubleAnimationUsingKeyFrames
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                Storyboard.TargetName="player1_Left">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                Storyboard.TargetName="player1_Right">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer2">
+            <DoubleAnimationUsingKeyFrames
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                Storyboard.TargetName="player2_Left">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                Storyboard.TargetName="player2_Right">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+        <Storyboard x:Key="sbPlayer3">
+            <DoubleAnimationUsingKeyFrames
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                Storyboard.TargetName="player3_Left">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                BeginTime="0:0:0"
+                Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                Storyboard.TargetName="player3_Right">
+                <LinearDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.35" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+</Window>
