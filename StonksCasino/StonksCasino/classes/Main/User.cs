@@ -31,6 +31,15 @@ namespace StonksCasino.classes.Main
             get { return _logoutclick; }
             set { _logoutclick = value; }
         }
+
+        private static bool _shutdown = true;
+
+        public static bool shutdown
+        {
+            get { return _shutdown; }
+            set { _shutdown = value; }
+        } 
+
         public static async Task<bool> LogoutAsync()
         {
             StonksCasino.Properties.Settings.Default.Username = "";
