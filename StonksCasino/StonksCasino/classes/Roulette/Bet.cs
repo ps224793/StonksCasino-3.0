@@ -230,12 +230,10 @@ namespace StonksCasino.classes.Roulette
           
 
         }
-        public async void DeleteBet()
+        public void DeleteBet()
         {
             if (Set == true)
             {
-                int amount = int.Parse(AmountLabel);
-                await ApiWrapper.UpdateTokens(amount);
                 ImageUrl = "/Img/Roulette/transparant.png";
                 AmountLabel = "";
                 Amount = 0;

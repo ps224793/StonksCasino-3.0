@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StonksCasino.classes.Api;
 
 namespace StonksCasino.classes.Main
 {
@@ -23,5 +24,24 @@ namespace StonksCasino.classes.Main
             get { return _tokens; }
             set { _tokens = value; }
         }
+        private static bool _logoutclick = false;
+
+        public static bool Logoutclick
+        {
+            get { return _logoutclick; }
+            set { _logoutclick = value; }
+        }
+        public static async Task<bool> LogoutAsync()
+        {
+            StonksCasino.Properties.Settings.Default.Username = "";
+            StonksCasino.Properties.Settings.Default.Password = "";
+            StonksCasino.Properties.Settings.Default.Save();
+            User.Username = "";
+            User.Tokens = 0;
+          
+            await ApiWrapper.Logout();
+            return true;
+        }
+
     }
 }
