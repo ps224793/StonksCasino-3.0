@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -463,6 +464,7 @@ namespace StonksCasino.Views.Roulette
                         {
                             if (!_toLibrary)
                             {
+                                User.shutdown = false;
                                 await ApiWrapper.Logout();
                                 Application.Current.Shutdown();
                             }
@@ -483,6 +485,7 @@ namespace StonksCasino.Views.Roulette
 
                             if (!_toLibrary)
                             {
+                                User.shutdown = false;
                                 await ApiWrapper.Logout();
                                 Application.Current.Shutdown();
                             }
@@ -506,6 +509,7 @@ namespace StonksCasino.Views.Roulette
                             {
                                 if (!_toLibrary)
                                 {
+                                    User.shutdown = false;
                                     await ApiWrapper.Logout();
                                     Application.Current.Shutdown();
                                 }
@@ -529,6 +533,12 @@ namespace StonksCasino.Views.Roulette
         {
             User.Logoutclick = true;
             this.Close();
+
+        }
+
+        private void BtnGeldStorten_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/account-info");
 
         }
     }

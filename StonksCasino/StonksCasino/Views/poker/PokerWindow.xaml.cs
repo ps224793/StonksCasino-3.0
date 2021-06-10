@@ -19,6 +19,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media.Animation;
 using System.Data;
 using StonksCasino.classes.Api;
+using System.Diagnostics;
 
 namespace StonksCasino.Views.poker
 {
@@ -140,6 +141,7 @@ namespace StonksCasino.Views.poker
                     {
                         if (!back2Library)
                         {
+                            User.shutdown = false;
                             await ApiWrapper.Logout();
                             Application.Current.Shutdown();
                         }
@@ -173,6 +175,12 @@ namespace StonksCasino.Views.poker
         {
             User.Logoutclick = true;
             this.Close();
+        }
+
+        private void BtnGeldStorten_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/account-info");
+
         }
     }
 }

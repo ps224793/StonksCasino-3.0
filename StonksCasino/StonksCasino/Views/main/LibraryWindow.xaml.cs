@@ -21,6 +21,7 @@ using StonksCasino.Views.horserace;
 using StonksCasino.classes.Api;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace StonksCasino.Views.main
 {
@@ -198,21 +199,38 @@ namespace StonksCasino.Views.main
         {
             if (User.Logoutclick == false)
             {
-                MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
-                if (leaving == MessageBoxResult.No)
+                if (User.shutdown)
                 {
-                    e.Cancel = true;
-                }
-                else if (leaving == MessageBoxResult.Yes)
-                {
-                   
-                        await ApiWrapper.Logout();
-                        Application.Current.Shutdown();
-                    
+                    MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
+                    if (leaving == MessageBoxResult.No)
+                    {
+                        e.Cancel = true;
+                    }
+                    else if (leaving == MessageBoxResult.Yes)
+                    {
 
+                        bool uitloggen =  await ApiWrapper.Logout();
+                        if (uitloggen)
+                        {
+                            Application.Current.Shutdown();
+                        }
+                        
+
+
+                    }
                 }
 
             }
+        }
+
+        private async void Window_Closed(object sender, EventArgs e)
+        {
+            await ApiWrapper.Logout();
+        }
+
+        private void BtnGeldStorten_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/account-info");
         }
     }
 }

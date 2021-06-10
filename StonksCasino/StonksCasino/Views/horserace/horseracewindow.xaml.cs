@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -484,7 +485,7 @@ namespace StonksCasino.Views.horserace
                 Application.Current.Shutdown();
             }
         }
-        private void Window_Closing(object sender, CancelEventArgs e)
+        private async void Window_Closing(object sender, CancelEventArgs e)
         {
             if (!User.Logoutclick)
             {
@@ -497,11 +498,19 @@ namespace StonksCasino.Views.horserace
                     }
                     else if (leaving == MessageBoxResult.Yes)
                     {
+                        User.shutdown = false;
+                        await ApiWrapper.Logout();
                         Application.Current.Shutdown();
 
                     }
                 }
             }
+        }
+
+        private void BtnGeldStorten_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/account-info");
+
         }
     }
 }
