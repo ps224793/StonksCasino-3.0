@@ -161,16 +161,6 @@ namespace StonksCasino.Views.main
         }
 
 
-
-        private async void Window_Closed(object sender, EventArgs e)
-        {
-            if (User.Logoutclick == false)
-            {
-                await ApiWrapper.Logout();
-
-            }
-        }
-
         private async void Uitloggen_Click(object sender, RoutedEventArgs e)
         {
             bool logout = await User.LogoutAsync();
@@ -201,6 +191,27 @@ namespace StonksCasino.Views.main
             else
             {
                 this.Show();
+            }
+        }
+
+        private async void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (User.Logoutclick == false)
+            {
+                MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
+                if (leaving == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else if (leaving == MessageBoxResult.Yes)
+                {
+                   
+                        await ApiWrapper.Logout();
+                        Application.Current.Shutdown();
+                    
+
+                }
+
             }
         }
     }
