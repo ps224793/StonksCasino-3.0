@@ -127,19 +127,22 @@ namespace StonksCasino.Views.poker
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (this.IsActive == true && !back2Library)
+            if (!User.Logoutclick)
             {
-                MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
-                if (leaving == MessageBoxResult.No)
+                if (this.IsActive == true && !back2Library)
                 {
-                    e.Cancel = true;
-                }
-                else if (leaving == MessageBoxResult.Yes)
-                {
-                    if (!back2Library)
+                    MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
+                    if (leaving == MessageBoxResult.No)
                     {
-                        await ApiWrapper.Logout();
-                        Application.Current.Shutdown();
+                        e.Cancel = true;
+                    }
+                    else if (leaving == MessageBoxResult.Yes)
+                    {
+                        if (!back2Library)
+                        {
+                            await ApiWrapper.Logout();
+                            Application.Current.Shutdown();
+                        }
                     }
                 }
             }
@@ -166,20 +169,10 @@ namespace StonksCasino.Views.poker
             Game.StartGame2();
         }
 
-        private async void Uitloggen_Click(object sender, RoutedEventArgs e)
+        private void Uitloggen_Click(object sender, RoutedEventArgs e)
         {
-            StonksCasino.Properties.Settings.Default.Username = "";
-            StonksCasino.Properties.Settings.Default.Password = "";
-            StonksCasino.Properties.Settings.Default.Save();
-            await ApiWrapper.Logout();
-            User.Username = "";
-            User.Tokens = 0;
-
-
-            MainWindow window = new MainWindow();
-
+            User.Logoutclick = true;
             this.Close();
-            window.Show();
         }
     }
 }

@@ -70,13 +70,15 @@ namespace StonksCasino.Views.main
             Roulettegame();
         }
 
-        private void Roulettegame()
+        private async void Roulettegame()
         {
             Account();
             RouletteWindow roulette = new RouletteWindow();
             this.Hide();
             roulette.ShowDialog();
-            this.Show();
+            await uitloggencheck();
+            
+            
         }
 
         private void Blackjack_click(object sender, RoutedEventArgs e)
@@ -89,14 +91,14 @@ namespace StonksCasino.Views.main
             Blackjackgame();
         }
 
-        private void Blackjackgame()
+        private async void Blackjackgame()
         {
             Account();
             BlackjackWindow blackjack = new BlackjackWindow();
             this.Hide();
             blackjack.ShowDialog();
-            this.Show();
-           
+            await uitloggencheck();
+
         }
 
         private void Poker_click(object sender, RoutedEventArgs e)
@@ -109,13 +111,13 @@ namespace StonksCasino.Views.main
             Pokergame();
         }
 
-        private void Pokergame()
+        private async void Pokergame()
         {
             Account();
             PokerWindow roulette = new PokerWindow();
             this.Hide();
             roulette.ShowDialog();
-            this.Show();
+            await uitloggencheck();
 
         }
 
@@ -129,13 +131,13 @@ namespace StonksCasino.Views.main
             SlotMachinegame();
         }
 
-        private void SlotMachinegame()
+        private async void SlotMachinegame()
         {
             Account();
             SlotmachineWindow roulette = new SlotmachineWindow();
             this.Hide();
             roulette.ShowDialog();
-            this.Show();
+            await uitloggencheck();
         }
 
 
@@ -149,40 +151,57 @@ namespace StonksCasino.Views.main
             HorseRacegame();
         }
 
-        private void HorseRacegame()
+        private async void HorseRacegame()
         {
             Account();
             horseracewindow horserace = new horseracewindow();
             this.Hide();
             horserace.ShowDialog();
-            this.Show();
+            await uitloggencheck();
         }
 
 
 
         private async void Window_Closed(object sender, EventArgs e)
         {
+            if (User.Logoutclick == false)
+            {
+                await ApiWrapper.Logout();
 
-            await ApiWrapper.Logout();
+            }
         }
 
         private async void Uitloggen_Click(object sender, RoutedEventArgs e)
         {
-            StonksCasino.Properties.Settings.Default.Username = "";
-            StonksCasino.Properties.Settings.Default.Password = "";
-            StonksCasino.Properties.Settings.Default.Save();
-            await ApiWrapper.Logout();
-            User.Username = "";
-            User.Tokens = 0;
-
-            MainWindow window = new MainWindow();
-            this.Close();
-            window.Show();
+            bool logout = await User.LogoutAsync();
+            if (logout)
+            {
+                MainWindow login = new MainWindow();
+                this.Close();
+                login.Show();
+            }
         }
 
         private void btnBibliotheek_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        public async Task uitloggencheck()
+        {
+            if (User.Logoutclick)
+            {
+                bool logout = await User.LogoutAsync();
+                if (logout)
+                {
+                    MainWindow login = new MainWindow();
+                    this.Close();
+                    login.Show();
+                }
+            }
+            else
+            {
+                this.Show();
+            }
         }
     }
 }

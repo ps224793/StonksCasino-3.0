@@ -341,7 +341,7 @@ namespace StonksCasino.Views.Roulette
                     {
                         int amount = ((Bet)bt.Tag).Amount;
                         ((Bet)bt.Tag).DeleteBet();
-
+                        await ApiWrapper.UpdateTokens(amount);
                         MyAmount.RemoveTotal(amount);
                         Account();
                     }
@@ -444,61 +444,43 @@ namespace StonksCasino.Views.Roulette
 
         private async void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (_Spinning)
+            if (User.Logoutclick == false)
             {
-               
-                if (MyAmount.MyTotalinzet > 0 )
-                {
-                    
-                    MessageBoxResult spinning = MessageBox.Show("De roulette tafel is aan het draaien. Als u nu de applicatie afsluit dan bent u uw ingezetten fiches kwijt", "Weet u zeker dat u wil weggaan?", MessageBoxButton.OKCancel);
-                    if (spinning == MessageBoxResult.Cancel)
-                    {
-                        e.Cancel = true;
-                    }
-                    else if (spinning == MessageBoxResult.OK)
-                    {
-                        if (!_toLibrary)
-                        {
-                            await ApiWrapper.Logout();
-                            Application.Current.Shutdown();
-                        }
-                    }
-                }
-            }
-        
-            {
-                if (MyAmount.MyTotalinzet > 0)
-                {
-                    MessageBoxResult Leave = MessageBox.Show("U heeft geld ingezet. Als u nu de applicatie afsluit worden uw fiches wel teruggegeven", "Weet u zeker dat u wil weggaan?", MessageBoxButton.OKCancel);
-                    if (Leave == MessageBoxResult.OK)
-                    {
-                        await ApiWrapper.UpdateTokens(MyAmount.MyTotalinzet, _sender);
-                    
-                        Account();
 
-                        if (!_toLibrary)
-                        {
-                            await ApiWrapper.Logout();
-                            Application.Current.Shutdown();
-                        }
 
-                    }
-                    else
-                    {
-                        e.Cancel = true;
-                    }
-                }
-                else
+                if (_Spinning)
                 {
-                    if (this.IsActive == true && ! _toLibrary)
+
+                    if (MyAmount.MyTotalinzet > 0)
                     {
-                        MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
-                        if (leaving == MessageBoxResult.No)
+
+                        MessageBoxResult spinning = MessageBox.Show("De roulette tafel is aan het draaien. Als u nu de applicatie afsluit dan bent u uw ingezetten fiches kwijt", "Weet u zeker dat u wil weggaan?", MessageBoxButton.OKCancel);
+                        if (spinning == MessageBoxResult.Cancel)
                         {
                             e.Cancel = true;
                         }
-                        else if (leaving == MessageBoxResult.Yes)
+                        else if (spinning == MessageBoxResult.OK)
                         {
+                            if (!_toLibrary)
+                            {
+                                await ApiWrapper.Logout();
+                                Application.Current.Shutdown();
+                            }
+                        }
+                    }
+                }
+
+                {
+                    if (MyAmount.MyTotalinzet > 0)
+                    {
+
+                        MessageBoxResult Leave = MessageBox.Show("U heeft geld ingezet. Als u nu de applicatie afsluit worden uw fiches wel teruggegeven", "Weet u zeker dat u wil weggaan?", MessageBoxButton.OKCancel);
+                        if (Leave == MessageBoxResult.OK)
+                        {
+                            await ApiWrapper.UpdateTokens(MyAmount.MyTotalinzet);
+
+                            Account();
+
                             if (!_toLibrary)
                             {
                                 await ApiWrapper.Logout();
@@ -506,12 +488,35 @@ namespace StonksCasino.Views.Roulette
                             }
 
                         }
-                        
+                        else
+                        {
+                            e.Cancel = true;
+                        }
                     }
-                    
+                    else
+                    {
+                        if (this.IsActive == true && !_toLibrary)
+                        {
+                            MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
+                            if (leaving == MessageBoxResult.No)
+                            {
+                                e.Cancel = true;
+                            }
+                            else if (leaving == MessageBoxResult.Yes)
+                            {
+                                if (!_toLibrary)
+                                {
+                                    await ApiWrapper.Logout();
+                                    Application.Current.Shutdown();
+                                }
+
+                            }
+
+                        }
+
+                    }
                 }
             }
-
             }
 
         private void btnBibliotheek_Click(object sender, RoutedEventArgs e)
@@ -520,20 +525,11 @@ namespace StonksCasino.Views.Roulette
             this.Close();
         }
 
-        private async void Uitloggen_Click(object sender, RoutedEventArgs e)
+        private void Uitloggen_Click(object sender, RoutedEventArgs e)
         {
-            StonksCasino.Properties.Settings.Default.Username = "";
-            StonksCasino.Properties.Settings.Default.Password = "";
-            StonksCasino.Properties.Settings.Default.Save();
-            await ApiWrapper.Logout();
-            User.Username = "";
-            User.Tokens = 0;
-
-
-            MainWindow window = new MainWindow();
-
+            User.Logoutclick = true;
             this.Close();
-            window.Show();
+
         }
     }
     }

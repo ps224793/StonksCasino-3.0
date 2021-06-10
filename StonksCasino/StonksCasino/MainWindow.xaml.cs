@@ -48,6 +48,7 @@ namespace StonksCasino
         {
             LoginCredentials credentials = new LoginCredentials() {Email = MyEmail, Password = tbPassword.Password, Overwride = false};
             string result = await ApiWrapper.Login(credentials);
+            User.Logoutclick = false;
   
             if (result == "succes")
             {
