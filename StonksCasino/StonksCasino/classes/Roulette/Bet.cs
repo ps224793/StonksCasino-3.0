@@ -22,6 +22,7 @@ namespace StonksCasino.classes.Roulette
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        private const string _sender = "Roulette";
 
         private string _imageUrl = "/Img/Roulette/transparant.png";
 
@@ -235,7 +236,7 @@ namespace StonksCasino.classes.Roulette
             if (Set == true)
             {
                 int amount = int.Parse(AmountLabel);
-                await ApiWrapper.UpdateTokens(amount);
+                await ApiWrapper.UpdateTokens(amount, _sender);
                 ImageUrl = "/Img/Roulette/transparant.png";
                 AmountLabel = "";
                 Amount = 0;
