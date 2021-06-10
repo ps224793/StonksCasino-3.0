@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace StonksCasino.classes.Api
 {
-    public class ApiWrapper
+    public static class ApiWrapper
     {
         public static async Task<string> Login(LoginCredentials loginCredentials)
         {
@@ -89,7 +89,7 @@ namespace StonksCasino.classes.Api
             }
         }
 
-        public static async Task<bool> UpdateTokens(int tokens)
+        public static async Task<bool> UpdateTokens(int tokens, string sender)
         {
             string baseUri = @"https://stonkscasino.nl/api/UpdateUserTokens.php";
             Uri request = new Uri(baseUri);
@@ -97,7 +97,7 @@ namespace StonksCasino.classes.Api
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "StonksCasino");
 
-            TokenUpdate tokenUpdate = new TokenUpdate(tokens);
+            TokenUpdate tokenUpdate = new TokenUpdate(tokens, sender);
             HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(tokenUpdate), Encoding.UTF8, "application/json");
             HttpResponseMessage respons = await client.PostAsync(request, httpContent);
 

@@ -34,6 +34,8 @@ namespace StonksCasino.Views.blackjack
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        private const string _sender = "Blackjack";
+
         private bool back2Library = false;
 
         private CardBlackjack _cardturned;
@@ -152,7 +154,7 @@ namespace StonksCasino.Views.blackjack
             int MyAantal = Game.MyAantal;
             if (MyAantal <= User.Tokens && MyAantal > 0)
             {
-                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1);
+                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1, _sender);
                 if (result)
                 {
                     Game.Deal();
