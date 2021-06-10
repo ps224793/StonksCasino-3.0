@@ -292,8 +292,21 @@ namespace StonksCasino.classes.poker
         private void SetPlayerHand(PokerPlayer player)
         {
             List<Card> cards = new List<Card>();
-            cards.Add(deck.DrawCard());
-            cards.Add(deck.DrawCard());
+
+            //hier
+            //if (player.PlayerID == 1 || player.PlayerID == 2)
+            //{
+            //    cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Ace, enums.card.CardBackColor.Blue));
+            //    cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Ace, enums.card.CardBackColor.Blue));
+            //}
+            //else
+            //{
+                cards.Add(deck.DrawCard());
+                cards.Add(deck.DrawCard());
+            //}
+
+
+
             foreach (Card card in cards)
             {
                 if (player.PlayerID != 0)
@@ -770,66 +783,8 @@ namespace StonksCasino.classes.poker
                             if (player.PlayerID == highestHands[winningHand].PlayerID)
                             {
                                 player.Balance += CurrentPot / highestHands.Count;
-                                if (winningHand == 0)
-                                {
-                                    for (int i = 0; i < 14; i++)
-                                    {
-                                        await Task.Delay(200);
-                                        if (Player0_CardVisibility != "Hidden")
-                                        {
-                                            Player0_CardVisibility = "Hidden";
-                                        }
-                                        else
-                                        {
-                                            Player0_CardVisibility = "Visible";
-                                        }
-                                    }
-                                }
-                                if (winningHand == 1)
-                                {
-                                    for (int i = 0; i < 14; i++)
-                                    {
-                                        await Task.Delay(200);
-                                        if (Player1_CardVisibility != "Hidden")
-                                        {
-                                            Player1_CardVisibility = "Hidden";
-                                        }
-                                        else
-                                        {
-                                            Player1_CardVisibility = "Visible";
-                                        }
-                                    }
-                                }
-                                if (winningHand == 2)
-                                {
-                                    for (int i = 0; i < 14; i++)
-                                    {
-                                        await Task.Delay(200);
-                                        if (Player2_CardVisibility != "Hidden")
-                                        {
-                                            Player2_CardVisibility = "Hidden";
-                                        }
-                                        else
-                                        {
-                                            Player2_CardVisibility = "Visible";
-                                        }
-                                    }
-                                }
-                                if (winningHand == 3)
-                                {
-                                    for (int i = 0; i < 14; i++)
-                                    {
-                                        await Task.Delay(200);
-                                        if (Player3_CardVisibility != "Hidden")
-                                        {
-                                            Player3_CardVisibility = "Hidden";
-                                        }
-                                        else
-                                        {
-                                            Player3_CardVisibility = "Visible";
-                                        }
-                                    }
-                                }
+
+                                ShowWinner(player.PlayerID);
                             }
                         }
                     }
@@ -850,23 +805,36 @@ namespace StonksCasino.classes.poker
                 {
                     Players[highestHands[0].PlayerID].Balance += CurrentPot;
                     MessageBox.Show($"{Players[highestHands[0].PlayerID].PokerName} heeft gewonnen!");
+
+                    ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
+                    await Task.Delay(3000);
                 }
             }
             else
             {
                 Players[highestHands[0].PlayerID].Balance += CurrentPot;
                 MessageBox.Show($"{Players[highestHands[0].PlayerID].PokerName} heeft gewonnen!");
+
+                ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
+                await Task.Delay(3000);
             }
 
-            GameState = "End";
-            string testWonPlayer = "Player" + Players[highestHands[0].PlayerID].PlayerID.ToString() + "_CardVisibility";
-            MessageBox.Show(testWonPlayer);
+            //string testWonPlayer = "Player" + Players[highestHands[0].PlayerID].PlayerID.ToString() + "_CardVisibility";
+            //MessageBox.Show(testWonPlayer);
+            
 
-            switch (Players[highestHands[0].PlayerID].PlayerID)
+            GameState = "End";
+            EndGame();
+        }
+
+        private async void ShowWinner(int playerID)
+        {
+            switch (playerID)
             {
                 case 0:
                     for (int i = 0; i < 14; i++)
                     {
+                        await Task.Delay(200);
                         if (Player0_CardVisibility != "Hidden")
                         {
                             Player0_CardVisibility = "Hidden";
@@ -875,12 +843,12 @@ namespace StonksCasino.classes.poker
                         {
                             Player0_CardVisibility = "Visible";
                         }
-                        await Task.Delay(200);
                     }
                     break;
                 case 1:
                     for (int i = 0; i < 14; i++)
                     {
+                        await Task.Delay(200);
                         if (Player1_CardVisibility != "Hidden")
                         {
                             Player1_CardVisibility = "Hidden";
@@ -889,12 +857,12 @@ namespace StonksCasino.classes.poker
                         {
                             Player1_CardVisibility = "Visible";
                         }
-                        await Task.Delay(200);
                     }
                     break;
                 case 2:
                     for (int i = 0; i < 14; i++)
                     {
+                        await Task.Delay(200);
                         if (Player2_CardVisibility != "Hidden")
                         {
                             Player2_CardVisibility = "Hidden";
@@ -903,12 +871,12 @@ namespace StonksCasino.classes.poker
                         {
                             Player2_CardVisibility = "Visible";
                         }
-                        await Task.Delay(200);
                     }
                     break;
                 case 3:
                     for (int i = 0; i < 14; i++)
                     {
+                        await Task.Delay(200);
                         if (Player3_CardVisibility != "Hidden")
                         {
                             Player3_CardVisibility = "Hidden";
@@ -917,14 +885,10 @@ namespace StonksCasino.classes.poker
                         {
                             Player3_CardVisibility = "Visible";
                         }
-                        await Task.Delay(200);
                     }
                     break;
             }
-
-            EndGame();
         }
-
 
         private void WinByFold(PokerPlayer player)
         {
