@@ -341,7 +341,7 @@ namespace StonksCasino.Views.Roulette
                     {
                         int amount = ((Bet)bt.Tag).Amount;
                         ((Bet)bt.Tag).DeleteBet();
-                        await ApiWrapper.UpdateTokens(amount);
+                        await ApiWrapper.UpdateTokens(amount, _sender);
                         MyAmount.RemoveTotal(amount);
                         Account();
                     }
@@ -477,7 +477,7 @@ namespace StonksCasino.Views.Roulette
                         MessageBoxResult Leave = MessageBox.Show("U heeft geld ingezet. Als u nu de applicatie afsluit worden uw fiches wel teruggegeven", "Weet u zeker dat u wil weggaan?", MessageBoxButton.OKCancel);
                         if (Leave == MessageBoxResult.OK)
                         {
-                            await ApiWrapper.UpdateTokens(MyAmount.MyTotalinzet);
+                            await ApiWrapper.UpdateTokens(MyAmount.MyTotalinzet, _sender);
 
                             Account();
 
