@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ namespace StonksCasino.classes.blackjack
 {
     public class BlackJack : PropertyChange
     {
+        private const string _sender = "Blackjack";
 
         private int _aantal;
 
@@ -146,7 +148,7 @@ namespace StonksCasino.classes.blackjack
 
         public async void Dubbelen()
         {
-            await ApiWrapper.UpdateTokens(-MyAantal);
+            await ApiWrapper.UpdateTokens(-MyAantal, _sender);
             Dubbel = false;
             MyAantal = MyAantal * 2;
             MessageBox.Show($"Het aantal Tokens is verdubbeld naar: { MyAantal }");
@@ -177,12 +179,12 @@ namespace StonksCasino.classes.blackjack
 
         public async void Gamewin()
         {
-            await ApiWrapper.UpdateTokens(MyAantal * 2);
+            await ApiWrapper.UpdateTokens(MyAantal * 2 , _sender);
         }
 
         public async void Gamedraw()
         {
-            await ApiWrapper.UpdateTokens(MyAantal);
+            await ApiWrapper.UpdateTokens(MyAantal, _sender);
         }
 
         public void Gameclear()

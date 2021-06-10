@@ -35,6 +35,8 @@ namespace StonksCasino.Views.Roulette
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        private const string _sender = "Roulette";
+
         public string Username 
         {
             get { return User.Username; }
@@ -241,7 +243,7 @@ namespace StonksCasino.Views.Roulette
             if (totelwin > 0)
             {
                 MessageBox.Show("Gefeliciteerd u hebt € " + totelwin.ToString() + " Gewonnen");
-                await ApiWrapper.UpdateTokens(totelwin);
+                await ApiWrapper.UpdateTokens(totelwin, _sender);
 
             }
             _display = false;
@@ -275,7 +277,7 @@ namespace StonksCasino.Views.Roulette
                             MyAmount.Addtotal(_betAmount);
                             Button bt = sender as Button;
                             ((Bet)bt.Tag).SetBet(_betAmount);
-                            await ApiWrapper.UpdateTokens(-_betAmount);
+                            await ApiWrapper.UpdateTokens(-_betAmount, _sender);
                             Account();
                         }
                         else
@@ -470,7 +472,7 @@ namespace StonksCasino.Views.Roulette
                     MessageBoxResult Leave = MessageBox.Show("U heeft geld ingezet. Als u nu de applicatie afsluit worden uw fiches wel teruggegeven", "Weet u zeker dat u wil weggaan?", MessageBoxButton.OKCancel);
                     if (Leave == MessageBoxResult.OK)
                     {
-                        await ApiWrapper.UpdateTokens(MyAmount.MyTotalinzet);
+                        await ApiWrapper.UpdateTokens(MyAmount.MyTotalinzet, _sender);
                     
                         Account();
 

@@ -37,6 +37,8 @@ namespace StonksCasino.Views.slotmachine
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        private const string _sender = "Slotmachine";
+
         public string Username
         {
             get { return User.Username; }
@@ -169,14 +171,14 @@ namespace StonksCasino.Views.slotmachine
 
         public async void Verhogen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(-100);
+            await ApiWrapper.UpdateTokens(-100, _sender);
             Account();
             Beurt++;
             Check();
         }
         private async void Verlagen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(100);
+            await ApiWrapper.UpdateTokens(100, _sender);
             Account();
             Beurt--;
             Check();
