@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -36,6 +37,8 @@ namespace StonksCasino.Views.slotmachine
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        private const string _sender = "Slotmachine";
 
         public string Username
         {
@@ -169,14 +172,14 @@ namespace StonksCasino.Views.slotmachine
 
         public async void Verhogen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(-100);
+            await ApiWrapper.UpdateTokens(-100, _sender);
             Account();
             Beurt++;
             Check();
         }
         private async void Verlagen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(100);
+            await ApiWrapper.UpdateTokens(100, _sender);
             Account();
             Beurt--;
             Check();
@@ -303,6 +306,12 @@ namespace StonksCasino.Views.slotmachine
             {
                 Application.Current.Shutdown();
             }
+        }
+
+        private void BtnGeldStorten_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/account-info");
+
         }
     }
 }

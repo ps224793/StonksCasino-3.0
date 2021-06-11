@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -468,20 +469,10 @@ namespace StonksCasino.Views.horserace
             controller4.Play();
         }
 
-        private async void Uitloggen_Click(object sender, RoutedEventArgs e)
+        private void Uitloggen_Click(object sender, RoutedEventArgs e)
         {
-            StonksCasino.Properties.Settings.Default.Username = "";
-            StonksCasino.Properties.Settings.Default.Password = "";
-            StonksCasino.Properties.Settings.Default.Save();
-            await ApiWrapper.Logout();
-            User.Username = "";
-            User.Tokens = 0;
-
-
-            MainWindow window = new MainWindow();
-
+            User.Logoutclick = true;
             this.Close();
-            window.Show();
         }
 
         private async void Account()
@@ -494,21 +485,32 @@ namespace StonksCasino.Views.horserace
                 Application.Current.Shutdown();
             }
         }
-        private void Window_Closing(object sender, CancelEventArgs e)
+        private async void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (this.IsActive == true && !back2Library)
+            if (!User.Logoutclick)
             {
-                MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
-                if (leaving == MessageBoxResult.No)
+                if (this.IsActive == true && !back2Library)
                 {
-                    e.Cancel = true;
-                }
-                else if (leaving == MessageBoxResult.Yes)
-                {
-                    Application.Current.Shutdown();
+                    MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
+                    if (leaving == MessageBoxResult.No)
+                    {
+                        e.Cancel = true;
+                    }
+                    else if (leaving == MessageBoxResult.Yes)
+                    {
+                        User.shutdown = false;
+                        await ApiWrapper.Logout();
+                        Application.Current.Shutdown();
 
+                    }
                 }
             }
+        }
+
+        private void BtnGeldStorten_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/account-info");
+
         }
     }
 }

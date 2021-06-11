@@ -105,6 +105,28 @@ namespace StonksCasino.classes.Slotmachine
             {
                 winnings += _symbolValues[SlotRows[0].Slots[2].Name];
             }
+            if (
+                SlotRows[0].Slots[0].Name == SlotRows[0].Slots[1].Name &&
+                SlotRows[0].Slots[0].Name == SlotRows[0].Slots[2].Name
+                )
+            {
+                winnings += _symbolValues[SlotRows[0].Slots[0].Name];
+            }
+            if (
+                SlotRows[1].Slots[0].Name == SlotRows[1].Slots[1].Name &&
+                SlotRows[1].Slots[0].Name == SlotRows[1].Slots[2].Name
+                )
+            {
+                winnings += _symbolValues[SlotRows[1].Slots[0].Name];
+            }
+            if (
+                SlotRows[2].Slots[0].Name == SlotRows[2].Slots[1].Name &&
+                SlotRows[2].Slots[0].Name == SlotRows[2].Slots[2].Name
+                )
+            {
+                winnings += _symbolValues[SlotRows[2].Slots[0].Name];
+            }
+
 
             return winnings;
         }

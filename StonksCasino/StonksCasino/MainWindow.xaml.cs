@@ -16,7 +16,7 @@ using StonksCasino.Views.main;
 using StonksCasino.classes.Main;
 using StonksCasino.classes.Api;
 using StonksCasino.classes.Api.Models;
-
+using System.Diagnostics;
 
 namespace StonksCasino
 {
@@ -48,6 +48,7 @@ namespace StonksCasino
         {
             LoginCredentials credentials = new LoginCredentials() {Email = MyEmail, Password = tbPassword.Password, Overwride = false};
             string result = await ApiWrapper.Login(credentials);
+            User.Logoutclick = false;
   
             if (result == "succes")
             {
@@ -112,6 +113,16 @@ namespace StonksCasino
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoginRemember();
+        }
+
+        private void Register_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/register");
+        }
+
+        private void Pass_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/password/reset");
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -33,6 +34,8 @@ namespace StonksCasino.Views.blackjack
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        private const string _sender = "Blackjack";
 
         private bool back2Library = false;
 
@@ -152,7 +155,7 @@ namespace StonksCasino.Views.blackjack
             int MyAantal = Game.MyAantal;
             if (MyAantal <= User.Tokens && MyAantal > 0)
             {
-                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1);
+                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1, _sender);
                 if (result)
                 {
                     Game.Deal();
@@ -295,19 +298,25 @@ namespace StonksCasino.Views.blackjack
             }
         }
 
-        private void Window_Closing(object sender, CancelEventArgs e)
+        private async void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (this.IsActive == true && !back2Library)
+            if (!User.Logoutclick)
             {
-                MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
-                if (leaving == MessageBoxResult.No)
+
+                if (this.IsActive == true && !back2Library)
                 {
-                    e.Cancel = true;
-                }
-                else if (leaving == MessageBoxResult.Yes)
-                {
-                   Application.Current.Shutdown();
-                 
+                    MessageBoxResult leaving = MessageBox.Show("Weet u zeker dat u de applicatie wil afsluiten", "Afsluiten", MessageBoxButton.YesNo);
+                    if (leaving == MessageBoxResult.No)
+                    {
+                        e.Cancel = true;
+                    }
+                    else if (leaving == MessageBoxResult.Yes)
+                    {
+                        User.shutdown = false;
+                        await ApiWrapper.Logout();
+                        Application.Current.Shutdown();
+
+                    }
                 }
             }
         }
@@ -335,16 +344,16 @@ namespace StonksCasino.Views.blackjack
             return true;
         }
 
-        private async void Uitloggen_Click(object sender, RoutedEventArgs e)
+        private void Uitloggen_Click(object sender, RoutedEventArgs e)
         {
-            StonksCasino.Properties.Settings.Default.Username = "";
-            StonksCasino.Properties.Settings.Default.Password = "";
-            StonksCasino.Properties.Settings.Default.Save();
-            await ApiWrapper.Logout();
-            User.Username = "";
-            User.Tokens = 0;
-
+            User.Logoutclick = true;
             this.Close();
+        }
+
+        private void BtnGeldStorten_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://stonkscasino.nl/public/account-info");
+
         }
     }
 }

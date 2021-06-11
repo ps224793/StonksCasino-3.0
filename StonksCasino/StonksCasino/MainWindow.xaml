@@ -52,9 +52,9 @@
                 <PasswordBox x:Name="tbPassword" PasswordChar="*" FontSize="30" Foreground="Black" Background="White"  />
             </StackPanel>
             <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal"  VerticalAlignment="Center">
-                <TextBlock Margin="0,0,15,0" TextDecorations="Underline" Foreground="White" FontSize="22" Text="Account registreren"/>
-                <TextBlock Text="|" Foreground="White" FontSize="22"/>
-                <TextBlock Margin="15,0" TextDecorations="Underline" Foreground="White" FontSize="22" Text="Wachtwoord vergeten?"/>
+                <TextBlock MouseLeftButtonDown="Register_MouseLeftButtonDown" Margin="0,0,15,0" TextDecorations="Underline" Foreground="White" FontSize="22" Text="Account registreren"/>
+                <TextBlock  Text="|" Foreground="White" FontSize="22"/>
+                <TextBlock MouseLeftButtonDown="Pass_MouseLeftButtonDown" Margin="15,0" TextDecorations="Underline" Foreground="White" FontSize="22" Text="Wachtwoord vergeten?"/>
             </StackPanel>
             <CheckBox Grid.Row="5" Grid.Column="1" Foreground="White" IsChecked="{Binding Remember,Mode=OneWayToSource}"  FontSize="11" Height="25" VerticalAlignment="Top"  Content="Onthoud mij">
                 <CheckBox.LayoutTransform>

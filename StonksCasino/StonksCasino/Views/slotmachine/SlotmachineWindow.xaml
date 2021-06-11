@@ -15,7 +15,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Click="Bibliotheek_Click" x:Name="btnBibliotheek" Content="Bibliotheek" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" />
                 <Button x:Name="btnWinkel" Content="Winkel" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" />
-                <Button x:Name="BtnGeldStorten" Content="Geld storten" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" />
+                <Button x:Name="BtnGeldStorten" Content="Geld storten" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Height="50" Padding="10" VerticalAlignment="Center" Foreground="White" Click="BtnGeldStorten_Click" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Image Source="/Img/Main/Account.png" Margin="5,0" Height="40"></Image>

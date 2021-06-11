@@ -18,9 +18,15 @@ namespace StonksCasino.classes.Api.Models
         [JsonProperty("tokens")]
         public int Tokens { get; set; }
 
-        public TokenUpdate(int tokens)
+        [JsonProperty("sender")]
+        public string Sender { get; set; }
+
+        public TokenUpdate(int tokens, string sender)
         {
             Tokens = tokens;
+            Sender = sender;
         }
+
+
     }
 }
