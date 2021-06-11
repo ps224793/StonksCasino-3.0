@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using StonksCasino.classes.Main;
 using StonksCasino.enums.poker;
@@ -41,7 +42,6 @@ namespace StonksCasino.classes.poker
             get { return _numOfActivePlayers; }
             set { _numOfActivePlayers = value; }
         }
-
 
         private int _blindsBet = 5;
 
@@ -201,8 +201,6 @@ namespace StonksCasino.classes.poker
             set { _player3_CardVisibility = value; OnPropertyChanged(); }
         }
 
-
-
         private int _roundsSinceBlindsRaise = 0;
 
         public int RoundsSinceBlindsRaise
@@ -219,7 +217,13 @@ namespace StonksCasino.classes.poker
             set { _enablePlayerInput = value; OnPropertyChanged(); }
         }
 
+        private ObservableCollection<string> _eventLog = new ObservableCollection<string>();
 
+        public ObservableCollection<string> EventLog
+        {
+            get { return _eventLog; }
+            set { _eventLog = value; OnPropertyChanged(); }
+        }
 
         private ObservableCollection<Card> _table;
 
@@ -235,6 +239,54 @@ namespace StonksCasino.classes.poker
         {
             get { return _boardOut; }
             set { _boardOut = value; }
+        }
+
+        private int _gameCount = 1;
+
+        public int GameCount
+        {
+            get { return _gameCount; }
+            set { _gameCount = value; }
+        }
+
+        private string _player0Color = "White";
+
+        public string Player0Color
+        {
+            get { return _player0Color; }
+            set { _player0Color = value; OnPropertyChanged(); }
+        }
+
+        private string _player1Color = "White";
+
+        public string Player1Color
+        {
+            get { return _player1Color; }
+            set { _player1Color = value; OnPropertyChanged(); }
+        }
+
+        private string _player2Color = "White";
+
+        public string Player2Color
+        {
+            get { return _player2Color; }
+            set { _player2Color = value; OnPropertyChanged(); }
+        }
+
+        private string _player3Color = "White";
+
+        public string Player3Color
+        {
+            get { return _player3Color; }
+            set { _player3Color = value; OnPropertyChanged(); }
+        }
+
+        private string btnStartDinges = "Visible";
+
+        public string BUTTONSTART
+        {
+            get { return btnStartDinges; }
+            set { btnStartDinges = value; OnPropertyChanged(); }
         }
 
 
@@ -255,10 +307,10 @@ namespace StonksCasino.classes.poker
                         Players[i].PokerName = $"{User.Username}";
                         break;
                     case 1:
-                        Players[i].PokerName = "Gambletron 2000";
+                        Players[i].PokerName = "Gambletron2000";
                         break;
                     case 2:
-                        Players[i].PokerName = "The Pokernator";
+                        Players[i].PokerName = "ThePokernator";
                         break;
                     case 3:
                         Players[i].PokerName = "MyloBot";
@@ -273,36 +325,34 @@ namespace StonksCasino.classes.poker
             //PokerHandCalculator.GetHandValue(_players[0].Hand.ToList(), _table.ToList());
         }
 
-        public void CalcHand()
-        {
-            //List<Card> handje = new List<Card>();
-            //handje.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Six, enums.card.CardBackColor.Blue));
-            //handje.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Jack, enums.card.CardBackColor.Blue));
-
-            //List<Card> tafeltje = new List<Card>();
-            //tafeltje.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Seven, enums.card.CardBackColor.Blue));
-            //tafeltje.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
-            //tafeltje.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
-            //tafeltje.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
-            //tafeltje.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Seven, enums.card.CardBackColor.Blue));
-            //PokerHandCalculator.GetHandValue(tafeltje, handje);
-            PokerHandCalculator.GetHandValue(_players[0], _table.ToList());
-        }
-
         private void SetPlayerHand(PokerPlayer player)
         {
             List<Card> cards = new List<Card>();
 
-            //hier
-            //if (player.PlayerID == 1 || player.PlayerID == 2)
-            //{
-            //    cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Ace, enums.card.CardBackColor.Blue));
-            //    cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Ace, enums.card.CardBackColor.Blue));
-            //}
+            //daar
+            switch (player.PlayerID)
+            {
+                case 0:
+                    cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
+                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
+                    break;
+                case 1:
+                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
+                    break;
+                case 2:
+                    cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Two, enums.card.CardBackColor.Blue));
+                    break;
+                case 3:
+                    cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Seven, enums.card.CardBackColor.Blue));
+                    break;
+            }
             //else
             //{
-                cards.Add(deck.DrawCard());
-                cards.Add(deck.DrawCard());
+            //    cards.Add(deck.DrawCard());
+            //    cards.Add(deck.DrawCard());
             //}
 
 
@@ -335,6 +385,8 @@ namespace StonksCasino.classes.poker
                 TopBet += raiseBet;
                 CurrentPot += raised;
             }
+            EventLog.Add($"{currentPlayer.PokerName} raised with {LastRaise}");
+            ScrollListbox();
             resetCheckedPlayers(currentPlayer);
             WagerRound(currentPlayer);
         }
@@ -355,6 +407,8 @@ namespace StonksCasino.classes.poker
                 }
                 if (exitloop) break;
             }
+            EventLog.Add($"{player.PokerName} folds");
+            ScrollListbox();
         }
 
         public void Call(PokerPlayer player)
@@ -363,11 +417,15 @@ namespace StonksCasino.classes.poker
             {
                 CurrentPot = player.Call(CurrentPot, TopBet);
             }
+            EventLog.Add($"{player.PokerName} calls");
+            ScrollListbox();
         }
 
         public void Check(PokerPlayer player)
         {
             player.Check();
+            EventLog.Add($"{player.PokerName} checks");
+            ScrollListbox();
         }
 
         public void AllIn(PokerPlayer player)
@@ -377,13 +435,23 @@ namespace StonksCasino.classes.poker
                 CurrentPot = player.AllIn(CurrentPot);
                 // Switch from MainPot to SidePot
             }
+            EventLog.Add($"{player.PokerName} goes all-in");
+            ScrollListbox();
         }
 
         public void StartGame()
         {
+            BUTTONSTART = "Hidden";
+            EventLog.Add($"======{GameCount++}e GAME======");
             if (RoundsSinceBlindsRaise >= 5)
             {
                 RaiseBlinds();
+            }
+            else
+            {
+                EventLog.Add($"The Small Blind is { BlindsBet }");
+                EventLog.Add($"The Big Blind is {(BlindsBet * 2)}");
+                ScrollListbox();
             }
             PlayerCardOpacity = 1;
             deck = new PokerDeck();
@@ -391,11 +459,11 @@ namespace StonksCasino.classes.poker
             PlaceBlinds();
             DealHoleCards();
             SetTable();
-
-
         }
         public void StartGame2()
         {
+            EventLog.Add("======PRE-FLOP======");
+
             foreach (PokerPlayer player in Players)
             {
                 bool exitLoop = false;
@@ -496,7 +564,7 @@ namespace StonksCasino.classes.poker
             }
         }
 
-        public void WagerRound(PokerPlayer player)
+        public async void WagerRound(PokerPlayer player)
         {
             int i = 0;
             int numOfPlayersNotPlaying = 0;
@@ -515,23 +583,38 @@ namespace StonksCasino.classes.poker
                         if (Players[currentPlayer].PlayerID != 0)
                         {
                             // Execute algorithm
-                            MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
+                            //hier
+                            //MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
+                            ShowCurrentPlayer(Players[currentPlayer].PlayerID);
+
+                            //EventLog.Add($"{Players[currentPlayer].PokerName} is aan de beurt.");
+                            ScrollListbox();
+
                             if (Players[currentPlayer].Bet == TopBet)
                             {
+                                await Task.Delay(2000);
                                 Check(Players[currentPlayer]);
                             }
                             else if (Players[currentPlayer].Bet < TopBet && Players[currentPlayer].Balance >= (TopBet - Players[currentPlayer].Bet))
                             {
+                                await Task.Delay(2000);
                                 Call(Players[currentPlayer]);
                             }
                             else
                             {
+                                await Task.Delay(2000);
                                 AllIn(Players[currentPlayer]);
                             }
                         }
                         else
                         {
-                            MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
+                            //MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
+                            await Task.Delay(2000);
+                            ShowCurrentPlayer(Players[currentPlayer].PlayerID);
+
+                            //EventLog.Add($"{Players[currentPlayer].PokerName} is aan de beurt");
+                            ScrollListbox();
+
                             Players[currentPlayer].RaiseBet = LastRaise + (TopBet - Players[currentPlayer].Bet);
                             EnablePlayerInput = true;
                             break;
@@ -579,6 +662,46 @@ namespace StonksCasino.classes.poker
             }
         }
 
+        private void ShowCurrentPlayer(int player_ID)
+        {
+            Player0Color = "White";
+            Player1Color = "White";
+            Player2Color = "White";
+            Player3Color = "White";
+            switch (player_ID)
+            {
+                case 0:
+                    Player0Color = "#FFFF6464";
+                    break;
+                case 1:
+                    Player1Color = "#FFFF6464";
+                    break;
+                case 2:
+                    Player2Color = "#FFFF6464";
+                    break;
+                case 3:
+                    Player3Color = "#FFFF6464";
+                    break;
+            }
+        }
+
+        private void ScrollListbox()
+        {
+            foreach (Window item in Application.Current.Windows)
+            {
+                if(item.GetType() == typeof(PokerWindow))
+                {
+                    ListBox lbEventLog = (ListBox)(item as PokerWindow).FindName("lbEventLog");
+                    if (VisualTreeHelper.GetChildrenCount(lbEventLog) > 0)
+                    {
+                        Border border = (Border)VisualTreeHelper.GetChild(lbEventLog, 0);
+                        ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
+                        scrollViewer.ScrollToBottom();
+                    }
+                }
+            }
+        }
+
         public void DisablePlayerInput()
         {
             EnablePlayerInput = false;
@@ -587,14 +710,19 @@ namespace StonksCasino.classes.poker
         private async void SetTable()
         {
             ObservableCollection<Card> cards = new ObservableCollection<Card>();
-            for (int i = 0; i < 5; i++)
-            {
-                Card card = deck.DrawCard();
-                card.Turned = true;
-                cards.Add(card);
-            }
-            MyTable = cards;
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    Card card = deck.DrawCard();
+            //    card.Turned = true;
+            //    cards.Add(card);
+            //}
+            cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
+            cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
+            cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
+            cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
+            cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
 
+            MyTable = cards;
         }
 
         private void resetCheckedPlayers(PokerPlayer currentPlayer)
@@ -654,6 +782,8 @@ namespace StonksCasino.classes.poker
 
         private async void PlaceFlop()
         {
+            EventLog.Add("======FLOP======");
+
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(PokerWindow))
@@ -677,6 +807,8 @@ namespace StonksCasino.classes.poker
 
         public async void PlaceTurn()
         {
+            EventLog.Add("======TURN======");
+
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(PokerWindow))
@@ -695,6 +827,8 @@ namespace StonksCasino.classes.poker
 
         public async void PlaceRiver()
         {
+            EventLog.Add("======RIVER======");
+
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(PokerWindow))
@@ -713,6 +847,8 @@ namespace StonksCasino.classes.poker
 
         public async void showdown()
         {
+            EventLog.Add("======SHOWDOWN======");
+
             List<PokerHandValue> playerHands = new List<PokerHandValue>();
 
             List<PokerPlayer> activePlayers = new List<PokerPlayer>();
@@ -735,6 +871,12 @@ namespace StonksCasino.classes.poker
                     highestHands.Add(playerHand);
                 }
             }
+
+
+
+
+
+
             if (highestHands.Count > 1)
             {
                 for (int handToCompare = 1; handToCompare < highestHands.Count; handToCompare++)
@@ -776,6 +918,8 @@ namespace StonksCasino.classes.poker
                 }
                 if (highestHands.Count > 1)
                 {
+                    EventLog.Add("Gelijkspel");
+                    MessageWinningHand(highestHands);
                     for (int winningHand = 0; winningHand < highestHands.Count; winningHand++)
                     {
                         foreach (PokerPlayer player in Players)
@@ -783,7 +927,6 @@ namespace StonksCasino.classes.poker
                             if (player.PlayerID == highestHands[winningHand].PlayerID)
                             {
                                 player.Balance += CurrentPot / highestHands.Count;
-
                                 ShowWinner(player.PlayerID);
                             }
                         }
@@ -799,13 +942,12 @@ namespace StonksCasino.classes.poker
                     {
                         player.Bet = 0;
                     }
-                    MessageBox.Show("Gelijkspel");
+                    await Task.Delay(3000);
                 }
                 else
                 {
                     Players[highestHands[0].PlayerID].Balance += CurrentPot;
-                    MessageBox.Show($"{Players[highestHands[0].PlayerID].PokerName} heeft gewonnen!");
-
+                    MessageWinningHand(highestHands);
                     ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
                     await Task.Delay(3000);
                 }
@@ -813,23 +955,73 @@ namespace StonksCasino.classes.poker
             else
             {
                 Players[highestHands[0].PlayerID].Balance += CurrentPot;
-                MessageBox.Show($"{Players[highestHands[0].PlayerID].PokerName} heeft gewonnen!");
-
+                MessageWinningHand(highestHands);
                 ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
                 await Task.Delay(3000);
             }
 
-            //string testWonPlayer = "Player" + Players[highestHands[0].PlayerID].PlayerID.ToString() + "_CardVisibility";
-            //MessageBox.Show(testWonPlayer);
-            
 
+            MessageBox.Show("Click ok voor volgende ronde", "volgende ronde", MessageBoxButton.OK);
             GameState = "End";
             EndGame();
         }
 
-        private async void ShowWinner(int playerID)
+        private void MessageWinningHand(List<PokerHandValue> winningHands)
         {
-            switch (playerID)
+            foreach (PokerHandValue winningHand in winningHands)
+            {
+                //suitHands
+                string sh0 = $"{winningHand.Hand[0].Type}".Replace("Spades", "♠").Replace("Clubs", "♣").Replace("Hearts", "♥").Replace("Diamonds", "♦");
+                string sh1 = $"{winningHand.Hand[1].Type}".Replace("Spades", "♠").Replace("Clubs", "♣").Replace("Hearts", "♥").Replace("Diamonds", "♦");
+                string sh2 = $"{winningHand.Hand[2].Type}".Replace("Spades", "♠").Replace("Clubs", "♣").Replace("Hearts", "♥").Replace("Diamonds", "♦");
+                string sh3 = $"{winningHand.Hand[3].Type}".Replace("Spades", "♠").Replace("Clubs", "♣").Replace("Hearts", "♥").Replace("Diamonds", "♦");
+                string sh4 = $"{winningHand.Hand[4].Type}".Replace("Spades", "♠").Replace("Clubs", "♣").Replace("Hearts", "♥").Replace("Diamonds", "♦");
+                //valuehands
+                string vh0 = $"{winningHand.Hand[0].Value}";
+                string vh1 = $"{winningHand.Hand[1].Value}";
+                string vh2 = $"{winningHand.Hand[2].Value}";
+                string vh3 = $"{winningHand.Hand[3].Value}";
+                string vh4 = $"{winningHand.Hand[4].Value}";
+                //pokerhand
+                string ph = $"{winningHand.MyPokerHand}";
+
+                string[] search = { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten" };
+                string[] _replace = { "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+
+                int pCounter = 0;
+                foreach (string i in search)
+                {
+                    vh0 = vh0.Replace(i, _replace[pCounter]);
+                    vh1 = vh1.Replace(i, _replace[pCounter]);
+                    vh2 = vh2.Replace(i, _replace[pCounter]);
+                    vh3 = vh3.Replace(i, _replace[pCounter]);
+                    vh4 = vh4.Replace(i, _replace[pCounter]);
+                    pCounter++;
+                }
+                string[] vhArray = { vh0, vh1, vh2, vh3, vh4 };
+                int xCounter = 0;
+                foreach (string x in vhArray)
+                {
+                    if (x == "10")
+                    {
+                        vhArray[xCounter] = vhArray[xCounter].Substring(0, 2);
+                    }
+                    else
+                    {
+                        vhArray[xCounter] = vhArray[xCounter].Substring(0, 1);
+                    }
+                    xCounter++;
+                }
+                string winnerCards = $"{ph}  {vhArray[0]}{sh0}  {vhArray[1]}{sh1}  {vhArray[2]}{sh2}  {vhArray[3]}{sh3}  {vhArray[4]}{sh4}";
+
+                EventLog.Add($"{Players[winningHand.PlayerID].PokerName} wins  -{winnerCards}-");
+            }
+            ScrollListbox();
+        }
+
+        private async void ShowWinner(int player_ID)
+        {
+            switch (player_ID)
             {
                 case 0:
                     for (int i = 0; i < 14; i++)
@@ -890,10 +1082,12 @@ namespace StonksCasino.classes.poker
             }
         }
 
-        private void WinByFold(PokerPlayer player)
+        private async void WinByFold(PokerPlayer player)
         {
             player.Balance += CurrentPot;
-            MessageBox.Show($"{player.PokerName} heeft gewonnen!");
+            EventLog.Add($"{player.PokerName} wins  -by fold-");
+            ShowWinner(player.PlayerID);
+            await Task.Delay(3000);
             GameState = "End";
             EndGame();
         }
@@ -959,6 +1153,11 @@ namespace StonksCasino.classes.poker
 
         public async void EndGame()
         {
+            BUTTONSTART = "Visible";
+            Player0Color = "White";
+            Player1Color = "White";
+            Player2Color = "White";
+            Player3Color = "White";
             RoundsSinceBlindsRaise++;
             CurrentPot = 0;
             await ClearTable();
@@ -1065,9 +1264,10 @@ namespace StonksCasino.classes.poker
         {
             RoundsSinceBlindsRaise = 0;
             BlindsBet *= 2;
-            MessageBox.Show($"The Blinds have been raised\n" +
-                            $"The Small Blind is now {BlindsBet}\n" +
-                            $"The Big Blind is now {(BlindsBet * 2)}");
+            EventLog.Add($"The Blinds have been raised");
+            EventLog.Add($"The Small Blind is now { BlindsBet }");
+            EventLog.Add($"The Big Blind is now {(BlindsBet * 2)}");
+            ScrollListbox();
         }
     }
 }

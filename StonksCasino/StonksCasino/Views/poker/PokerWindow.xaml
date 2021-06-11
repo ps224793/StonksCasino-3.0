@@ -45,6 +45,16 @@
                     <RowDefinition Height="1.75*"/>
                 </Grid.RowDefinitions>
 
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Border Margin="-20,-20,0,0" BorderThickness="4" BorderBrush="Black">
+                        <ListBox x:Name="lbEventLog" Background="#4C000000" Foreground="White" FontWeight="Bold" FontSize="14" ItemsSource="{Binding Game.EventLog, Mode=OneWay}"/>
+                    </Border>
+                </Grid>
+
                 <!-- table cards -->
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.RowDefinitions>
@@ -101,7 +111,7 @@
                     </Image>
                 </Grid>
 
-                <Grid  Grid.Row="2" Grid.Column="1">
+                <Grid Margin="0,0,0,20" Grid.Row="2" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1.5*"/>
@@ -112,6 +122,13 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="0,0,0,-30" Text="{Binding Username}" Foreground="{Binding Game.Player0Color, Mode=OneWay}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextAlignment="Center" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold">
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+
                     <Image x:Name="player0_Left" Visibility="{Binding Game.Player0_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,10,0" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Source="{Binding Game.Players[0].Hand[0].ActiveURL}" Opacity="{Binding Game.PlayerCardOpacity}">
                         <Image.RenderTransform>
                             <TransformGroup>
@@ -137,11 +154,11 @@
                         <Image Grid.Column="0" Margin="0,10,0,0" HorizontalAlignment="Left" Source="{Binding Game.Players[0].ButtonImageURL}" />
                     </Grid>
 
-                    <TextBlock Margin="0,10,0,0" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[0].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                    <TextBlock Margin="0,10,0,0" FontSize="18" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[0].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                 </Grid>
 
                 <!--top-->
-                <Grid  Grid.Row="0" Grid.Column="1">
+                <Grid Margin="0,20,0,0" Grid.Row="0" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1.5*"/>
                         <RowDefinition Height="1*"/>
@@ -152,6 +169,13 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="0,-30,0,0" Text="{Binding Game.Players[2].PokerName}" Foreground="{Binding Game.Player2Color, Mode=OneWay}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" TextAlignment="Center" VerticalAlignment="Top" FontSize="20" FontWeight="Bold">
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+
                     <Image x:Name="player2_Left" Visibility="{Binding Game.Player2_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,10,0" Grid.Column="1" HorizontalAlignment="Right" Source="{Binding Game.Players[2].Hand[1].ActiveURL}" RenderTransformOrigin="0.5,0.5">
                         <Image.RenderTransform>
                             <TransformGroup>
@@ -181,10 +205,10 @@
 
                     <Grid HorizontalAlignment="Right">
                         <Image HorizontalAlignment="Center" Grid.Column="0" Source="/Img/Main/Token.png" MaxWidth="140"/>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[2].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <TextBlock FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[2].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold"/>
                     </Grid>
 
-                    <TextBlock Margin="0,0,0,10" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[2].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                    <TextBlock Margin="0,0,0,10" FontSize="18" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[2].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                 </Grid>
 
                 <!--Left-->
@@ -199,6 +223,16 @@
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="0,0,0,0" Text="{Binding Game.Players[1].PokerName}" Foreground="{Binding Game.Player1Color, Mode=OneWay}" Grid.Row="1" Grid.RowSpan="2" TextAlignment="Center" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Direction="45"/>
+                        </TextBlock.Effect>
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+
                     <Image x:Name="player1_Left" Visibility="{Binding Game.Player1_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,0,-10" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Source="{Binding Game.Players[1].Hand[0].ActiveURL}" RenderTransformOrigin="0.5,0.5">
                         <Image.LayoutTransform>
                             <TransformGroup>
@@ -240,12 +274,14 @@
                         </Grid.RowDefinitions>
                         <Image Grid.Row="1" Margin="0,0,10,0" Source="/Img/Main/Token.png" />
                         <Image Grid.Row="0" Margin="0,0,10,0" VerticalAlignment="Bottom" Source="{Binding Game.Players[1].ButtonImageURL}" />
-                        <TextBlock Margin="0,0,10,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[1].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <TextBlock Margin="0,0,10,0" FontSize="18" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[1].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+
+
                     </Grid>
 
                     <Grid HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Top">
                         <Image HorizontalAlignment="Center" Source="/Img/Main/Token.png" MaxWidth="140"/>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[1].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <TextBlock FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[1].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold"/>
                     </Grid>
                 </Grid>
 
@@ -264,6 +300,16 @@
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="0,0,0,0" Text="{Binding Game.Players[3].PokerName}" Foreground="{Binding Game.Player3Color, Mode=OneWay}" Grid.Row="1" Grid.RowSpan="2" TextAlignment="Center" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Direction="225"/>
+                        </TextBlock.Effect>
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+
                     <Image x:Name="player3_Right" Visibility="{Binding Game.Player3_CardVisibility, Mode=OneWay}" Width="{Binding CardWidth, Mode=OneWay}" Margin="0,0,0,-10" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Source="{Binding Game.Players[3].Hand[1].ActiveURL}" RenderTransformOrigin="0.5,0.5">
                         <Image.LayoutTransform>
                             <TransformGroup>
@@ -309,7 +355,7 @@
                                 <RotateTransform Angle="180"/>
                             </Image.LayoutTransform>
                         </Image>
-                        <TextBlock Margin="0,0,10,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[3].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock Margin="0,0,10,0" FontSize="18" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[3].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
                             <TextBlock.RenderTransform>
                                 <RotateTransform Angle="180"/>
                             </TextBlock.RenderTransform>
@@ -318,7 +364,7 @@
 
                     <Grid HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Top">
                         <Image HorizontalAlignment="Center" Source="/Img/Main/Token.png" MaxWidth="140"/>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[3].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Game.Players[3].Balance}" TextAlignment="Center" Foreground="White" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
                             <TextBlock.RenderTransform>
                                 <RotateTransform Angle="180"/>
                             </TextBlock.RenderTransform>
@@ -372,12 +418,12 @@
                             </Grid>
 
                             <Image Grid.Column="0" Source="/Img/Main/Token.png" Grid.RowSpan="2"></Image>
-                            <TextBlock Text="{Binding Game.Players[0].Balance}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Grid.Row="0" Grid.RowSpan="2" />
+                            <TextBlock FontSize="18" Text="{Binding Game.Players[0].Balance}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Grid.Row="0" Grid.RowSpan="2" />
                         </Grid>
                     </Border>
                 </Grid>
             </Grid>
-            <Button Content="Start" HorizontalAlignment="Left" Margin="510,400,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+            <Button Content="Start" HorizontalAlignment="Left" Margin="510,400,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Visibility="{Binding Game.BUTTONSTART, Mode=OneWay}"/>
         </Grid>
     </Grid>
 
