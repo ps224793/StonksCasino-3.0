@@ -329,30 +329,30 @@ namespace StonksCasino.classes.poker
         {
             List<Card> cards = new List<Card>();
 
-            //daar
-            switch (player.PlayerID)
-            {
-                case 0:
-                    cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
-                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
-                    break;
-                case 1:
-                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
-                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
-                    break;
-                case 2:
-                    cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
-                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Two, enums.card.CardBackColor.Blue));
-                    break;
-                case 3:
-                    cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
-                    cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Seven, enums.card.CardBackColor.Blue));
-                    break;
-            }
+            ////daar
+            //switch (player.PlayerID)
+            //{
+            //    case 0:
+            //        cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
+            //        break;
+            //    case 1:
+            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
+            //        break;
+            //    case 2:
+            //        cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Two, enums.card.CardBackColor.Blue));
+            //        break;
+            //    case 3:
+            //        cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Seven, enums.card.CardBackColor.Blue));
+            //        break;
+            //}
             //else
             //{
-            //    cards.Add(deck.DrawCard());
-            //    cards.Add(deck.DrawCard());
+            cards.Add(deck.DrawCard());
+            cards.Add(deck.DrawCard());
             //}
 
 
@@ -710,17 +710,17 @@ namespace StonksCasino.classes.poker
         private async void SetTable()
         {
             ObservableCollection<Card> cards = new ObservableCollection<Card>();
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    Card card = deck.DrawCard();
-            //    card.Turned = true;
-            //    cards.Add(card);
-            //}
-            cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
-            cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
-            cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
-            cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
-            cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
+            for (int i = 0; i < 5; i++)
+            {
+                Card card = deck.DrawCard();
+                card.Turned = true;
+                cards.Add(card);
+            }
+            //cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
 
             MyTable = cards;
         }
