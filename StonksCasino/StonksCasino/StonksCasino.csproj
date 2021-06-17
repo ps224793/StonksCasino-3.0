@@ -116,7 +116,6 @@
     <Compile Include="classes\Slotmachine\Slot.cs" />
     <Compile Include="classes\Slotmachine\Slotmachine.cs" />
     <Compile Include="classes\Slotmachine\SlotRow.cs" />
-    <Compile Include="classes\Slotmachine\SlotmachineHendel.cs" />
     <Compile Include="enums\card\BlackcardValue.cs" />
     <Compile Include="enums\card\CardBackColor.cs" />
     <Compile Include="enums\card\CardType.cs" />
