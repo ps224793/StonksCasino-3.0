@@ -6,13 +6,7 @@
         xmlns:local="clr-namespace:StonksCasino.Views.Roulette"
         mc:Ignorable="d"
         Title="RouletteWindow" Height="600" Width="1000" WindowState="Maximized"  Closing="Window_Closing">
-    <Window.Resources>
-        <Storyboard x:Key="Storyboard" BeginTime="00:00:00.000" Duration="00:00:10.000">
-            <DoubleAnimation Storyboard.TargetName="imWheel" 
-                             Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" 
-                             From="0" To="360" Duration="00:00:20.000" />
-        </Storyboard>
-    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -56,7 +50,7 @@
                     <RotateTransform Angle="0" />
                 </Image.RenderTransform>
             </Image>
-            <Image  x:Name="imBal" Source="/Img/Roulette/Bal1.png" Grid.Row="1" Grid.Column="1" RenderTransformOrigin="0.5,0.5"  >
+            <Image  x:Name="imBal" Source="/Img/Roulette/Bal1.png" Margin="0,-120,0,0" Grid.Row="1" Grid.Column="1" RenderTransformOrigin="0.5,0.59"  >
                 <Image.RenderTransform>
                     <RotateTransform Angle="0" />
                 </Image.RenderTransform>
@@ -79,7 +73,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button Background="ForestGreen"  Foreground="White" BorderBrush="LightGreen" Width="100" Height="80" Click="BtnPlay_Click" >Speel!</Button>
+                    <Button Background="ForestGreen" IsEnabled="{Binding play}"  Foreground="White" BorderBrush="LightGreen" Width="100" Height="80" Click="BtnPlay_Click" >Speel!</Button>
                 </StackPanel>
                 <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center"/>
                 <Grid Grid.Row="2" x:Name="gridgetallen">

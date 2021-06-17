@@ -36,6 +36,15 @@ namespace StonksCasino.Views.Roulette
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        private bool _play = true;
+
+        public bool play
+        {
+            get { return _play; }
+            set { _play = value; OnPropertyChanged(); }
+        }
+
+
         private const string _sender = "Roulette";
 
         public string Username 
@@ -97,6 +106,7 @@ namespace StonksCasino.Views.Roulette
         bool _display = true;
         DispatcherTimer _timerbet = new DispatcherTimer();
         DispatcherTimer _timerdisplay = new DispatcherTimer();
+        DispatcherTimer _timerbal = new DispatcherTimer();
 
         public RouletteWindow()
         {
@@ -147,10 +157,28 @@ namespace StonksCasino.Views.Roulette
 
         private void configTimer()
         {
+            _timerbal.Interval = TimeSpan.FromMilliseconds(100);
+            _timerbal.Tick += _timerbal_Tick;
             _timerbet.Interval = TimeSpan.FromSeconds(1);
             _timerbet.Tick += _timerbet_Tick;
             _timerdisplay.Interval = TimeSpan.FromSeconds(1);
             _timerdisplay.Tick += _timerdisplay_Tick;
+        }
+
+        private void _timerbal_Tick(object sender, EventArgs e)
+        {
+            if (imBal.Margin.Top < 0)
+            {
+                imBal.Margin = new Thickness(0, imBal.Margin.Top + 2, 0, 0);
+                imBal.RenderTransformOrigin = new Point(0.5, imBal.RenderTransformOrigin.Y - 0.001);
+            }
+            if(imBal.Margin.Top == 0)
+            {
+                imBal.RenderTransformOrigin = new Point(0.5, 0.5);
+                _timerbal.Stop();
+                
+
+            }
         }
 
         private void _timerdisplay_Tick(object sender, EventArgs e)
@@ -179,10 +207,15 @@ namespace StonksCasino.Views.Roulette
 
         private async void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
+            play = false;
             bool ingelogd = await Checkingelogd();
             if (ingelogd)
             {
+
+                imBal.RenderTransformOrigin = new Point(0.5, 0.59);
+                imBal.Margin = new Thickness(0, -100, 0, 0);
                 _timerbet.Start();
+                
                 _Spinning = true;
                 int[] _score = new int[] { 0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 20 };
                 Angle = 0;
@@ -231,8 +264,12 @@ namespace StonksCasino.Views.Roulette
 
                 storyboard2.Children.Add(rotateAnimation2);
                 storyboard2.Begin(this);
+                _timerbal.Start();
 
                 _Finalnumber = _score[random1];
+               
+                
+
 
             }
         }
@@ -252,6 +289,7 @@ namespace StonksCasino.Views.Roulette
             _canbet = true;
             Account();
             _Spinning = false;
+            play = true;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
