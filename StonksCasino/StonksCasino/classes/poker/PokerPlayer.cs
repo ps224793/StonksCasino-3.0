@@ -170,14 +170,7 @@ namespace StonksCasino.classes.poker
         /// </summary>
         public int Raise(int topBet, out int raiseBet)
         {
-            if (Bet >= topBet)
-            {
-                raiseBet = RaiseBet;
-            }
-            else
-            {
-                raiseBet = (RaiseBet - (topBet - Bet));
-            }
+            raiseBet = RaiseBet;
             int raised = RaiseBet - (topBet - Bet);
             Balance -= RaiseBet;
             Bet += RaiseBet;

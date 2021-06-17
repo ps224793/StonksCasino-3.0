@@ -283,7 +283,7 @@ namespace StonksCasino.classes.poker
 
         private string btnStartDinges = "Visible";
 
-        public string BUTTONSTART
+        public string GameActive
         {
             get { return btnStartDinges; }
             set { btnStartDinges = value; OnPropertyChanged(); }
@@ -329,33 +329,28 @@ namespace StonksCasino.classes.poker
         {
             List<Card> cards = new List<Card>();
 
-            ////daar
+            //daar
             //switch (player.PlayerID)
             //{
             //    case 0:
-            //        cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
-            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Ace, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
             //        break;
             //    case 1:
-            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Two, enums.card.CardBackColor.Blue));
             //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Three, enums.card.CardBackColor.Blue));
             //        break;
             //    case 2:
-            //        cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Two, enums.card.CardBackColor.Blue));
             //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Two, enums.card.CardBackColor.Blue));
             //        break;
             //    case 3:
-            //        cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.King, enums.card.CardBackColor.Blue));
+            //        cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
             //        cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Seven, enums.card.CardBackColor.Blue));
             //        break;
             //}
-            //else
-            //{
             cards.Add(deck.DrawCard());
             cards.Add(deck.DrawCard());
-            //}
-
-
 
             foreach (Card card in cards)
             {
@@ -416,8 +411,12 @@ namespace StonksCasino.classes.poker
             if (player.Balance >= (TopBet - player.Bet))
             {
                 CurrentPot = player.Call(CurrentPot, TopBet);
+                EventLog.Add($"{player.PokerName} calls");
             }
-            EventLog.Add($"{player.PokerName} calls");
+            else
+            {
+                AllIn(player);
+            }
             ScrollListbox();
         }
 
@@ -430,18 +429,15 @@ namespace StonksCasino.classes.poker
 
         public void AllIn(PokerPlayer player)
         {
-            if (player.Balance >= (TopBet - player.Bet))
-            {
-                CurrentPot = player.AllIn(CurrentPot);
-                // Switch from MainPot to SidePot
-            }
+            CurrentPot = player.AllIn(CurrentPot);
+            // Switch from MainPot to SidePot
             EventLog.Add($"{player.PokerName} goes all-in");
             ScrollListbox();
         }
 
         public void StartGame()
         {
-            BUTTONSTART = "Hidden";
+            GameActive = "Hidden";
             EventLog.Add($"======{GameCount++}e GAME======");
             if (RoundsSinceBlindsRaise >= 5)
             {
@@ -716,11 +712,12 @@ namespace StonksCasino.classes.poker
                 card.Turned = true;
                 cards.Add(card);
             }
-            //cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
-            //cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
-            //cards.Add(new Card(enums.card.CardType.Hearts, enums.card.CardValue.Five, enums.card.CardBackColor.Blue));
-            //cards.Add(new Card(enums.card.CardType.Clubs, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
-            //cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Four, enums.card.CardBackColor.Blue));
+            //daar
+            //cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Ten, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Jack, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Diamonds, enums.card.CardValue.Queen, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Eight, enums.card.CardBackColor.Blue));
+            //cards.Add(new Card(enums.card.CardType.Spades, enums.card.CardValue.Six, enums.card.CardBackColor.Blue));
 
             MyTable = cards;
         }
@@ -871,12 +868,6 @@ namespace StonksCasino.classes.poker
                     highestHands.Add(playerHand);
                 }
             }
-
-
-
-
-
-
             if (highestHands.Count > 1)
             {
                 for (int handToCompare = 1; handToCompare < highestHands.Count; handToCompare++)
@@ -1153,7 +1144,6 @@ namespace StonksCasino.classes.poker
 
         public async void EndGame()
         {
-            BUTTONSTART = "Visible";
             Player0Color = "White";
             Player1Color = "White";
             Player2Color = "White";
@@ -1208,6 +1198,9 @@ namespace StonksCasino.classes.poker
                     break;
             }
             MyTable.Clear();
+
+            await Task.Delay(1500);
+            GameActive = "Visible";
         }
 
         private void PassButtons(int numOfButtons, int currentDealer)
