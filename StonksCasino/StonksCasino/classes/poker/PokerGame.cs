@@ -417,7 +417,7 @@ namespace StonksCasino.classes.poker
             {
                 if (window.GetType() == typeof(PokerWindow))
                 {
-                    if (player.PlayerID == 0 && GameState == "End")
+                    if (player.PlayerID != 0)
                     {
                         clearPlayerHand(window as PokerWindow, player);
                     }
@@ -606,7 +606,8 @@ namespace StonksCasino.classes.poker
                             {
                                 //hier
                                 // Execute algorithm
-                                await Task.Delay(GameSpeed * 1000);
+                                ShowCurrentPlayer(Players[currentPlayer].PlayerID); //deze
+                                await Task.Delay(GameSpeed * 1000);                 //deze
                                 string action = Players[currentPlayer].ExecuteAI(GameState, TopBet);
                                 switch (action)
                                 {
@@ -615,6 +616,7 @@ namespace StonksCasino.classes.poker
                                         break;
                                     case "fold":
                                         Fold(Players[currentPlayer]);
+                                        //Call(Players[currentPlayer]);
                                         break;
                                     case "check":
                                         Check(Players[currentPlayer]);
