@@ -172,14 +172,14 @@ namespace StonksCasino.Views.slotmachine
 
         public async void Verhogen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(-100, _sender);
+            await ApiWrapper.UpdateTokens(-50, _sender);
             Account();
             Beurt++;
             Check();
         }
         private async void Verlagen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(100, _sender);
+            await ApiWrapper.UpdateTokens(50, _sender);
             Account();
             Beurt--;
             Check();
@@ -259,7 +259,7 @@ namespace StonksCasino.Views.slotmachine
             if (winnings>0)
             {
                 MessageBox.Show($"u heeft {winnings} gewonnen");
-                //Het aantal gewonnen fishes moet worden toegevoegd
+                await ApiWrapper.UpdateTokens(winnings, _sender);
             }
             Check();
         }

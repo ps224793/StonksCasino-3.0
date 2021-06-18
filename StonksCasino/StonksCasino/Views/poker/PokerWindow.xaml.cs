@@ -189,5 +189,21 @@ namespace StonksCasino.Views.poker
             Process.Start("https://stonkscasino.nl/public/account-info");
 
         }
+
+        private async void Button_Click_Yes(object sender, RoutedEventArgs e)
+        {
+            Game.NextRoundButton();
+            await Task.Delay(2000);
+            Game.StartGame();
+            await Task.Delay(1);
+            SetCardWidth();
+            await Task.Delay(800);
+            Storyboard board = (Storyboard)FindResource("sbTableIn");
+            board.Begin();
+
+            await Task.Delay(3000);
+
+            Game.StartGame2();
+        }
     }
 }

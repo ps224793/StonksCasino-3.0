@@ -282,12 +282,26 @@ namespace StonksCasino.classes.poker
         }
 
         private string btnStartDinges = "Visible";
-
         public string GameActive
         {
             get { return btnStartDinges; }
             set { btnStartDinges = value; OnPropertyChanged(); }
         }
+
+        private string _nextRoundGrid = "Hidden";
+        public string NextRoundGrid
+        {
+            get { return  _nextRoundGrid; }
+            set {  _nextRoundGrid = value; OnPropertyChanged(); }
+        }
+
+        private int _gameSpeed = 2;
+        public int GameSpeed
+        {
+            get { return _gameSpeed; }
+            set { _gameSpeed = value; OnPropertyChanged(); }
+        }
+
 
 
         public PokerGame()
@@ -438,6 +452,7 @@ namespace StonksCasino.classes.poker
         public void StartGame()
         {
             GameActive = "Hidden";
+            NextRoundGrid = "Hidden";
             EventLog.Add($"======{GameCount++}e GAME======");
             if (RoundsSinceBlindsRaise >= 5)
             {
@@ -582,30 +597,27 @@ namespace StonksCasino.classes.poker
                             //hier
                             //MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
                             ShowCurrentPlayer(Players[currentPlayer].PlayerID);
-
-                            //EventLog.Add($"{Players[currentPlayer].PokerName} is aan de beurt.");
                             ScrollListbox();
 
                             if (Players[currentPlayer].Bet == TopBet)
                             {
-                                await Task.Delay(2000);
+                                await Task.Delay(GameSpeed * 1000);
                                 Check(Players[currentPlayer]);
                             }
                             else if (Players[currentPlayer].Bet < TopBet && Players[currentPlayer].Balance >= (TopBet - Players[currentPlayer].Bet))
                             {
-                                await Task.Delay(2000);
+                                await Task.Delay(GameSpeed * 1000);
                                 Call(Players[currentPlayer]);
                             }
                             else
                             {
-                                await Task.Delay(2000);
+                                await Task.Delay(GameSpeed * 1000);
                                 AllIn(Players[currentPlayer]);
                             }
                         }
                         else
                         {
                             //MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
-                            await Task.Delay(2000);
                             ShowCurrentPlayer(Players[currentPlayer].PlayerID);
 
                             //EventLog.Add($"{Players[currentPlayer].PokerName} is aan de beurt");
@@ -952,8 +964,21 @@ namespace StonksCasino.classes.poker
             }
 
 
-            MessageBox.Show("Click ok voor volgende ronde", "volgende ronde", MessageBoxButton.OK);
             GameState = "End";
+
+            if (GameCount > 1)
+            {
+                NextRoundGrid = "Visible";
+            }
+            else
+            {
+                GameActive = "Visible";
+            }
+        }
+
+        public void NextRoundButton()
+        {
+            NextRoundGrid = "Hidden";
             EndGame();
         }
 
@@ -1012,9 +1037,14 @@ namespace StonksCasino.classes.poker
 
         private async void ShowWinner(int player_ID)
         {
+            Player0Color = "White";
+            Player1Color = "White";
+            Player2Color = "White";
+            Player3Color = "White";
             switch (player_ID)
             {
                 case 0:
+                    Player0Color = "Gold";
                     for (int i = 0; i < 14; i++)
                     {
                         await Task.Delay(200);
@@ -1028,7 +1058,9 @@ namespace StonksCasino.classes.poker
                         }
                     }
                     break;
+
                 case 1:
+                    Player1Color = "Gold";
                     for (int i = 0; i < 14; i++)
                     {
                         await Task.Delay(200);
@@ -1043,6 +1075,7 @@ namespace StonksCasino.classes.poker
                     }
                     break;
                 case 2:
+                    Player2Color = "Gold";
                     for (int i = 0; i < 14; i++)
                     {
                         await Task.Delay(200);
@@ -1057,6 +1090,7 @@ namespace StonksCasino.classes.poker
                     }
                     break;
                 case 3:
+                    Player3Color = "Gold";
                     for (int i = 0; i < 14; i++)
                     {
                         await Task.Delay(200);
@@ -1080,7 +1114,14 @@ namespace StonksCasino.classes.poker
             ShowWinner(player.PlayerID);
             await Task.Delay(3000);
             GameState = "End";
-            EndGame();
+            if (GameCount > 1)
+            {
+                NextRoundGrid = "Visible";
+            }
+            else
+            {
+                GameActive = "Visible";
+            }
         }
 
         private async Task showCards(List<PokerPlayer> Players)
@@ -1116,7 +1157,6 @@ namespace StonksCasino.classes.poker
 
         private async Task ClearTable()
         {
-
             bool exitLoop = false;
             foreach (Window window in Application.Current.Windows)
             {
@@ -1199,8 +1239,7 @@ namespace StonksCasino.classes.poker
             }
             MyTable.Clear();
 
-            await Task.Delay(1500);
-            GameActive = "Visible";
+
         }
 
         private void PassButtons(int numOfButtons, int currentDealer)
