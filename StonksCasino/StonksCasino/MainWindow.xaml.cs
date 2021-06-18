@@ -44,12 +44,17 @@ namespace StonksCasino
 
         }
 
-        private async void Login_Click(object sender, RoutedEventArgs e)
+        private void Login_Click(object sender, RoutedEventArgs e)
         {
-            LoginCredentials credentials = new LoginCredentials() {Email = MyEmail, Password = tbPassword.Password, Overwride = false};
+            Login();
+        }
+
+        private async void Login()
+        {
+            LoginCredentials credentials = new LoginCredentials() { Email = MyEmail, Password = tbPassword.Password, Overwride = false };
             string result = await ApiWrapper.Login(credentials);
             User.Logoutclick = false;
-  
+
             if (result == "succes")
             {
                 if (Remember)
@@ -123,6 +128,22 @@ namespace StonksCasino
         private void Pass_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Process.Start("https://stonkscasino.nl/public/password/reset");
+        }
+
+        private void tbPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                Login();
+            }
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Login();
+            }
         }
     }
 }

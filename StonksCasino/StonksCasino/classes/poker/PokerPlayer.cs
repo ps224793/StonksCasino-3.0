@@ -36,6 +36,23 @@ namespace StonksCasino.classes.poker
             set { _playerID = value; }
         }
 
+        private bool _isBluffing = false;
+
+        public bool IsBluffing
+        {
+            get { return _isBluffing; }
+            set { _isBluffing = value; }
+        }
+
+
+        private PokerAI _pokerAI;
+
+        public PokerAI MyPokerAI
+        {
+            get { return _pokerAI; }
+            set { _pokerAI = value; }
+        }
+
 
         /// <summary>
         /// Represents the cards this player has in their hand
@@ -147,7 +164,7 @@ namespace StonksCasino.classes.poker
 
         public PokerPlayer()
         {
-
+            MyPokerAI = new PokerAI(this);
         }
 
         /// <summary>
@@ -232,6 +249,48 @@ namespace StonksCasino.classes.poker
         {
             Folded = true;
             // End of this player's turn
+        }
+
+        public string ExecuteAI(string gameState, int topBet)
+        {
+            bool isBluffing = IsBluffing;
+            switch (gameState)
+            {
+                case "pre-Flop":
+                    if (MyPokerAI.CalcPreFlopMove(out isBluffing) == "play")
+                    {
+                        IsBluffing = isBluffing;
+                        if (this.Bet == topBet)
+                        {
+                            return "check";
+                        }
+                        else if (this.Bet < topBet && this.Balance >= (topBet - this.Bet))
+                        {
+                            return "call";
+                        }
+                        else
+                        {
+                            return "all-in";
+                        }
+                    }
+                    else
+                    {
+                        return "fold";
+                    }
+                default:
+                    if (this.Bet == topBet)
+                    {
+                        return "check";
+                    }
+                    else if (this.Bet < topBet && this.Balance >= (topBet - this.Bet))
+                    {
+                        return "call";
+                    }
+                    else
+                    {
+                        return "all-in";
+                    }
+            }
         }
 
     }

@@ -45,11 +45,11 @@
         
             <StackPanel Grid.Row="2" Grid.Column="1">
                 <TextBlock   Text="E-mail" Margin="0,10" Foreground="White" FontSize="30"></TextBlock>
-                <TextBox Text="{Binding MyEmail, Mode=OneWayToSource}" FontSize="30" Foreground="Black" Background="White"></TextBox>
+                <TextBox Text="{Binding MyEmail, Mode=OneWayToSource}" FontSize="30" Foreground="Black" Background="White" KeyDown="TextBox_KeyDown"></TextBox>
             </StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="1">
             <TextBlock Text="Wachtwoord" Foreground="White" Margin="0,10" FontSize="30"></TextBlock>
-                <PasswordBox x:Name="tbPassword" PasswordChar="*" FontSize="30" Foreground="Black" Background="White"  />
+                <PasswordBox x:Name="tbPassword" PasswordChar="*" FontSize="30" Foreground="Black" Background="White" KeyDown="tbPassword_KeyDown" />
             </StackPanel>
             <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal"  VerticalAlignment="Center">
                 <TextBlock MouseLeftButtonDown="Register_MouseLeftButtonDown" Margin="0,0,15,0" TextDecorations="Underline" Foreground="White" FontSize="22" Text="Account registreren"/>
