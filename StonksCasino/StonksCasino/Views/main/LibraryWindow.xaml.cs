@@ -77,9 +77,7 @@ namespace StonksCasino.Views.main
             RouletteWindow roulette = new RouletteWindow();
             this.Hide();
             roulette.ShowDialog();
-            await uitloggencheck();
-            
-            
+            await uitloggencheck();            
         }
 
         private void Blackjack_click(object sender, RoutedEventArgs e)

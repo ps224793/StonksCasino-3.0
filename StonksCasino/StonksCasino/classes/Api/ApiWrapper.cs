@@ -73,6 +73,7 @@ namespace StonksCasino.classes.Api
                 {
                     User.Username = infoResult.UserName;
                     User.Tokens = infoResult.Tokens;
+                    User.SelectedCardskin = infoResult.SelectedCardSkin;
                     return true;
                 }
                 else

@@ -38,7 +38,16 @@ namespace StonksCasino.classes.Main
         {
             get { return _shutdown; }
             set { _shutdown = value; }
-        } 
+        }
+
+        private static string _selectedCardskin;
+
+        public static string SelectedCardskin
+        {
+            get { return _selectedCardskin; }
+            set { _selectedCardskin = value; }
+        }
+
 
         public static async Task<bool> LogoutAsync()
         {
