@@ -300,8 +300,8 @@ namespace StonksCasino.classes.poker
         private string _nextRoundGrid = "Hidden";
         public string NextRoundGrid
         {
-            get { return  _nextRoundGrid; }
-            set {  _nextRoundGrid = value; OnPropertyChanged(); }
+            get { return _nextRoundGrid; }
+            set { _nextRoundGrid = value; OnPropertyChanged(); }
         }
 
         private int _gameSpeed = 2;
@@ -597,51 +597,55 @@ namespace StonksCasino.classes.poker
                 }
                 for (i = 0; i < Players.Count; i++)
                 {
-                    int currentPlayer = (i + startingPlayer) % Players.Count;
-                    if (Players[currentPlayer].Busted != true && Players[currentPlayer].Checked != true && Players[currentPlayer].IsAllIn != true && Players[currentPlayer].Folded != true)
+                    if (NumOfPlayersNotPlaying < (Players.Count - 1))
                     {
-                        if (Players[currentPlayer].PlayerID != 0)
+                        int currentPlayer = (i + startingPlayer) % Players.Count;
+                        if (Players[currentPlayer].Busted != true && Players[currentPlayer].Checked != true && Players[currentPlayer].IsAllIn != true && Players[currentPlayer].Folded != true)
                         {
-                            //hier
-                            // Execute algorithm
-                            await Task.Delay(GameSpeed * 1000);
-                            string action = Players[currentPlayer].ExecuteAI(GameState, TopBet);
-                            switch (action)
+                            if (Players[currentPlayer].PlayerID != 0)
                             {
-                                case "raise":
-                                    Raise(Players[currentPlayer]);
-                                    break;
-                                case "fold":
-                                    Fold(Players[currentPlayer]);
-                                    break;
-                                case "check":
-                                    Check(Players[currentPlayer]);
-                                    break;
-                                case "call":
-                                    Call(Players[currentPlayer]);
-                                    break;
-                                case "all-in":
-                                    AllIn(Players[currentPlayer]);
-                                    break;
+                                //hier
+                                // Execute algorithm
+                                await Task.Delay(GameSpeed * 1000);
+                                string action = Players[currentPlayer].ExecuteAI(GameState, TopBet);
+                                switch (action)
+                                {
+                                    case "raise":
+                                        Raise(Players[currentPlayer]);
+                                        break;
+                                    case "fold":
+                                        Fold(Players[currentPlayer]);
+                                        break;
+                                    case "check":
+                                        Check(Players[currentPlayer]);
+                                        break;
+                                    case "call":
+                                        Call(Players[currentPlayer]);
+                                        break;
+                                    case "all-in":
+                                        AllIn(Players[currentPlayer]);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                //MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
+                                ShowCurrentPlayer(Players[currentPlayer].PlayerID);
+
+                                //EventLog.Add($"{Players[currentPlayer].PokerName} is aan de beurt");
+                                ScrollListbox();
+
+                                Players[currentPlayer].RaiseBet = LastRaise + (TopBet - Players[currentPlayer].Bet);
+                                EnablePlayerInput = true;
+                                break;
                             }
                         }
-                        else
+                        else if (Players[currentPlayer].Busted == true)
                         {
-                            //MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
-                            ShowCurrentPlayer(Players[currentPlayer].PlayerID);
-
-                            //EventLog.Add($"{Players[currentPlayer].PokerName} is aan de beurt");
-                            ScrollListbox();
-
-                            Players[currentPlayer].RaiseBet = LastRaise + (TopBet - Players[currentPlayer].Bet);
-                            EnablePlayerInput = true;
-                            break;
+                            NumOfPlayersNotPlaying++;
                         }
                     }
-                    else if (Players[currentPlayer].Busted == true)
-                    {
-                        NumOfPlayersNotPlaying++;
-                    }
+                    else { break; }
                 }
             }
             if (NumOfPlayersNotPlaying < (Players.Count - 1))
@@ -707,7 +711,7 @@ namespace StonksCasino.classes.poker
         {
             foreach (Window item in Application.Current.Windows)
             {
-                if(item.GetType() == typeof(PokerWindow))
+                if (item.GetType() == typeof(PokerWindow))
                 {
                     ListBox lbEventLog = (ListBox)(item as PokerWindow).FindName("lbEventLog");
                     if (VisualTreeHelper.GetChildrenCount(lbEventLog) > 0)
