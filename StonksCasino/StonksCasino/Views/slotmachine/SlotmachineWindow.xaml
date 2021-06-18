@@ -80,7 +80,7 @@
                         <Image Source="{Binding Slotmachine.SlotRows[2].Slots[2].ImageURL}"/>
                     </Border>
 
-                    <Button IsEnabled="{Binding AllowedToPull}" BorderThickness="0"  Background="Transparent" Click="BtnStart_Click" Style="{DynamicResource Buttonstyleinzet}" Grid.Column="3"  Grid.Row="1" >
+                    <Button IsEnabled="{Binding AllowedToPull}" BorderThickness="0"  Background="Transparent" Click="BtnStart_Click" Style="{DynamicResource Buttonstyleinzet}" Grid.Column="3"  Grid.Row="0" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Left" Width="380" Height="380">
                         <Image x:Name="imgLever" Source="/Img/Slotmachine/Lever.png" RenderTransformOrigin="0.065,0.800">
                             <Image.RenderTransform>
                                 <RotateTransform Angle="0"/>
@@ -88,7 +88,7 @@
                         </Image>
                     </Button>
 
-                    <Image Source="/Img/Slotmachine/Bal.png" Grid.Column="4" Grid.Row="1"  Width="50" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left"></Image>
+                    <Image Source="/Img/Slotmachine/Bal.png" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2"  Width="75" Height="75" VerticalAlignment="Center" HorizontalAlignment="Left"></Image>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -110,10 +110,10 @@
                         </Button.Resources>
                     </Button>
                     <Button  Click="Verhogen_Click" IsEnabled="{Binding AllowedToClickVH}" Background="Black" Grid.Column="1" Grid.Row="1" Height="60px" Foreground="White">
-                        <TextBlock TextAlignment="Center">Beurten verhogen<LineBreak/>- 100 fiches</TextBlock>
+                        <TextBlock TextAlignment="Center">Beurten verhogen<LineBreak/>- 50 fiches</TextBlock>
                     </Button>
                     <Button Click="Verlagen_Click" IsEnabled="{Binding AllowedToClickVL}" Background="Black" Grid.Column="1" Grid.Row="2" Height="60px" Foreground="White">
-                        <TextBlock TextAlignment="Center">Beurten verlagen<LineBreak/>+ 100 fiches</TextBlock>
+                        <TextBlock TextAlignment="Center">Beurten verlagen<LineBreak/>+ 50 fiches</TextBlock>
                     </Button>
                     <Grid Grid.Row="3" Grid.Column="1" Background="Black">
                         <Grid.RowDefinitions>
