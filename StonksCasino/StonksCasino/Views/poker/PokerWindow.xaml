@@ -33,6 +33,24 @@
             <Grid.Background>
                 <ImageBrush ImageSource="/Img/Main/background.png" />
             </Grid.Background>
+
+            <!--daar-->
+            <Border BorderBrush="#282929" BorderThickness="1" CornerRadius="5" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="250" Margin="30,0,0,15">
+                <StackPanel  Background="#282929">
+                    <TextBlock Text="Snelheid pc-spelers in secondes" TextAlignment="Center" Foreground="White" FontSize="15"/>
+                    <Slider x:Name="SdrGameSpeed" Value="{Binding Game.GameSpeed, Mode=TwoWay}" Minimum="0" Maximum="5" LargeChange="0"/>
+                    <UniformGrid Columns="6" Width="287" Margin="-19,0,0,0">
+                        <TextBlock Text="0" Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="1" Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="2" Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="3" Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="4" Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="5" Foreground="White" HorizontalAlignment="Center" Panel.ZIndex="1"/>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+
+
             <Grid Margin="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -151,7 +169,11 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="1" Margin="0,10,0,0" Source="/Img/Main/Token.png" />
-                        <Image Grid.Column="0" Margin="0,10,0,0" HorizontalAlignment="Left" Source="{Binding Game.Players[0].ButtonImageURL}" />
+                        <Image Grid.Column="0" Margin="0,10,0,0" HorizontalAlignment="Left" Source="{Binding Game.Players[0].ButtonImageURL}">
+                            <Image.Effect>
+                                <DropShadowEffect/>
+                            </Image.Effect>
+                        </Image>
                     </Grid>
 
                     <TextBlock Margin="0,10,0,0" FontSize="18" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[0].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -200,7 +222,11 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="1" Margin="0,0,0,10" Source="/Img/Main/Token.png" />
-                        <Image Grid.Column="2" Margin="0,0,0,10" HorizontalAlignment="Right" Source="{Binding Game.Players[2].ButtonImageURL}" />
+                        <Image Grid.Column="2" Margin="0,0,0,10" HorizontalAlignment="Right" Source="{Binding Game.Players[2].ButtonImageURL}">
+                            <Image.Effect>
+                                <DropShadowEffect/>
+                            </Image.Effect>
+                        </Image>
                     </Grid>
 
                     <Grid HorizontalAlignment="Right">
@@ -273,7 +299,11 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Image Grid.Row="1" Margin="0,0,10,0" Source="/Img/Main/Token.png" />
-                        <Image Grid.Row="0" Margin="0,0,10,0" VerticalAlignment="Bottom" Source="{Binding Game.Players[1].ButtonImageURL}" />
+                        <Image Grid.Row="0" Margin="0,0,10,0" VerticalAlignment="Bottom" Source="{Binding Game.Players[1].ButtonImageURL}">
+                            <Image.Effect>
+                                <DropShadowEffect/>
+                            </Image.Effect>
+                        </Image>
                         <TextBlock Margin="0,0,10,0" FontSize="18" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[1].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
 
 
@@ -354,6 +384,9 @@
                             <Image.LayoutTransform>
                                 <RotateTransform Angle="180"/>
                             </Image.LayoutTransform>
+                            <Image.Effect>
+                                <DropShadowEffect/>
+                            </Image.Effect>
                         </Image>
                         <TextBlock Margin="0,0,10,0" FontSize="18" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Game.Players[3].Bet}" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
                             <TextBlock.RenderTransform>
@@ -425,20 +458,120 @@
             </Grid>
         </Grid>
 
+        <!--<Grid Grid.Row="1" Visibility="Hidden">-->
+            <!--hier-->
         <Grid Grid.Row="1" Visibility="{Binding Game.GameActive, Mode=OneWay}">
             <Grid.Background>
                 <ImageBrush ImageSource="/Img/main/background.png"/>
             </Grid.Background>
-            <Border x:Name="BtnYesss" BorderThickness="12" BorderBrush="Yellow" Width="500" Height="300" CornerRadius="69">
-                <Border.Background>
-                    <!--<ImageBrush ImageSource="https://cdn.vox-cdn.com/thumbor/VZNJM5S4Cw2i3JaycT9waVLCwqw=/715x248:1689x721/1200x800/filters:focal(972x299:1278x605)/cdn.vox-cdn.com/uploads/chorus_image/image/69305239/shrek4_disneyscreencaps.com_675.0.jpg"></ImageBrush>-->
-                    <SolidColorBrush Color="Purple"/>
-                </Border.Background>
-                <Grid>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1" Foreground="White" FontSize="30">START</TextBlock>
-                    <Button Click="Button_Click"  Opacity="0"/>
-                </Grid>
-            </Border>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="1" Grid.Column="1">
+                <StackPanel>
+                    <TextBlock Width="520" TextAlignment="Center" FontSize="50" Foreground="White" FontWeight="Bold" Text="Texas Hold 'em Poker">
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <TextBlock FontSize="22" Foreground="White" FontWeight="Bold" TextAlignment="Center" Margin="0,30,0,-55" Panel.ZIndex="1" TextDecorations="Underline">Texas Hold 'em Rules:</TextBlock>
+                    <TextBlock Width="520" HorizontalAlignment="Center" FontSize="15" TextWrapping="Wrap" Foreground="White" Background="#85000000" Padding="15,35,15,15" Margin="0,25,0,0">
+                        Wij hebben er voor gekozen om de regels van Texas Hold 'em Poker aan te houden.
+                        Als je op start drukt zal er automatisch 500 tokens van je account afgeschreven worden.
+                        Dit bedrag kun je gebruiken als in inzet tijdens Poker.
+                        Het potje gaat meteen van start nadat je op de start knop hebt gedrukt.
+                    </TextBlock>
+                    <Border VerticalAlignment="Top" BorderThickness="3" BorderBrush="Black" Width="200" Height="75" CornerRadius="10" Margin="0,30,0,0">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="5" Opacity="0.8" />
+                        </Border.Effect>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="1,0.5" EndPoint="1,0">
+                                <GradientStop Offset="0" Color="Green"/>
+                                <GradientStop Offset="1" Color="DarkGreen"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1" Foreground="White" FontWeight="Bold" FontSize="25">START</TextBlock>
+                            <Button Click="Button_Click"  Opacity="0"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+        <!--hier2-->
+        <Grid Grid.Row="1" Visibility="{Binding Game.NextRoundGrid, Mode=OneWay}">
+        <!--<Grid Grid.Row="1" Visibility="Hidden">-->
+            <Grid.Background>
+                <SolidColorBrush Color="#88000000"/>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="1" Grid.Column="1">
+                <StackPanel>
+                    <TextBlock Width="520" TextAlignment="Center" FontSize="50" Foreground="White" FontWeight="Bold" Text="Volgende ronde?">
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <TextBlock Width="520" TextAlignment="Center" HorizontalAlignment="Center" FontSize="15" TextWrapping="Wrap" Foreground="White" Background="#85000000" Padding="15,30" Margin="0,25,0,0">
+                        Je kan stoppen en je gewonnen tokens meenemen of verder spelen.
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="0,30" HorizontalAlignment="Center">
+                        <Border VerticalAlignment="Top" BorderThickness="3" BorderBrush="Black" Width="200" Height="75" CornerRadius="10" Margin="10,0">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="5" Opacity="0.8" />
+                            </Border.Effect>
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="1,0.5" EndPoint="1,0">
+                                    <GradientStop Offset="0" Color="Red"/>
+                                    <GradientStop Offset="1" Color="DarkRed"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Grid>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1" Foreground="White" FontWeight="Bold" FontSize="25">NEE</TextBlock>
+                                <Button Click="btnBibliotheek_Click"  Opacity="0"/>
+                            </Grid>
+                        </Border>
+                        <Border VerticalAlignment="Top" BorderThickness="3" BorderBrush="Black" Width="200" Height="75" CornerRadius="10" Margin="10,0">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="5" Opacity="0.8" />
+                            </Border.Effect>
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="1,0.5" EndPoint="1,0">
+                                    <GradientStop Offset="0" Color="Green"/>
+                                    <GradientStop Offset="1" Color="DarkGreen"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Grid>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1" Foreground="White" FontWeight="Bold" FontSize="25">JA</TextBlock>
+                                <Button Click="Button_Click_Yes" Opacity="0"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
         </Grid>
     </Grid>
 
