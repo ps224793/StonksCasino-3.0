@@ -28,6 +28,40 @@ namespace StonksCasino.classes.poker
             set { _rng = value; }
         }
 
+        private bool _badCards =  false;
+
+        public bool BadCards
+        {
+            get { return _badCards; }
+            set { _badCards = value; }
+        }
+
+
+        private int _roundsSinceLastBluff = 0;
+
+        public int RoundsSinceLastBluff
+        {
+            get { return _roundsSinceLastBluff; }
+            set { _roundsSinceLastBluff = value; }
+        }
+
+        private int _succesfulBluffs;
+
+        public int SuccesfulBluffs
+        {
+            get { return _succesfulBluffs; }
+            set { _succesfulBluffs = value; }
+        }
+
+        private int _bluffsCaught;
+
+        public int BluffsCaught
+        {
+            get { return _bluffsCaught; }
+            set { _bluffsCaught = value; }
+        }
+
+
         public PokerAI(PokerPlayer player)
         {
             Player = player;
@@ -611,20 +645,41 @@ namespace StonksCasino.classes.poker
         {
             string position = CalcPosition(4, Player.Button);
             int playThreshold = CalcStartingHand(Player.Hand, position);
+            if (playThreshold != 100) { BadCards = true; }
             int playOdds = playThreshold;
+            for (int i = 0; i < RoundsSinceLastBluff; i++)
+            {
+                playOdds += 20;
+            }
+            for (int i = 0; i < SuccesfulBluffs; i++)
+            {
+                playOdds += 20;
+            }
+            for (int i = 0; i < BluffsCaught; i++)
+            {
+                playOdds -= 20;
+            }
             return playOdds;
         }
 
-        public string CalcPreFlopMove()
+        public string CalcPreFlopMove(out bool isBluffing)
         {
+            isBluffing = false;
             int playOdds = CalcPlayOdds();
-            int rngOdds = RNG.Next(0, 100);
+            int rngOdds = RNG.Next(0, 101);
             if (playOdds >= rngOdds)
             {
+                if (BadCards == true) 
+                { 
+                    RoundsSinceLastBluff = 0;
+                    isBluffing = true;
+                }
+                else { RoundsSinceLastBluff++; }
                 return "play";
             }
             else
             {
+                RoundsSinceLastBluff++;
                 return "fold";
             }
         }

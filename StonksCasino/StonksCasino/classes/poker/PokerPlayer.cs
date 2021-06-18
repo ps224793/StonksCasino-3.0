@@ -36,6 +36,15 @@ namespace StonksCasino.classes.poker
             set { _playerID = value; }
         }
 
+        private bool _isBluffing = false;
+
+        public bool IsBluffing
+        {
+            get { return _isBluffing; }
+            set { _isBluffing = value; }
+        }
+
+
         private PokerAI _pokerAI;
 
         public PokerAI MyPokerAI
@@ -244,11 +253,13 @@ namespace StonksCasino.classes.poker
 
         public string ExecuteAI(string gameState, int topBet)
         {
+            bool isBluffing = IsBluffing;
             switch (gameState)
             {
                 case "pre-Flop":
-                    if (MyPokerAI.CalcPreFlopMove() == "play")
+                    if (MyPokerAI.CalcPreFlopMove(out isBluffing) == "play")
                     {
+                        IsBluffing = isBluffing;
                         if (this.Bet == topBet)
                         {
                             return "check";

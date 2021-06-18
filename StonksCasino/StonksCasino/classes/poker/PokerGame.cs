@@ -884,6 +884,7 @@ namespace StonksCasino.classes.poker
                     PokerHandValue result = PokerHandCalculator.GetHandValue(player, _table.ToList());
                     playerHands.Add(result);
                     activePlayers.Add(player);
+                    if (player.IsBluffing == true) { player.MyPokerAI.BluffsCaught++; }
                 }
             }
             await showCards(activePlayers);
@@ -1126,6 +1127,7 @@ namespace StonksCasino.classes.poker
         private async void WinByFold(PokerPlayer player)
         {
             player.Balance += CurrentPot;
+            if (player.IsBluffing == true) { player.MyPokerAI.SuccesfulBluffs++; }
             EventLog.Add($"{player.PokerName} wins  -by fold-");
             ShowWinner(player.PlayerID);
             await Task.Delay(3000);
