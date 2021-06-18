@@ -35,6 +35,14 @@ namespace StonksCasino.classes.poker
             set { _players = value; }
         }
 
+        private int _numOfPlayersNotPlaying = 0;
+
+        public int NumOfPlayersNotPlaying
+        {
+            get { return _numOfPlayersNotPlaying; }
+            set { _numOfPlayersNotPlaying = value; }
+        }
+
         private int _numOfActivePlayers;
 
         public int NumOfActivePlayers
@@ -282,6 +290,7 @@ namespace StonksCasino.classes.poker
         }
 
         private string btnStartDinges = "Visible";
+
         public string GameActive
         {
             get { return btnStartDinges; }
@@ -416,6 +425,7 @@ namespace StonksCasino.classes.poker
                 }
                 if (exitloop) break;
             }
+            NumOfPlayersNotPlaying++;
             EventLog.Add($"{player.PokerName} folds");
             ScrollListbox();
         }
@@ -578,7 +588,6 @@ namespace StonksCasino.classes.poker
         public async void WagerRound(PokerPlayer player)
         {
             int i = 0;
-            int numOfPlayersNotPlaying = 0;
             int startingPlayer = player.PlayerID;
             if (GameState != "End")
             {
@@ -593,26 +602,27 @@ namespace StonksCasino.classes.poker
                     {
                         if (Players[currentPlayer].PlayerID != 0)
                         {
-                            // Execute algorithm
                             //hier
-                            //MessageBox.Show($"{Players[currentPlayer].PokerName} is aan de beurt");
-                            ShowCurrentPlayer(Players[currentPlayer].PlayerID);
-                            ScrollListbox();
-
-                            if (Players[currentPlayer].Bet == TopBet)
+                            // Execute algorithm
+                            await Task.Delay(GameSpeed * 1000);
+                            string action = Players[currentPlayer].ExecuteAI(GameState, TopBet);
+                            switch (action)
                             {
-                                await Task.Delay(GameSpeed * 1000);
-                                Check(Players[currentPlayer]);
-                            }
-                            else if (Players[currentPlayer].Bet < TopBet && Players[currentPlayer].Balance >= (TopBet - Players[currentPlayer].Bet))
-                            {
-                                await Task.Delay(GameSpeed * 1000);
-                                Call(Players[currentPlayer]);
-                            }
-                            else
-                            {
-                                await Task.Delay(GameSpeed * 1000);
-                                AllIn(Players[currentPlayer]);
+                                case "raise":
+                                    Raise(Players[currentPlayer]);
+                                    break;
+                                case "fold":
+                                    Fold(Players[currentPlayer]);
+                                    break;
+                                case "check":
+                                    Check(Players[currentPlayer]);
+                                    break;
+                                case "call":
+                                    Call(Players[currentPlayer]);
+                                    break;
+                                case "all-in":
+                                    AllIn(Players[currentPlayer]);
+                                    break;
                             }
                         }
                         else
@@ -630,11 +640,11 @@ namespace StonksCasino.classes.poker
                     }
                     else if (Players[currentPlayer].Busted == true)
                     {
-                        numOfPlayersNotPlaying++;
+                        NumOfPlayersNotPlaying++;
                     }
                 }
             }
-            if (numOfPlayersNotPlaying <= 3)
+            if (NumOfPlayersNotPlaying < (Players.Count - 1))
             {
                 if (i == Players.Count)
                 {
@@ -1190,6 +1200,7 @@ namespace StonksCasino.classes.poker
             Player3Color = "White";
             RoundsSinceBlindsRaise++;
             CurrentPot = 0;
+            NumOfPlayersNotPlaying = 0;
             await ClearTable();
             int currentDealer = 0;
             foreach (PokerPlayer player in Players)

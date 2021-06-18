@@ -106,6 +106,7 @@
     <Compile Include="classes\Main\CardDeckBlack.cs" />
     <Compile Include="classes\Main\User.cs" />
     <Compile Include="classes\poker\CardPair.cs" />
+    <Compile Include="classes\poker\PokerAI.cs" />
     <Compile Include="classes\poker\PokerDeck.cs" />
     <Compile Include="classes\poker\PokerGame.cs" />
     <Compile Include="classes\poker\PokerHandCalculator.cs" />
