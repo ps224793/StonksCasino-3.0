@@ -313,13 +313,11 @@ namespace StonksCasino.Views.blackjack
                 }
                 else if (Splitfunction == true && Deckswitch == false)
                 {
-                    MessageBox.Show("hahah split");
                     Deckswitch = true;
                     Game.Splitfunction2();
                 }
                 else if (Deckswitch == true && Splitfunction == true)
                 {
-                    MessageBox.Show("2de deck ook gestand");
                     Computersbet();
                     MessageBox.Show("computers beurt");
                     Resultrl();
@@ -445,6 +443,7 @@ namespace StonksCasino.Views.blackjack
             BlackjackWindowRestart();
             Splitfunction = false;
             Deckswitch = false;
+            //Einde game
         }
 
         private async void Window_Closing(object sender, CancelEventArgs e)
