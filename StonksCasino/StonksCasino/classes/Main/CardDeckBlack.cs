@@ -52,16 +52,20 @@ namespace StonksCasino.classes.Main
             return null;
         }
 
-        public void AssembleDeck()
+        public void AssembleDeck(int numberOfDecks)
         {
             List<CardBlackjack> cards = new List<CardBlackjack>();
-            foreach (BlackcardValue value in Enum.GetValues(typeof(BlackcardValue)))
+            for (int i = 0; i < numberOfDecks; i++)
             {
-                foreach (CardType type in Enum.GetValues(typeof(CardType)))
+                foreach (BlackcardValue value in Enum.GetValues(typeof(BlackcardValue)))
                 {
-                    cards.Add(new CardBlackjack(type, value, CardBackColor.Blue));
+                    foreach (CardType type in Enum.GetValues(typeof(CardType)))
+                    {
+                        cards.Add(new CardBlackjack(type, value, CardBackColor.Blue));
+                    }
                 }
             }
+
             AddCards(cards);
         }
     }
