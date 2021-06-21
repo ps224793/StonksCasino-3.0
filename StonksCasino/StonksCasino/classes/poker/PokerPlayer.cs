@@ -28,6 +28,15 @@ namespace StonksCasino.classes.poker
             set { _pokerName = value; }
         }
 
+        private string _personality;
+
+        public string Personality
+        {
+            get { return _personality; }
+            set { _personality = value; }
+        }
+
+
         private int _playerID;
 
         public int PlayerID
@@ -251,45 +260,15 @@ namespace StonksCasino.classes.poker
             // End of this player's turn
         }
 
-        public string ExecuteAI(string gameState, int topBet)
+        public string ExecuteAI(string gameState, ObservableCollection<Card> table, int topBet)
         {
             bool isBluffing = IsBluffing;
             switch (gameState)
             {
                 case "pre-Flop":
-                    if (MyPokerAI.CalcPreFlopMove(out isBluffing) == "play")
-                    {
-                        IsBluffing = isBluffing;
-                        if (this.Bet == topBet)
-                        {
-                            return "check";
-                        }
-                        else if (this.Bet < topBet && this.Balance >= (topBet - this.Bet))
-                        {
-                            return "call";
-                        }
-                        else
-                        {
-                            return "all-in";
-                        }
-                    }
-                    else
-                    {
-                        return "fold";
-                    }
+                    return MyPokerAI.CalcPreFlopMove(table, topBet);
                 default:
-                    if (this.Bet == topBet)
-                    {
-                        return "check";
-                    }
-                    else if (this.Bet < topBet && this.Balance >= (topBet - this.Bet))
-                    {
-                        return "call";
-                    }
-                    else
-                    {
-                        return "all-in";
-                    }
+                    return MyPokerAI.CalcMove(table, topBet, gameState);
             }
         }
 

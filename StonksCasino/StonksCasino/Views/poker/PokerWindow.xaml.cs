@@ -80,14 +80,7 @@ namespace StonksCasino.Views.poker
 
         private void Raise_Bet(object sender, RoutedEventArgs e)
         {
-            if (Game.Players[0].RaiseBet < Game.Players[0].Balance)
-            {
-                Game.Raise(Game.Players[0]);
-            }
-            else
-            {
-                Game.AllIn(Game.Players[0]);
-            }
+            Game.Raise(Game.Players[0]);
             Game.DisablePlayerInput();
         }
 
@@ -110,7 +103,6 @@ namespace StonksCasino.Views.poker
         private void btnFold_Click(object sender, RoutedEventArgs e)
         {
             Game.Fold(Game.Players[0]);
-            Game.WagerRound(Game.Players[0]);
             Game.DisablePlayerInput();
         }
 
@@ -130,7 +122,6 @@ namespace StonksCasino.Views.poker
                 Game.Check(Game.Players[0]);
             }
             Game.DisablePlayerInput();
-            Game.WagerRound(Game.Players[0]);
         }
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

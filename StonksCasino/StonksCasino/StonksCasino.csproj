@@ -112,6 +112,7 @@
     <Compile Include="classes\poker\PokerHandCalculator.cs" />
     <Compile Include="classes\poker\PokerHandValue.cs" />
     <Compile Include="classes\poker\PokerPlayer.cs" />
+    <Compile Include="classes\poker\PokerPot.cs" />
     <Compile Include="classes\Roulette\Bet.cs" />
     <Compile Include="classes\Roulette\Bettingtable.cs" />
     <Compile Include="classes\Slotmachine\Slot.cs" />

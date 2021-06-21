@@ -59,56 +59,12 @@ namespace StonksCasino.classes.poker
             set { _blindsBet = value; }
         }
 
-        private int _currentPot = 0;
+        private string _currentPot;
 
-        public int CurrentPot
+        public string CurrentPot
         {
-            get
-            {
-                if (true)
-                {
-                    return MainPot;
-                }
-                else
-                {
-                    return SidePot1;
-                }
-            }
-            set
-            {
-                if (true)
-                {
-                    MainPot = value;
-                }
-                else
-                {
-                    SidePot1 = value;
-                }
-            }
-        }
-
-        private int _mainPot = 0;
-
-        public int MainPot
-        {
-            get { return _mainPot; }
-            set { _mainPot = value; }
-        }
-
-        private int _sidePot1 = 0;
-
-        public int SidePot1
-        {
-            get { return _sidePot1; }
-            set { _sidePot1 = value; }
-        }
-
-        private int _sidePot2 = 0;
-
-        public int SidePot2
-        {
-            get { return _sidePot2; }
-            set { _sidePot2 = value; }
+            get { return _currentPot; }
+            set { _currentPot = value; }
         }
 
         private int _topBet = 0;
@@ -241,6 +197,23 @@ namespace StonksCasino.classes.poker
             set { _table = value; OnPropertyChanged(); }
         }
 
+        private Dictionary<string, PokerPot> _pots;
+
+        public Dictionary<string, PokerPot> Pots
+        {
+            get { return _pots; }
+            set { _pots = value; }
+        }
+
+        private int _numSidePots;
+
+        public int NumSidePots
+        {
+            get { return _numSidePots; }
+            set { _numSidePots = value; }
+        }
+
+
         private Storyboard _boardOut;
 
         public Storyboard BoardOut
@@ -311,12 +284,21 @@ namespace StonksCasino.classes.poker
             set { _gameSpeed = value; OnPropertyChanged(); }
         }
 
+        private Random _rng;
 
+        public Random RNG
+        {
+            get { return _rng; }
+            set { _rng = value; }
+        }
 
         public PokerGame()
         {
-            PlayerCardOpacity = 1;
+            RNG = new Random();
             Players = new List<PokerPlayer>();
+            Pots = new Dictionary<string, PokerPot>();
+            NumOfActivePlayers = 0;
+            PlayerCardOpacity = 1;
             for (int i = 0; i < 4; i++)
             {
                 Players.Add(new PokerPlayer());
@@ -324,6 +306,7 @@ namespace StonksCasino.classes.poker
                 Players[i].RaiseBet = 0;
                 Players[i].Bet = 0;
                 Players[i].PlayerID = i;
+                Players[i].Button = PokerButton.None;
                 switch (i)
                 {
                     case 0:
@@ -339,13 +322,61 @@ namespace StonksCasino.classes.poker
                         Players[i].PokerName = "MyloBot";
                         break;
                 }
-                NumOfActivePlayers++;
+                if (Players[i].PlayerID == 0)
+                {
+                    Players[i].Personality = "player";
+                }
+                else
+                {
+                    int personality = RNG.Next(1, 101);
+                    if (personality <= 25)
+                    {
+                        Players[i].Personality = "loose-passive";
+                    }
+                    else if (personality > 25 && personality <= 50)
+                    {
+                        Players[i].Personality = "loose-aggressive";
+                    }
+                    else if (personality > 50 && personality <= 75)
+                    {
+                        Players[i].Personality = "tight-passive";
+                    }
+                    else if (personality > 75)
+                    {
+                        Players[i].Personality = "tight-aggressive";
+                    }
+                }
             }
-            Players[0].Button = PokerButton.Dealer;
-            Players[1].Button = PokerButton.SmallBlind;
-            Players[2].Button = PokerButton.BigBlind;
-            Players[3].Button = PokerButton.None;
-            //PokerHandCalculator.GetHandValue(_players[0].Hand.ToList(), _table.ToList());
+            NumOfActivePlayers = Players.Count;
+            NumSidePots = 0;
+            int startingDealer = RNG.Next(0, 4);
+            PassButtons(3, startingDealer);
+            //Players[0].Button = PokerButton.Dealer;
+            //Players[1].Button = PokerButton.SmallBlind;
+            //Players[2].Button = PokerButton.BigBlind;
+            //Players[3].Button = PokerButton.None;
+        }
+
+        private void setupNewGame()
+        {
+            // pay out winnings
+            foreach (PokerPlayer player in Players)
+            {
+                player.Balance = 500;
+                player.RaiseBet = 0;
+                player.Bet = 0;
+                player.Button = PokerButton.None;
+                player.Busted = false;
+            }
+            RoundsSinceBlindsRaise = 0;
+            NumOfActivePlayers = Players.Count;
+            NumSidePots = 0;
+            int startingDealer = RNG.Next(0, 4);
+            PassButtons(3, startingDealer);
+            //Players[0].Button = PokerButton.Dealer;
+            //Players[1].Button = PokerButton.SmallBlind;
+            //Players[2].Button = PokerButton.BigBlind;
+            //Players[3].Button = PokerButton.None;
         }
 
         private void SetPlayerHand(PokerPlayer player)
@@ -393,7 +424,7 @@ namespace StonksCasino.classes.poker
                 int raiseBet = currentPlayer.Raise(TopBet, out raised);
                 LastRaise = raiseBet;
                 TopBet += raiseBet;
-                CurrentPot += raised;
+                Pots[CurrentPot].Chips += raised;
             }
             else if (currentPlayer.RaiseBet <= currentPlayer.Balance && currentPlayer.RaiseBet < (LastRaise + (TopBet - currentPlayer.Bet)))
             {
@@ -401,7 +432,7 @@ namespace StonksCasino.classes.poker
                 int raised;
                 int raiseBet = currentPlayer.Raise(TopBet, out raised);
                 TopBet += raiseBet;
-                CurrentPot += raised;
+                Pots[CurrentPot].Chips += raised;
             }
             EventLog.Add($"{currentPlayer.PokerName} raised with {LastRaise}");
             ScrollListbox();
@@ -428,13 +459,14 @@ namespace StonksCasino.classes.poker
             NumOfPlayersNotPlaying++;
             EventLog.Add($"{player.PokerName} folds");
             ScrollListbox();
+            if (player.PlayerID == 0) { WagerRound(player); }
         }
 
         public void Call(PokerPlayer player)
         {
             if (player.Balance >= (TopBet - player.Bet))
             {
-                CurrentPot = player.Call(CurrentPot, TopBet);
+                Pots[CurrentPot].Chips = player.Call(Pots[CurrentPot].Chips, TopBet);
                 EventLog.Add($"{player.PokerName} calls");
             }
             else
@@ -442,6 +474,7 @@ namespace StonksCasino.classes.poker
                 AllIn(player);
             }
             ScrollListbox();
+            if (player.PlayerID == 0) { WagerRound(player); }
         }
 
         public void Check(PokerPlayer player)
@@ -449,14 +482,26 @@ namespace StonksCasino.classes.poker
             player.Check();
             EventLog.Add($"{player.PokerName} checks");
             ScrollListbox();
+            if (player.PlayerID == 0) { WagerRound(player); }
         }
 
         public void AllIn(PokerPlayer player)
         {
-            CurrentPot = player.AllIn(CurrentPot);
+            List<PokerPlayer> eligablePlayers = new List<PokerPlayer>();
+            foreach (PokerPlayer eligablePlayer in Players)
+            {
+                if (eligablePlayer.Busted != true && eligablePlayer.IsAllIn != true && eligablePlayer.Folded != true) { eligablePlayers.Add(eligablePlayer); }
+            }
+            PokerPot newSidePot = new PokerPot(eligablePlayers, 0);
+            NumSidePots++;
+            string PotName = $"SidePot{NumSidePots}";
+            Pots.Add(PotName, newSidePot);
+            CurrentPot = PotName;
+            Pots[CurrentPot].Chips = player.AllIn(Pots[CurrentPot].Chips);
             // Switch from MainPot to SidePot
             EventLog.Add($"{player.PokerName} goes all-in");
             ScrollListbox();
+            if (player.PlayerID == 0) { WagerRound(player); }
         }
 
         public void StartGame()
@@ -477,6 +522,10 @@ namespace StonksCasino.classes.poker
             PlayerCardOpacity = 1;
             deck = new PokerDeck();
             GameState = "pre-Flop";
+            foreach (PokerPlayer player in Players)
+            {
+                if (player.Busted) { NumOfPlayersNotPlaying++; }
+            }
             PlaceBlinds();
             DealHoleCards();
             SetTable();
@@ -512,37 +561,79 @@ namespace StonksCasino.classes.poker
 
         private void PlaceBlinds()
         {
+            PokerPot MainPot = new PokerPot(Players, 0);
+            Pots.Add("MainPot", MainPot);
+            string PotName = "MainPot";
+            CurrentPot = PotName;
             foreach (PokerPlayer player in Players)
             {
-                switch (player.Button)
+                switch (NumOfActivePlayers)
                 {
-                    case PokerButton.SmallBlind:
-                        if (player.Balance >= BlindsBet)
+                    case 2:
+                        switch (player.Button)
                         {
-                            player.Bet += BlindsBet;
-                            player.Balance -= BlindsBet;
-                            CurrentPot += BlindsBet;
-                        }
-                        else
-                        {
-                            player.AllIn(CurrentPot);
-                        }
-                        break;
-                    case PokerButton.BigBlind:
-                        if (player.Balance >= (BlindsBet * 2))
-                        {
-                            player.Bet += (BlindsBet * 2);
-                            player.Balance -= (BlindsBet * 2);
-                            CurrentPot += (BlindsBet * 2);
-                            TopBet = (BlindsBet * 2);
-                            LastRaise = TopBet;
-                        }
-                        else
-                        {
-                            player.AllIn(CurrentPot);
+                            case PokerButton.Dealer:
+                                if (player.Balance >= BlindsBet)
+                                {
+                                    player.Bet += BlindsBet;
+                                    player.Balance -= BlindsBet;
+                                    Pots[CurrentPot].Chips += BlindsBet;
+                                }
+                                else
+                                {
+                                    AllIn(player);
+                                }
+                                break;
+                            case PokerButton.BigBlind:
+                                if (player.Balance >= (BlindsBet * 2))
+                                {
+                                    player.Bet += BlindsBet * 2;
+                                    player.Balance -= BlindsBet * 2;
+                                    Pots[CurrentPot].Chips += BlindsBet * 2;
+                                    TopBet = BlindsBet * 2;
+                                    LastRaise = TopBet;
+                                }
+                                else
+                                {
+                                    AllIn(player);
+                                }
+                                break;
+                            default:
+                                break;
                         }
                         break;
                     default:
+                        switch (player.Button)
+                        {
+                            case PokerButton.SmallBlind:
+                                if (player.Balance >= BlindsBet)
+                                {
+                                    player.Bet += BlindsBet;
+                                    player.Balance -= BlindsBet;
+                                    Pots[CurrentPot].Chips += BlindsBet;
+                                }
+                                else
+                                {
+                                    player.AllIn(Pots[CurrentPot].Chips);
+                                }
+                                break;
+                            case PokerButton.BigBlind:
+                                if (player.Balance >= (BlindsBet * 2))
+                                {
+                                    player.Bet += BlindsBet * 2;
+                                    player.Balance -= BlindsBet * 2;
+                                    Pots[CurrentPot].Chips += BlindsBet * 2;
+                                    TopBet = BlindsBet * 2;
+                                    LastRaise = TopBet;
+                                }
+                                else
+                                {
+                                    player.AllIn(Pots[CurrentPot].Chips);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
                         break;
                 }
             }
@@ -608,7 +699,7 @@ namespace StonksCasino.classes.poker
                                 // Execute algorithm
                                 ShowCurrentPlayer(Players[currentPlayer].PlayerID); //deze
                                 await Task.Delay(GameSpeed * 1000);                 //deze
-                                string action = Players[currentPlayer].ExecuteAI(GameState, TopBet);
+                                string action = Players[currentPlayer].ExecuteAI(GameState, _table, TopBet);
                                 switch (action)
                                 {
                                     case "raise":
@@ -642,15 +733,24 @@ namespace StonksCasino.classes.poker
                                 break;
                             }
                         }
-                        else if (Players[currentPlayer].Busted == true)
-                        {
-                            NumOfPlayersNotPlaying++;
-                        }
                     }
                     else { break; }
                 }
             }
-            if (NumOfPlayersNotPlaying < (Players.Count - 1))
+            if (NumOfPlayersNotPlaying >= (Players.Count - 1))
+            {
+                foreach (PokerPlayer playerToCheck in Players)
+                {
+                    bool exitLoop = false;
+                    if (!playerToCheck.Busted && !playerToCheck.Folded)
+                    {
+                        exitLoop = true;
+                        WinByFold(playerToCheck);
+                    }
+                    if (exitLoop) break;
+                }
+            }
+            else
             {
                 if (i == Players.Count)
                 {
@@ -669,19 +769,6 @@ namespace StonksCasino.classes.poker
                             showdown();
                             break;
                     }
-                }
-            }
-            else
-            {
-                foreach (PokerPlayer playerToCheck in Players)
-                {
-                    bool exitLoop = false;
-                    if (!playerToCheck.Busted && !playerToCheck.Folded)
-                    {
-                        exitLoop = true;
-                        WinByFold(playerToCheck);
-                    }
-                    if (exitLoop) break;
                 }
             }
         }
@@ -780,12 +867,21 @@ namespace StonksCasino.classes.poker
                     switch (NumOfActivePlayers)
                     {
                         case 2:
-                        case 3:
-                            if (player.Button == PokerButton.SmallBlind && GameState == "pre-Flop")
+                            if (player.Button == PokerButton.Dealer && GameState == "pre-Flop")
                             {
                                 WagerRound(player);
                             }
                             else if (player.Button == PokerButton.BigBlind)
+                            {
+                                WagerRound(player);
+                            }
+                            break;
+                        case 3:
+                            if (player.Button == PokerButton.Dealer && GameState == "pre-Flop")
+                            {
+                                WagerRound(player);
+                            }
+                            else if (player.Button == PokerButton.SmallBlind)
                             {
                                 WagerRound(player);
                             }
@@ -946,16 +1042,16 @@ namespace StonksCasino.classes.poker
                         {
                             if (player.PlayerID == highestHands[winningHand].PlayerID)
                             {
-                                player.Balance += CurrentPot / highestHands.Count;
+                                player.Balance += Pots[CurrentPot].Chips / highestHands.Count;
                                 ShowWinner(player.PlayerID);
                             }
                         }
                     }
                     for (int player = 0; player < Players.Count; player++)
                     {
-                        if (Players[player].Button == PokerButton.SmallBlind)
+                        if ((Players[player].Button == PokerButton.SmallBlind || Players[player].Button == PokerButton.Dealer) && NumOfActivePlayers > 2)
                         {
-                            Players[player].Balance += CurrentPot % highestHands.Count;
+                            Players[player].Balance += Pots[CurrentPot].Chips % highestHands.Count;
                         }
                     }
                     foreach (PokerPlayer player in Players)
@@ -966,7 +1062,7 @@ namespace StonksCasino.classes.poker
                 }
                 else
                 {
-                    Players[highestHands[0].PlayerID].Balance += CurrentPot;
+                    Players[highestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
                     MessageWinningHand(highestHands);
                     ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
                     await Task.Delay(3000);
@@ -974,7 +1070,7 @@ namespace StonksCasino.classes.poker
             }
             else
             {
-                Players[highestHands[0].PlayerID].Balance += CurrentPot;
+                Players[highestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
                 MessageWinningHand(highestHands);
                 ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
                 await Task.Delay(3000);
@@ -983,7 +1079,11 @@ namespace StonksCasino.classes.poker
 
             GameState = "End";
 
-            if (GameCount > 1)
+            if (NumOfActivePlayers <= 1)
+            {
+                NextRoundGrid = "Visible";
+            }
+            else if (GameCount > 1)
             {
                 NextRoundGrid = "Visible";
             }
@@ -995,6 +1095,7 @@ namespace StonksCasino.classes.poker
 
         public void NextRoundButton()
         {
+            if (NumOfActivePlayers == 1) { setupNewGame(); }
             NextRoundGrid = "Hidden";
             EndGame();
         }
@@ -1126,7 +1227,7 @@ namespace StonksCasino.classes.poker
 
         private async void WinByFold(PokerPlayer player)
         {
-            player.Balance += CurrentPot;
+            player.Balance += Pots[CurrentPot].Chips;
             if (player.IsBluffing == true) { player.MyPokerAI.SuccesfulBluffs++; }
             EventLog.Add($"{player.PokerName} wins  -by fold-");
             ShowWinner(player.PlayerID);
@@ -1166,7 +1267,7 @@ namespace StonksCasino.classes.poker
 
         private void clearPlayerHand(PokerWindow window, PokerPlayer player)
         {
-            if (player.Hand.Count > 1)
+            if (player.Hand != null)
             {
                 Storyboard player_out = (Storyboard)(window as PokerWindow).FindResource($"sbPlayer{player.PlayerID}_Out");
                 player_out.Begin();
@@ -1207,8 +1308,10 @@ namespace StonksCasino.classes.poker
             Player2Color = "White";
             Player3Color = "White";
             RoundsSinceBlindsRaise++;
-            CurrentPot = 0;
+            Pots.Clear();
+            TopBet = 0;
             NumOfPlayersNotPlaying = 0;
+            NumSidePots = 0;
             await ClearTable();
             int currentDealer = 0;
             foreach (PokerPlayer player in Players)
@@ -1216,7 +1319,10 @@ namespace StonksCasino.classes.poker
                 if (!player.Busted)
                 {
                     player.Bet = 0;
-                    player.Hand.Clear();
+                    if (player.Hand != null)
+                    {
+                        player.Hand.Clear();
+                    }
                     player.Checked = false;
                     player.Folded = false;
                     player.IsAllIn = false;
@@ -1226,21 +1332,9 @@ namespace StonksCasino.classes.poker
                         NumOfActivePlayers--;
                     }
                 }
-                switch (NumOfActivePlayers)
+                if (player.Button == PokerButton.Dealer)
                 {
-                    case 2:
-                    case 3:
-                        if (player.Button == PokerButton.SmallBlind)
-                        {
-                            currentDealer = player.PlayerID;
-                        }
-                        break;
-                    default:
-                        if (player.Button == PokerButton.Dealer)
-                        {
-                            currentDealer = player.PlayerID;
-                        }
-                        break;
+                    currentDealer = player.PlayerID;
                 }
                 player.Button = PokerButton.None;
             }
@@ -1257,8 +1351,6 @@ namespace StonksCasino.classes.poker
                     break;
             }
             MyTable.Clear();
-
-
         }
 
         private void PassButtons(int numOfButtons, int currentDealer)
@@ -1275,7 +1367,7 @@ namespace StonksCasino.classes.poker
                             case 0:
                                 if (numOfButtons == 1)
                                 {
-                                    Players[newDealer].Button = PokerButton.SmallBlind;
+                                    Players[newDealer].Button = PokerButton.Dealer;
                                 }
                                 else
                                 {
