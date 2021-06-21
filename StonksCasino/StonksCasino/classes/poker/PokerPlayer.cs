@@ -200,14 +200,7 @@ namespace StonksCasino.classes.poker
             int raised = RaiseBet - (topBet - Bet);
             Balance -= RaiseBet;
             Bet += RaiseBet;
-            if (Balance == 0)
-            {
-                IsAllIn = true;
-            }
-            else
-            {
-                Checked = true;
-            }
+            Checked = true;
             return raised;
             // End of this player's turn
         }

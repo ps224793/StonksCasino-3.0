@@ -416,28 +416,29 @@ namespace StonksCasino.classes.poker
             player.SetHand(cards);
         }
 
-        public void Raise(PokerPlayer currentPlayer)
+        public void Raise(PokerPlayer player)
         {
-            if (currentPlayer.RaiseBet <= currentPlayer.Balance && currentPlayer.RaiseBet >= (LastRaise + (TopBet - currentPlayer.Bet)))
+            if (player.RaiseBet <= player.Balance && player.RaiseBet >= (LastRaise + (TopBet - player.Bet)))
             {
                 int raised;
-                int raiseBet = currentPlayer.Raise(TopBet, out raised);
+                int raiseBet = player.Raise(TopBet, out raised);
                 LastRaise = raiseBet;
                 TopBet += raiseBet;
                 Pots[CurrentPot].Chips += raised;
             }
-            else if (currentPlayer.RaiseBet <= currentPlayer.Balance && currentPlayer.RaiseBet < (LastRaise + (TopBet - currentPlayer.Bet)))
+            else if (player.RaiseBet <= player.Balance && player.RaiseBet < (LastRaise + (TopBet - player.Bet)))
             {
-                currentPlayer.RaiseBet = LastRaise + (TopBet - currentPlayer.Bet);
+                player.RaiseBet = LastRaise + (TopBet - player.Bet);
                 int raised;
-                int raiseBet = currentPlayer.Raise(TopBet, out raised);
+                int raiseBet = player.Raise(TopBet, out raised);
                 TopBet += raiseBet;
                 Pots[CurrentPot].Chips += raised;
             }
-            EventLog.Add($"{currentPlayer.PokerName} raised with {LastRaise}");
+            if (player.Balance == 0) { AllIn(player); }
+            EventLog.Add($"{player.PokerName} raised with {LastRaise}");
             ScrollListbox();
-            resetCheckedPlayers(currentPlayer);
-            WagerRound(currentPlayer);
+            resetCheckedPlayers(player);
+            WagerRound(player);
         }
 
         public void Fold(PokerPlayer player)
@@ -487,6 +488,8 @@ namespace StonksCasino.classes.poker
 
         public void AllIn(PokerPlayer player)
         {
+            Pots[CurrentPot].Chips = player.AllIn(Pots[CurrentPot].Chips);
+            // Switch from MainPot to SidePot
             List<PokerPlayer> eligablePlayers = new List<PokerPlayer>();
             foreach (PokerPlayer eligablePlayer in Players)
             {
@@ -497,8 +500,6 @@ namespace StonksCasino.classes.poker
             string PotName = $"SidePot{NumSidePots}";
             Pots.Add(PotName, newSidePot);
             CurrentPot = PotName;
-            Pots[CurrentPot].Chips = player.AllIn(Pots[CurrentPot].Chips);
-            // Switch from MainPot to SidePot
             EventLog.Add($"{player.PokerName} goes all-in");
             ScrollListbox();
             if (player.PlayerID == 0) { WagerRound(player); }
@@ -561,7 +562,12 @@ namespace StonksCasino.classes.poker
 
         private void PlaceBlinds()
         {
-            PokerPot MainPot = new PokerPot(Players, 0);
+            List<PokerPlayer> eligablePlayers = new List<PokerPlayer>();
+            foreach (PokerPlayer player in Players)
+            {
+                if (player.Busted != true) { eligablePlayers.Add(player); }
+            }
+            PokerPot MainPot = new PokerPot(eligablePlayers, 0);
             Pots.Add("MainPot", MainPot);
             string PotName = "MainPot";
             CurrentPot = PotName;
@@ -984,97 +990,194 @@ namespace StonksCasino.classes.poker
                 }
             }
             await showCards(activePlayers);
-            playerHands = playerHands.OrderBy(x => x.MyPokerHand).ToList();
-            List<PokerHandValue> highestHands = new List<PokerHandValue>();
-            foreach (PokerHandValue playerHand in playerHands)
+
+            foreach (KeyValuePair<string, PokerPot> pot in Pots)
             {
-                if (playerHand.MyPokerHand == playerHands[0].MyPokerHand)
+                List<PokerHandValue> eligableHands = new List<PokerHandValue>();
+                foreach (PokerPlayer eligablePlayer in pot.Value.EligablePlayers)
                 {
-                    highestHands.Add(playerHand);
-                }
-            }
-            if (highestHands.Count > 1)
-            {
-                for (int handToCompare = 1; handToCompare < highestHands.Count; handToCompare++)
-                {
-                    for (int cardToCompare = 0; cardToCompare < 5; cardToCompare++)
+                    if (eligablePlayer.Folded != true)
                     {
-                        if (highestHands[0].MyPokerHand == PokerHand.Straight ||
-                            highestHands[0].MyPokerHand == PokerHand.StraightFlush)
+                        PokerHandValue result = PokerHandCalculator.GetHandValue(eligablePlayer, _table.ToList());
+                        eligableHands.Add(result);
+                    }
+                }
+                eligableHands = eligableHands.OrderBy(x => x.MyPokerHand).ToList();
+                List<PokerHandValue> eligablehighestHands = new List<PokerHandValue>();
+                foreach (PokerHandValue eligableHand in eligableHands)
+                {
+                    if (eligableHand.MyPokerHand == playerHands[0].MyPokerHand)
+                    {
+                        eligablehighestHands.Add(eligableHand);
+                    }
+                }
+                if (eligablehighestHands.Count > 1)
+                {
+                    for (int handToCompare = 1; handToCompare < eligablehighestHands.Count; handToCompare++)
+                    {
+                        for (int cardToCompare = 0; cardToCompare < 5; cardToCompare++)
                         {
-                            if (highestHands[0].Hand[2].Value > highestHands[handToCompare].Hand[2].Value)
+                            if (eligablehighestHands[0].MyPokerHand == PokerHand.Straight ||
+                                eligablehighestHands[0].MyPokerHand == PokerHand.StraightFlush)
                             {
-                                highestHands.RemoveAt(handToCompare);
-                                handToCompare = 0;
-                                break;
+                                if (eligablehighestHands[0].Hand[2].Value > eligablehighestHands[handToCompare].Hand[2].Value)
+                                {
+                                    eligablehighestHands.RemoveAt(handToCompare);
+                                    handToCompare = 0;
+                                    break;
+                                }
+                                else if (eligablehighestHands[0].Hand[2].Value < eligablehighestHands[handToCompare].Hand[2].Value)
+                                {
+                                    eligablehighestHands.RemoveAt(0);
+                                    handToCompare = 0;
+                                    break;
+                                }
                             }
-                            else if (highestHands[0].Hand[2].Value < highestHands[handToCompare].Hand[2].Value)
+                            else
                             {
-                                highestHands.RemoveAt(0);
-                                handToCompare = 0;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            if (highestHands[0].Hand[cardToCompare].Value > highestHands[handToCompare].Hand[cardToCompare].Value)
-                            {
-                                highestHands.RemoveAt(handToCompare);
-                                handToCompare = 0;
-                                break;
-                            }
-                            else if (highestHands[0].Hand[cardToCompare].Value < highestHands[handToCompare].Hand[cardToCompare].Value)
-                            {
-                                highestHands.RemoveAt(0);
-                                handToCompare = 0;
-                                break;
+                                if (eligablehighestHands[0].Hand[cardToCompare].Value > eligablehighestHands[handToCompare].Hand[cardToCompare].Value)
+                                {
+                                    eligablehighestHands.RemoveAt(handToCompare);
+                                    handToCompare = 0;
+                                    break;
+                                }
+                                else if (eligablehighestHands[0].Hand[cardToCompare].Value < eligablehighestHands[handToCompare].Hand[cardToCompare].Value)
+                                {
+                                    eligablehighestHands.RemoveAt(0);
+                                    handToCompare = 0;
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-                if (highestHands.Count > 1)
-                {
-                    EventLog.Add("Gelijkspel");
-                    MessageWinningHand(highestHands);
-                    for (int winningHand = 0; winningHand < highestHands.Count; winningHand++)
+                    if (eligablehighestHands.Count > 1)
                     {
+                        EventLog.Add("Gelijkspel");
+                        MessageWinningHand(eligablehighestHands);
+                        for (int winningHand = 0; winningHand < eligablehighestHands.Count; winningHand++)
+                        {
+                            foreach (PokerPlayer player in Players)
+                            {
+                                if (player.PlayerID == eligablehighestHands[winningHand].PlayerID)
+                                {
+                                    player.Balance += Pots[CurrentPot].Chips / eligablehighestHands.Count;
+                                    ShowWinner(player.PlayerID);
+                                }
+                            }
+                        }
+                        for (int player = 0; player < Players.Count; player++)
+                        {
+                            if ((Players[player].Button == PokerButton.SmallBlind || Players[player].Button == PokerButton.Dealer) && NumOfActivePlayers > 2)
+                            {
+                                Players[player].Balance += Pots[CurrentPot].Chips % eligablehighestHands.Count;
+                            }
+                        }
                         foreach (PokerPlayer player in Players)
                         {
-                            if (player.PlayerID == highestHands[winningHand].PlayerID)
-                            {
-                                player.Balance += Pots[CurrentPot].Chips / highestHands.Count;
-                                ShowWinner(player.PlayerID);
-                            }
+                            player.Bet = 0;
                         }
+                        await Task.Delay(3000);
                     }
-                    for (int player = 0; player < Players.Count; player++)
-                    {
-                        if ((Players[player].Button == PokerButton.SmallBlind || Players[player].Button == PokerButton.Dealer) && NumOfActivePlayers > 2)
-                        {
-                            Players[player].Balance += Pots[CurrentPot].Chips % highestHands.Count;
-                        }
-                    }
-                    foreach (PokerPlayer player in Players)
-                    {
-                        player.Bet = 0;
-                    }
-                    await Task.Delay(3000);
                 }
                 else
                 {
-                    Players[highestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
-                    MessageWinningHand(highestHands);
-                    ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
+                    Players[eligablehighestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
+                    MessageWinningHand(eligablehighestHands);
+                    ShowWinner(Players[eligablehighestHands[0].PlayerID].PlayerID);
                     await Task.Delay(3000);
                 }
             }
-            else
-            {
-                Players[highestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
-                MessageWinningHand(highestHands);
-                ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
-                await Task.Delay(3000);
-            }
+            //playerHands = playerHands.OrderBy(x => x.MyPokerHand).ToList();
+            //List<PokerHandValue> highestHands = new List<PokerHandValue>();
+            //foreach (PokerHandValue playerHand in playerHands)
+            //{
+            //    if (playerHand.MyPokerHand == playerHands[0].MyPokerHand)
+            //    {
+            //        highestHands.Add(playerHand);
+            //    }
+            //}
+            //if (highestHands.Count > 1)
+            //{
+            //    for (int handToCompare = 1; handToCompare < highestHands.Count; handToCompare++)
+            //    {
+            //        for (int cardToCompare = 0; cardToCompare < 5; cardToCompare++)
+            //        {
+            //            if (highestHands[0].MyPokerHand == PokerHand.Straight ||
+            //                highestHands[0].MyPokerHand == PokerHand.StraightFlush)
+            //            {
+            //                if (highestHands[0].Hand[2].Value > highestHands[handToCompare].Hand[2].Value)
+            //                {
+            //                    highestHands.RemoveAt(handToCompare);
+            //                    handToCompare = 0;
+            //                    break;
+            //                }
+            //                else if (highestHands[0].Hand[2].Value < highestHands[handToCompare].Hand[2].Value)
+            //                {
+            //                    highestHands.RemoveAt(0);
+            //                    handToCompare = 0;
+            //                    break;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                if (highestHands[0].Hand[cardToCompare].Value > highestHands[handToCompare].Hand[cardToCompare].Value)
+            //                {
+            //                    highestHands.RemoveAt(handToCompare);
+            //                    handToCompare = 0;
+            //                    break;
+            //                }
+            //                else if (highestHands[0].Hand[cardToCompare].Value < highestHands[handToCompare].Hand[cardToCompare].Value)
+            //                {
+            //                    highestHands.RemoveAt(0);
+            //                    handToCompare = 0;
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    if (highestHands.Count > 1)
+            //    {
+            //        EventLog.Add("Gelijkspel");
+            //        MessageWinningHand(highestHands);
+            //        for (int winningHand = 0; winningHand < highestHands.Count; winningHand++)
+            //        {
+            //            foreach (PokerPlayer player in Players)
+            //            {
+            //                if (player.PlayerID == highestHands[winningHand].PlayerID)
+            //                {
+            //                    player.Balance += Pots[CurrentPot].Chips / highestHands.Count;
+            //                    ShowWinner(player.PlayerID);
+            //                }
+            //            }
+            //        }
+            //        for (int player = 0; player < Players.Count; player++)
+            //        {
+            //            if ((Players[player].Button == PokerButton.SmallBlind || Players[player].Button == PokerButton.Dealer) && NumOfActivePlayers > 2)
+            //            {
+            //                Players[player].Balance += Pots[CurrentPot].Chips % highestHands.Count;
+            //            }
+            //        }
+            //        foreach (PokerPlayer player in Players)
+            //        {
+            //            player.Bet = 0;
+            //        }
+            //        await Task.Delay(3000);
+            //    }
+            //    else
+            //    {
+            //        Players[highestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
+            //        MessageWinningHand(highestHands);
+            //        ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
+            //        await Task.Delay(3000);
+            //    }
+            //}
+            //else
+            //{
+            //    Players[highestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
+            //    MessageWinningHand(highestHands);
+            //    ShowWinner(Players[highestHands[0].PlayerID].PlayerID);
+            //    await Task.Delay(3000);
+            //}
 
 
             GameState = "End";
