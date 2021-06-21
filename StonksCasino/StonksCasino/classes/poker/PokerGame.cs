@@ -369,6 +369,7 @@ namespace StonksCasino.classes.poker
                 player.Busted = false;
             }
             RoundsSinceBlindsRaise = 0;
+            BlindsBet = 5;
             NumOfActivePlayers = Players.Count;
             NumSidePots = 0;
             int startingDealer = RNG.Next(0, 4);
@@ -705,7 +706,7 @@ namespace StonksCasino.classes.poker
                                 // Execute algorithm
                                 ShowCurrentPlayer(Players[currentPlayer].PlayerID); //deze
                                 await Task.Delay(GameSpeed * 1000);                 //deze
-                                string action = Players[currentPlayer].ExecuteAI(GameState, _table, TopBet);
+                                string action = Players[currentPlayer].ExecuteAI(GameState, _table, TopBet, BlindsBet);
                                 switch (action)
                                 {
                                     case "raise":
@@ -984,7 +985,7 @@ namespace StonksCasino.classes.poker
                 if (player.Busted != true && player.Folded != true)
                 {
                     PokerHandValue result = PokerHandCalculator.GetHandValue(player, _table.ToList());
-                    playerHands.Add(result);
+                    // playerHands.Add(result);
                     activePlayers.Add(player);
                     if (player.IsBluffing == true) { player.MyPokerAI.BluffsCaught++; }
                 }
@@ -1006,7 +1007,7 @@ namespace StonksCasino.classes.poker
                 List<PokerHandValue> eligablehighestHands = new List<PokerHandValue>();
                 foreach (PokerHandValue eligableHand in eligableHands)
                 {
-                    if (eligableHand.MyPokerHand == playerHands[0].MyPokerHand)
+                    if (eligableHand.MyPokerHand == eligableHands[0].MyPokerHand)
                     {
                         eligablehighestHands.Add(eligableHand);
                     }
@@ -1060,7 +1061,7 @@ namespace StonksCasino.classes.poker
                             {
                                 if (player.PlayerID == eligablehighestHands[winningHand].PlayerID)
                                 {
-                                    player.Balance += Pots[CurrentPot].Chips / eligablehighestHands.Count;
+                                    player.Balance += pot.Value.Chips / eligablehighestHands.Count;
                                     ShowWinner(player.PlayerID);
                                 }
                             }
@@ -1069,7 +1070,7 @@ namespace StonksCasino.classes.poker
                         {
                             if ((Players[player].Button == PokerButton.SmallBlind || Players[player].Button == PokerButton.Dealer) && NumOfActivePlayers > 2)
                             {
-                                Players[player].Balance += Pots[CurrentPot].Chips % eligablehighestHands.Count;
+                                Players[player].Balance += pot.Value.Chips % eligablehighestHands.Count;
                             }
                         }
                         foreach (PokerPlayer player in Players)
@@ -1078,10 +1079,17 @@ namespace StonksCasino.classes.poker
                         }
                         await Task.Delay(3000);
                     }
+                    else
+                    {
+                        Players[eligablehighestHands[0].PlayerID].Balance += pot.Value.Chips;
+                        MessageWinningHand(eligablehighestHands);
+                        ShowWinner(Players[eligablehighestHands[0].PlayerID].PlayerID);
+                        await Task.Delay(3000);
+                    }
                 }
                 else
                 {
-                    Players[eligablehighestHands[0].PlayerID].Balance += Pots[CurrentPot].Chips;
+                    Players[eligablehighestHands[0].PlayerID].Balance += pot.Value.Chips;
                     MessageWinningHand(eligablehighestHands);
                     ShowWinner(Players[eligablehighestHands[0].PlayerID].PlayerID);
                     await Task.Delay(3000);

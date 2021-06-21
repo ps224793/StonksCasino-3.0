@@ -253,7 +253,7 @@ namespace StonksCasino.classes.poker
             // End of this player's turn
         }
 
-        public string ExecuteAI(string gameState, ObservableCollection<Card> table, int topBet)
+        public string ExecuteAI(string gameState, ObservableCollection<Card> table, int topBet, int blindsBet)
         {
             bool isBluffing = IsBluffing;
             switch (gameState)
@@ -261,7 +261,8 @@ namespace StonksCasino.classes.poker
                 case "pre-Flop":
                     return MyPokerAI.CalcPreFlopMove(table, topBet);
                 default:
-                    return MyPokerAI.CalcMove(table, topBet, gameState);
+                    int raisebet = RaiseBet;
+                    return MyPokerAI.CalcMove(table, topBet, gameState, blindsBet, out int raiseBet);
             }
         }
 
