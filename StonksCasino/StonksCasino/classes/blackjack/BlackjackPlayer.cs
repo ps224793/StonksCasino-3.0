@@ -114,7 +114,6 @@ namespace StonksCasino.classes.blackjack
 
         public void Changescore2()
         {
-            MessageBox.Show("je weet het wel");
             Splittoright = false;
             Splittoleft = true;
         }
