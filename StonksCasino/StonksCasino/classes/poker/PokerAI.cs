@@ -1,4 +1,5 @@
 ﻿using StonksCasino.classes.Main;
+using StonksCasino.classes.poker;
 using StonksCasino.enums.poker;
 using StonksCasino.enums.card;
 using System;
@@ -22,13 +23,13 @@ namespace StonksCasino.classes.poker
 
         private Random _rng;
 
-        public Random  RNG
+        public Random RNG
         {
             get { return _rng; }
             set { _rng = value; }
         }
 
-        private bool _badCards =  false;
+        private bool _badCards = false;
 
         public bool BadCards
         {
@@ -60,7 +61,6 @@ namespace StonksCasino.classes.poker
             get { return _bluffsCaught; }
             set { _bluffsCaught = value; }
         }
-
 
         public PokerAI(PokerPlayer player)
         {
@@ -641,7 +641,7 @@ namespace StonksCasino.classes.poker
             return 0;
         }
 
-        private int CalcPlayOdds()
+        private int CalcPlayOdds(int topBet)
         {
             string position = CalcPosition(4, Player.Button);
             int playThreshold = CalcStartingHand(Player.Hand, position);
@@ -659,29 +659,168 @@ namespace StonksCasino.classes.poker
             {
                 playOdds -= 20;
             }
+            if (Player.Bet == topBet && playOdds < 100) { playOdds = 100; }
             return playOdds;
         }
 
-        public string CalcPreFlopMove(out bool isBluffing)
+        public string CalcPreFlopMove(ObservableCollection<Card> table, int topBet)
         {
-            isBluffing = false;
-            int playOdds = CalcPlayOdds();
+            int playOdds = CalcPlayOdds(topBet);
             int rngOdds = RNG.Next(0, 101);
             if (playOdds >= rngOdds)
             {
-                if (BadCards == true) 
-                { 
+                if (BadCards == true)
+                {
                     RoundsSinceLastBluff = 0;
-                    isBluffing = true;
+                    Player.IsBluffing = true;
                 }
                 else { RoundsSinceLastBluff++; }
-                return "play";
+                // raise if pair or bluff
+                if (Player.Bet == topBet)
+                {
+                    return "check";
+                }
+                else if (Player.Bet < topBet && Player.Balance >= (topBet - Player.Bet))
+                {
+                    return "call";
+                }
+                else
+                {
+                    return "all-in";
+                }
             }
             else
             {
                 RoundsSinceLastBluff++;
                 return "fold";
             }
+        }
+
+        public string CalcMove(ObservableCollection<Card> table, int topBet, string gamestate)
+        {
+            int handStrenght = CalcHandStrenght(table, gamestate);
+            // raise if pair
+            if (Player.Bet == topBet)
+            {
+                return "check";
+            }
+            else if (Player.Bet < topBet && Player.Balance >= (topBet - Player.Bet))
+            {
+                return "call";
+            }
+            else
+            {
+                return "all-in";
+            }
+        }
+
+        private int CalcHandStrenght(ObservableCollection<Card> table, string gamestate)
+        {
+            ObservableCollection<Card> useableCards = new ObservableCollection<Card>();
+            switch (gamestate)
+            {
+                case "Flop":
+                    useableCards = AddVisibleTableCards(table, 3);
+                    break;
+                case "Turn":
+                    useableCards = AddVisibleTableCards(table, 4);
+                    break;
+                case "River":
+                    useableCards = AddVisibleTableCards(table, 5);
+                    break;
+            }
+            PokerHandValue result = PokerHandCalculator.GetHandValue(Player, useableCards.ToList());
+            int handStrenght = 0;
+            List<Card> cards = new List<Card>();
+            cards.AddRange(result.Hand);
+            switch (result.MyPokerHand)
+            {
+                case PokerHand.RoyalFlush:
+                    handStrenght = 10000;
+                    break;
+                case PokerHand.StraightFlush:
+                    handStrenght = 800;
+                    break;
+                case PokerHand.FourOfAKind:
+                    handStrenght = 700;
+                    break;
+                case PokerHand.FullHouse:
+                    handStrenght = 600;
+                    break;
+                case PokerHand.Flush:
+                    handStrenght = 500;
+                    break;
+                case PokerHand.Straight:
+                    handStrenght = 400;
+                    break;
+                case PokerHand.ThreeOfAKind:
+                    handStrenght = 300;
+                    break;
+                case PokerHand.TwoPair:
+                    handStrenght = 200;
+                    break;
+                case PokerHand.Pair:
+                    handStrenght = 100;
+                    break;
+                case PokerHand.HighCard:
+                    break;
+            }
+            foreach (Card card in cards)
+            {
+                switch (card.Value)
+                {
+                    case CardValue.Two:
+                        handStrenght += 2;
+                        break;
+                    case CardValue.Three:
+                        handStrenght += 3;
+                        break;
+                    case CardValue.Four:
+                        handStrenght += 4;
+                        break;
+                    case CardValue.Five:
+                        handStrenght += 5;
+                        break;
+                    case CardValue.Six:
+                        handStrenght += 6;
+                        break;
+                    case CardValue.Seven:
+                        handStrenght += 7;
+                        break;
+                    case CardValue.Eight:
+                        handStrenght += 8;
+                        break;
+                    case CardValue.Nine:
+                        handStrenght += 9;
+                        break;
+                    case CardValue.Ten:
+                        handStrenght += 10;
+                        break;
+                    case CardValue.Jack:
+                        handStrenght += 11;
+                        break;
+                    case CardValue.Queen:
+                        handStrenght += 12;
+                        break;
+                    case CardValue.King:
+                        handStrenght += 13;
+                        break;
+                    case CardValue.Ace:
+                        handStrenght += 14;
+                        break;
+                }
+            }
+            return handStrenght;
+        }
+
+        private ObservableCollection<Card> AddVisibleTableCards(ObservableCollection<Card> table, int numOfVisibleCards)
+        {
+            ObservableCollection<Card> useableCards = new ObservableCollection<Card>();
+            for (int i = 0; i < numOfVisibleCards; i++)
+            {
+                useableCards.Add(table[i]);
+            }
+            return useableCards;
         }
     }
 }
