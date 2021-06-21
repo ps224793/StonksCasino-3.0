@@ -195,10 +195,6 @@ namespace StonksCasino.Views.horserace
             if (HorseNumber1Total < Line && HorseNumber2Total < Line && HorseNumber3Total < Line && HorseNumber4Total < Line)
             {
                 HorsePlus();
-                Horseracer = HorseNumber1Total;
-                Horseracer2 = HorseNumber2Total;
-                Horseracer3 = HorseNumber3Total;
-                Horseracer4 = HorseNumber4Total;
             }
             else
             {
@@ -333,7 +329,7 @@ namespace StonksCasino.Views.horserace
 
             if (stamina1 > 80)
             {
-                HorseNumber1 = rndhorsenumber.Next(20, 200);
+                HorseNumber1 = rndhorsenumber.Next(20, 300);
                 stamina1 -= 10;
             }
             else if (stamina1 > 50)
@@ -351,6 +347,7 @@ namespace StonksCasino.Views.horserace
                 stamina1 += 70;
             }
             HorseNumber1Total += HorseNumber1;
+            Horseracer = HorseNumber1Total;
         }
 
         public void Horsetimer2()
@@ -358,7 +355,7 @@ namespace StonksCasino.Views.horserace
             int HorseNumber2 = 0;
             if (stamina2 > 80)
             {
-                HorseNumber2 = rndhorsenumber.Next(20, 200);
+                HorseNumber2 = rndhorsenumber.Next(20, 300);
                 stamina2 -= 10;
             }
             else if (stamina2 > 50)
@@ -376,6 +373,7 @@ namespace StonksCasino.Views.horserace
                 stamina2 += 70;
             }
             HorseNumber2Total += HorseNumber2;
+            Horseracer2 = HorseNumber2Total;
         }
 
         public void Horsetimer3()
@@ -384,7 +382,7 @@ namespace StonksCasino.Views.horserace
 
             if (stamina3 > 80)
             {
-                HorseNumber3 = rndhorsenumber.Next(20, 200);
+                HorseNumber3 = rndhorsenumber.Next(20, 300);
                 stamina3 -= 10;
             }
             else if (stamina3 > 50)
@@ -402,6 +400,7 @@ namespace StonksCasino.Views.horserace
                 stamina3 += 70;
             }
             HorseNumber3Total += HorseNumber3;
+            Horseracer3 = HorseNumber3Total;
         }
 
         public void Horsetimer4()
@@ -410,7 +409,7 @@ namespace StonksCasino.Views.horserace
 
             if (stamina4 > 80)
             {
-                HorseNumber4 = rndhorsenumber.Next(20, 200);
+                HorseNumber4 = rndhorsenumber.Next(20, 300);
                 stamina4 -= 10;
             }
             else if (stamina4 > 50)
@@ -428,6 +427,7 @@ namespace StonksCasino.Views.horserace
                 stamina4 += 70;
             }
             HorseNumber4Total += HorseNumber4;
+            Horseracer4 = HorseNumber4Total;
         }
 
         public void Restart()

@@ -13,7 +13,7 @@ namespace StonksCasino.classes.blackjack
 
         public BlackjackDeck()
         {
-            AssembleDeck();
+            AssembleDeck(6);
         }
     }
 }

@@ -60,7 +60,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Margin="10, 30" Source="{Binding ActiveURL, Mode=OneWay}" />
+                            <Image Margin="-50, 30" Source="{Binding ActiveURL, Mode=OneWay}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -68,21 +68,58 @@
                 <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
                     <TextBlock Text="{Binding ComputerGame.Computer[0].ScoreC, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="50" Height="40" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"></TextBlock>
                     <Border Height="2" Background="Black"></Border>
-                    <TextBlock Text="{Binding Game.Players[0].Score, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="50" Height="40" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"></TextBlock>
+                    <TextBlock Text="{Binding Game.Players[0].Score, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Game.NoSplitGrid}" Width="50" Height="40" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"></TextBlock>
                 </StackPanel>
-                
-                <ItemsControl Background="Transparent" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" ItemsSource="{Binding Game.Players[0].Hand, Mode=OneWay}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"></StackPanel>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Image Margin="10, 30" Source="{Binding ActiveURL, Mode=OneWay}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+
+                <Grid Grid.Row="1" Grid.Column="1" Visibility="{Binding Game.SplitGrid}">
+                    <TextBlock Text="{Binding Game.Players[0].ScoreL, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" x:Name="Leftscore" Margin="260,0,0,0" Width="50" Height="40" FontSize="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" TextAlignment="Center"></TextBlock>
+                    <TextBlock Text="{Binding Game.Players[0].ScoreR, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" x:Name="Rightscore" Margin="0,0,260,0" Width="50" Height="40" FontSize="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" TextAlignment="Center"></TextBlock>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding Game.SplitGrid}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ItemsControl Background="Transparent" HorizontalAlignment="Center" Margin="-10" ItemsSource="{Binding Game.Players[0].SplitHand[0], Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"></StackPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Image Margin="-40, 0" Width="150" Height="250" Source="{Binding ActiveURL, Mode=OneWay}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl Grid.Column="1" Background="Transparent" HorizontalAlignment="Center" ItemsSource="{Binding Game.Players[0].SplitHand[1], Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"></StackPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Image Margin="-40, 0" Width="150" Height="250" Source="{Binding ActiveURL, Mode=OneWay}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding Game.NoSplitGrid}">
+                    <ItemsControl Background="Transparent" HorizontalAlignment="Center" ItemsSource="{Binding Game.Players[0].Hand, Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"></StackPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Image Margin="-50, 30" Source="{Binding ActiveURL, Mode=OneWay}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
                 
                 
             </Grid>
