@@ -443,6 +443,7 @@ namespace StonksCasino.Views.blackjack
             BlackjackWindowRestart();
             Splitfunction = false;
             Deckswitch = false;
+            //Einde game
         }
 
         private async void Window_Closing(object sender, CancelEventArgs e)
