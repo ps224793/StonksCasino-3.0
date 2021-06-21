@@ -16,6 +16,24 @@ namespace StonksCasino.classes.blackjack
     {
         private const string _sender = "Blackjack";
 
+        public Visibility SplitGrid
+        {
+            get { return _splitted ? Visibility.Visible : Visibility.Hidden; }
+        }
+
+        public Visibility NoSplitGrid
+        {
+            get { return _splitted ? Visibility.Hidden : Visibility.Visible; }
+        }
+
+        private bool _splitted = false;
+
+        public bool Splitted
+        {
+            get { return _splitted; }
+            set { _splitted = value; OnPropertyChanged("SplitGrid"); OnPropertyChanged("NoSplitGrid"); }
+        }
+
         private int _aantal;
 
         public int MyAantal
@@ -88,6 +106,14 @@ namespace StonksCasino.classes.blackjack
             set { _standing = value; OnPropertyChanged(); }
         }
 
+        private bool _splitstands = false;
+
+        public bool Splitstands
+        {
+            get { return _splitstands; }
+            set { _splitstands = value; OnPropertyChanged(); }
+        }
+
 
         private BlackjackDeck deck = new BlackjackDeck();
 
@@ -119,7 +145,7 @@ namespace StonksCasino.classes.blackjack
                     Deals = false;
                     Tokendrop = false;
                     Dubbel = true;
-                    Splitten = true;
+                    Splitten = CheckSplit();
                     Standing = true;
                     Hit = true;
 
@@ -145,6 +171,10 @@ namespace StonksCasino.classes.blackjack
             //MyPlayerSplit = 1;
         }
 
+        public bool CheckSplit()
+        {
+            return cards[0].Value == cards[1].Value;
+        }
 
         public async void Dubbelen()
         {
@@ -153,28 +183,71 @@ namespace StonksCasino.classes.blackjack
             MyAantal = MyAantal * 2;
             MessageBox.Show($"Het aantal Tokens is verdubbeld naar: { MyAantal }");
         }
-        public void Splitte()
+        public async void Splitte()
         {
+            await ApiWrapper.UpdateTokens(-MyAantal, _sender);
             Splitten = false;
             MyAantal = MyAantal * 2;
-            MyPlayerSplit = MyPlayerSplit / 2;
+            Players[0].Split(deck.DrawCard(), deck.DrawCard());
+            Splitted = true;
+            Players[0].Changescore2();
+            Players[0].Update();
             MessageBox.Show($"Het aantal Tokens is verdubbeld naar: { MyAantal } en de kaarten zijn gesplit!");
+        }
+
+        public void Splitfunction2()
+        {
+            Splitstands = true;
         }
 
         public void Hits()
         {
-            Hit = true;
-            Players[0].AddCard(deck.DrawCard());
+            if (Splitted == false)
+            {
+                Splitten = false;
+                Hit = true;
+                Players[0].AddCard(deck.DrawCard());
+            }
+            else if (Splitted == true)
+            {
+                Hit = true;
+                Players[0].AddCard(deck.DrawCard());
+            }
         }
 
         public void Stands()
         {
+            if (Splitted == true)
+            {
+                if (Splitstands == false)
+                {
+                    Splitstand();
+                    Players[0].SplitRightHand();
+                    Players[0].Changescore();
+                    Players[0].Update2();
+                }
+                else if (Splitstands == true)
+                {
+                    Splitstand();
+                    Standing = false;
+                    Deals = true;
+                    Tokendrop = true;
+                    Splitstands = false;
+                }
+            }
+            else
+            {
+                Splitstand();
+                Deals = true;
+                Tokendrop = true;
+                Hit = false;
+            }
+        }
+
+        public void Splitstand()
+        {
             Splitten = false;
             Dubbel = false;
-            Standing = false;
-            Hit = false;
-            Deals = true;
-            Tokendrop = true;
         }
 
         public async void Gamewin()
@@ -183,6 +256,16 @@ namespace StonksCasino.classes.blackjack
         }
 
         public async void Gamedraw()
+        {
+            await ApiWrapper.UpdateTokens(MyAantal, _sender);
+        }
+
+        public async void Gamewin2()
+        {
+            await ApiWrapper.UpdateTokens(MyAantal * 2, _sender);
+        }
+
+        public async void Gamedraw2()
         {
             await ApiWrapper.UpdateTokens(MyAantal, _sender);
         }

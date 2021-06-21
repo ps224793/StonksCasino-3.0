@@ -17,5 +17,8 @@ namespace StonksCasino.classes.Api.Models
         
         [JsonProperty("tokens")]
         public int Tokens { get; set; }
+
+        [JsonProperty("selectedSkin")]
+        public string SelectedCardSkin { get; set; }
     }
 }

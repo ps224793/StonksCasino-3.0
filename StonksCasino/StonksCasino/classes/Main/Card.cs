@@ -18,7 +18,12 @@ namespace StonksCasino.classes.Main
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 		}
 
-		private CardType _type;
+        public string SelectedCardskin 
+		{
+			get { return User.SelectedCardskin; }
+		}
+
+        private CardType _type;
 
 		public CardType Type
 		{
@@ -57,7 +62,7 @@ namespace StonksCasino.classes.Main
 			}
 		}
 
-		private CardBackColor _backColor;
+        private CardBackColor _backColor;
 
 		public CardBackColor BackColor
 		{
@@ -67,7 +72,7 @@ namespace StonksCasino.classes.Main
 
 		public string ImageURL
 		{
-			get { return $"/Img/Cards/{Value}{Type}.png"; }
+			get { return $"/Img/Cards/{SelectedCardskin}/{Value}{Type}.png"; }
 		}
 
 		public string BackURL
@@ -76,11 +81,11 @@ namespace StonksCasino.classes.Main
 			{
 				if (BackColor == CardBackColor.Blue)
 				{
-					return "/Img/Cards/BackBlue.png";
+					return $"/Img/Cards/{SelectedCardskin}/BackBlue.png";
 				}
 				else
 				{
-					return "/Img/Cards/BackRed.png";
+					return $"/Img/Cards/{SelectedCardskin}/BackRed.png";
 				}
 			}
 		}

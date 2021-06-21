@@ -81,6 +81,23 @@ namespace StonksCasino.Views.blackjack
             set { _computer2 = value; OnPropertyChanged(); }
         }
 
+        private bool _splitfunction = false;
+
+        public bool Splitfunction
+        {
+            get { return _splitfunction; }
+            set { _splitfunction = value; OnPropertyChanged(); }
+        }
+
+        private bool _deckswitch = false;
+
+        public bool Deckswitch
+        {
+            get { return _deckswitch; }
+            set { _deckswitch = value; OnPropertyChanged(); }
+        }
+
+
         public string Username
         {
             get { return User.Username; }
@@ -177,14 +194,12 @@ namespace StonksCasino.Views.blackjack
 
         private void Hit_Click(object sender, RoutedEventArgs e)
         {
-
             Game.Hits();
             int Player = Game.Players[0].Score;
 
             if (Player > 21)
             {
                 Game.Stands();
-                ComputerGame.ComputerDeal(Player);
                 Endresult();
             }
 
@@ -223,6 +238,7 @@ namespace StonksCasino.Views.blackjack
             bool ingelogd = await Checkingelogd();
             if (ingelogd)
             {
+                Splitfunction = true;
                 Game.Splitte();
                 await ApiWrapper.GetUserInfo();
             }
@@ -234,68 +250,200 @@ namespace StonksCasino.Views.blackjack
             bool ingelogd = await Checkingelogd();
             if (ingelogd)
             {
-                int Player = Game.Players[0].Score;
                 Game.Stands();
-                ComputerGame.ComputerDeal(Player);
                 Endresult();
                 Account();
             }
         }
 
-        private async void Endresult()
-        {            
+        private void Endresult()
+        {
             try
             {
-                int bot = ComputerGame.Computer[0].ScoreC;
-                int Player = Game.Players[0].Score;
+                if (Splitfunction == false && Deckswitch == false)
+                {
+                    Computersbet();
+                    int bot = ComputerGame.Computer[0].ScoreC;
+                    int Player = Game.Players[0].Score;
 
-                if (Player == 21 && bot < 21 )
-                {
-                    MessageBox.Show("Je hebt gewonnen!");
-                    Game.Gamewin();
+                    if (Player == 21 && bot < 21)
+                    {
+                        MessageBox.Show("Je hebt gewonnen!");
+                        Game.Gamewin();
+                        Endresults();
+                    }
+                    else if (bot > 21 && Player > 21)
+                    {
+                        MessageBox.Show("Allebij verloren!");
+                        Endresults();
+                    }
+                    else if (bot > 21 && Player <= 21)
+                    {
+                        MessageBox.Show("Je hebt gewonnen!");
+                        Game.Gamewin();
+                        Endresults();
+                    }
+                    else if (Player > bot && Player <= 21)
+                    {
+                        MessageBox.Show("Je hebt gewonnen!");
+                        Game.Gamewin();
+                        Endresults();
+                    }
+                    else if (Player > 21 && bot <= 21)
+                    {
+                        MessageBox.Show("Je hebt verloren!");
+                        Endresults();
+                    }
+                    else if (bot > Player && bot <= 21)
+                    {
+                        MessageBox.Show("Je hebt verloren!");
+                        Endresults();
+                    }
+                    else if (bot == Player)
+                    {
+                        MessageBox.Show("Het is gelijkspel!");
+                        Game.Gamedraw();
+                        Endresults();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Fout!!!!");
+                        Endresults();
+                    }
                 }
-                else if (bot > 21 && Player > 21)
+                else if (Splitfunction == true && Deckswitch == false)
                 {
-                    MessageBox.Show("Allebij verloren!");
+                    Deckswitch = true;
+                    Game.Splitfunction2();
                 }
-                else if (bot > 21 && Player <= 21)
+                else if (Deckswitch == true && Splitfunction == true)
                 {
-                    MessageBox.Show("Je hebt gewonnen!");
-                    Game.Gamewin();
+                    Computersbet();
+                    MessageBox.Show("computers beurt");
+                    Resultrl();
+                    Endresults();
                 }
-                else if (Player > bot && Player <= 21)
-                {
-                    MessageBox.Show("Je hebt gewonnen!");
-                    Game.Gamewin();
-                }
-                else if (Player > 21 && bot <= 21)
-                {
-                    MessageBox.Show("Je hebt verloren!");
-                }
-                else if (bot > Player && bot <= 21)
-                {
-                    MessageBox.Show("Je hebt verloren!");
-                }
-                else if (bot == Player)
-                {
-                    MessageBox.Show("Het is gelijkspel!");
-                    Game.Gamedraw();
-                }
-
-                else
-                {
-                    MessageBox.Show("Fout!!!!");
-                }
-                Game.Gameclear();
-                ComputerGame.GameclearComputer();
-                await ApiWrapper.GetUserInfo();
-                BlackjackWindowRestart();
-                Account();
             }
             catch
             {
                 Account();
             }
+        }
+
+        public void Resultrl()
+        {
+            int bot = ComputerGame.Computer[0].ScoreC;
+            int Player = int.Parse(Rightscore.Text);
+            int Player2 = int.Parse(Leftscore.Text);
+
+            if (Player2 == 21 && bot < 21)
+            {
+                MessageBox.Show("Je hebt gewonnen!");
+                Game.Gamewin();
+                Endresults();
+            }
+            else if (bot > 21 && Player2 > 21)
+            {
+                MessageBox.Show("Allebij verloren!");
+                Endresults();
+            }
+            else if (bot > 21 && Player2 <= 21)
+            {
+                MessageBox.Show("Je hebt gewonnen!");
+                Game.Gamewin();
+                Endresults();
+            }
+            else if (Player2 > bot && Player2 <= 21)
+            {
+                MessageBox.Show("Je hebt gewonnen!");
+                Game.Gamewin();
+                Endresults();
+            }
+            else if (Player2 > 21 && bot <= 21)
+            {
+                MessageBox.Show("Je hebt verloren!");
+                Endresults();
+            }
+            else if (bot > Player2 && bot <= 21)
+            {
+                MessageBox.Show("Je hebt verloren!");
+                Endresults();
+            }
+            else if (bot == Player2)
+            {
+                MessageBox.Show("Het is gelijkspel!");
+                Game.Gamedraw();
+                Endresults();
+            }
+            else
+            {
+                MessageBox.Show("Fout!!!!");
+                Endresults();
+            }
+
+
+            if (Player == 21 && bot < 21)
+            {
+                MessageBox.Show("Je hebt gewonnen!");
+                Game.Gamewin2();
+                Endresults();
+            }
+            else if (bot > 21 && Player > 21)
+            {
+                MessageBox.Show("Allebij verloren!");
+                Endresults();
+            }
+            else if (bot > 21 && Player <= 21)
+            {
+                MessageBox.Show("Je hebt gewonnen!");
+                Game.Gamewin2();
+                Endresults();
+            }
+            else if (Player > bot && Player <= 21)
+            {
+                MessageBox.Show("Je hebt gewonnen!");
+                Game.Gamewin2();
+                Endresults();
+            }
+            else if (Player > 21 && bot <= 21)
+            {
+                MessageBox.Show("Je hebt verloren!");
+                Endresults();
+            }
+            else if (bot > Player && bot <= 21)
+            {
+                MessageBox.Show("Je hebt verloren!");
+                Endresults();
+            }
+            else if (bot == Player)
+            {
+                MessageBox.Show("Het is gelijkspel!");
+                Game.Gamedraw2();
+                Endresults();
+            }
+            else
+            {
+                MessageBox.Show("Fout!!!!");
+                Endresults();
+            }
+        }
+
+        public void Computersbet()
+        {
+            int Player = Game.Players[0].Score;
+            ComputerGame.ComputerDeal(Player);
+        }
+
+        public async void Endresults()
+        {
+            Game.Gameclear();
+            ComputerGame.GameclearComputer();
+            await ApiWrapper.GetUserInfo();
+            Account();
+            BlackjackWindowRestart();
+            Splitfunction = false;
+            Deckswitch = false;
+            //Einde game
         }
 
         private async void Window_Closing(object sender, CancelEventArgs e)
@@ -323,24 +471,24 @@ namespace StonksCasino.Views.blackjack
 
         private async Task<bool> Checkingelogd()
         {
-            bool result = await ApiWrapper.CheckLogin();
+            //bool result = await ApiWrapper.CheckLogin();
 
-            if (!result)
-            {
-                StonksCasino.Properties.Settings.Default.Username = "";
-                StonksCasino.Properties.Settings.Default.Password = "";
-                StonksCasino.Properties.Settings.Default.Save();
-                User.Username = "";
-                User.Tokens = 0;
+            //if (!result)
+            //{
+            //    StonksCasino.Properties.Settings.Default.Username = "";
+            //    StonksCasino.Properties.Settings.Default.Password = "";
+            //    StonksCasino.Properties.Settings.Default.Save();
+            //    User.Username = "";
+            //    User.Tokens = 0;
 
-                MainWindow window = new MainWindow();
+            //    MainWindow window = new MainWindow();
 
-                MessageBox.Show("Er is door iemand anders ingelogd op het account waar u momenteel op speelt. Hierdoor wordt u uitgelogd");
-                this.Close();
-                window.Show();
+            //    MessageBox.Show("Er is door iemand anders ingelogd op het account waar u momenteel op speelt. Hierdoor wordt u uitgelogd");
+            //    this.Close();
+            //    window.Show();
 
-                return false;
-            }
+            //    return false;
+            //}
             return true;
         }
 

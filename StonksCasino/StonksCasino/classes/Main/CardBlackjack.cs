@@ -33,6 +33,11 @@ namespace StonksCasino.classes.Main
 			set { _value = value; OnPropertyChanged("ImageURL"); OnPropertyChanged("ActiveURL"); }
 		}
 
+		public string SelectedCardskin
+		{
+			get { return User.SelectedCardskin; }
+		}
+
 		private bool _turned;
 
 		public bool Turned
@@ -66,7 +71,7 @@ namespace StonksCasino.classes.Main
 
 		public string ImageURL
 		{
-			get { return $"/Img/Cards/{Value}{Type}.png"; }
+			get { return $"/Img/Cards/{SelectedCardskin}/{Value}{Type}.png"; }
 		}
 
 		public string BackURL
@@ -75,11 +80,11 @@ namespace StonksCasino.classes.Main
 			{
 				if (BackColor == CardBackColor.Blue)
 				{
-					return "/Img/Cards/BackBlue.png";
+					return $"/Img/Cards/{SelectedCardskin}/BackBlue.png";
 				}
 				else
 				{
-					return "/Img/Cards/BackRed.png";
+					return $"/Img/Cards/{SelectedCardskin}/BackRed.png";
 				}
 			}
 		}
