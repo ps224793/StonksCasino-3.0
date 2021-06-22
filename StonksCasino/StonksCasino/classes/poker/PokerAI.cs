@@ -687,7 +687,7 @@ namespace StonksCasino.classes.poker
             return playOdds;
         }
 
-        private int CalcCallOdds(int topBet, int blindsBet)
+        private int CalcCallOdds(int topBet, int blindsBet, string gamestate)
         {
             int callOdds = 0;
             if (Player.Balance >= (topBet - Player.Bet))
@@ -697,7 +697,7 @@ namespace StonksCasino.classes.poker
                     callOdds = 10000;
                     return callOdds;
                 }
-                else if (HandStrength > 600 && topBet - Player.Bet <= 500)
+                else if (HandStrength > 600 && (topBet <= 500 || Player.IsBluffing))
                 {
                     switch (Player.Personality)
                     {
@@ -705,94 +705,380 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 65;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 55;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 45;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 55;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 45;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 55;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 45;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 200)
                             {
-                                callOdds += 35;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 45;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 35;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 250)
                             {
-                                callOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 45;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 35;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 300)
                             {
-                                callOdds += 25;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 35;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 25;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 350)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 400)
                             {
-                                callOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 15;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 450)
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 5;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 15;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 10;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 5;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 100;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                    case "Turn":
+                                    case "River":
+                                    default:
+                                        callOdds += 100;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 90;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                    case "Turn":
+                                        callOdds += 100;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 90;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 80;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                        callOdds += 100;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 90;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 80;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 200)
                             {
-                                callOdds += 70;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 100;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 90;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 80;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 70;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 250)
                             {
-                                callOdds += 60;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 90;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 80;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 70;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 60;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 300)
                             {
-                                callOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 80;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 70;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 60;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 350)
                             {
-                                callOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 400)
                             {
-                                callOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 450)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            callOdds += 50;
                             break;
                     }
                 }
-                else if (HandStrength > 600 && topBet - Player.Bet <= 450)
+                else if (HandStrength > 600 && (topBet <= 450 || Player.IsBluffing))
                 {
                     switch (Player.Personality)
                     {
@@ -800,86 +1086,348 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 65;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 55;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 55;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 45;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 35;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 45;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 35;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 200)
                             {
-                                callOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 45;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 35;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 250)
                             {
-                                callOdds += 25;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 35;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 25;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 300)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 350)
                             {
-                                callOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 15;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 400)
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 5;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 15;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 10;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 5;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 90;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                    case "Turn":
+                                        callOdds += 100;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 90;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 80;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                        callOdds += 100;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 90;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 80;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 70;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 100;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 90;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 80;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 70;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 200)
                             {
-                                callOdds += 60;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 90;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 80;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 70;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 60;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 250)
                             {
-                                callOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 80;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 70;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 60;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 300)
                             {
-                                callOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 350)
                             {
-                                callOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 400)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            callOdds += 50;
                             break;
                     }
                 }
-                else if (HandStrength > 300 && topBet - Player.Bet <= 400)
+                else if (HandStrength > 300 && (topBet <= 400 || Player.IsBluffing))
                 {
                     switch (Player.Personality)
                     {
@@ -887,78 +1435,314 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 55;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 45;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 35;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 45;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 35;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 45;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 35;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 200)
                             {
-                                callOdds += 25;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 35;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 25;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 250)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 300)
                             {
-                                callOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 15;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 350)
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 5;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 15;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 10;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 5;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 80;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                        callOdds += 100;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 90;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 80;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 70;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 100;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 90;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 80;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 70;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 60;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 90;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 80;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 70;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 60;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 200)
                             {
-                                callOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 80;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 70;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 60;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 250)
                             {
-                                callOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 300)
                             {
-                                callOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 350)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            callOdds += 50;
                             break;
                     }
                 }
-                else if (HandStrength > 200 && topBet - Player.Bet <= 200)
+                else if (HandStrength > 200 && (topBet <= 200 || Player.IsBluffing))
                 {
                     switch (Player.Personality)
                     {
@@ -966,46 +1750,164 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 15;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 5;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 15;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 10;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 5;
+                                        break;
+                                };
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 100)
                             {
-                                callOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet <= 150)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            callOdds += 30;
                             break;
                     }
                 }
-                else if (HandStrength > 100 && topBet - Player.Bet <= 100)
+                else if (HandStrength > 100 && (topBet <= 100 || Player.IsBluffing))
                 {
                     switch (Player.Personality)
                     {
@@ -1013,43 +1915,84 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 5;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 20;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 15;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 10;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 5;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet <= 50)
                             {
-                                callOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 20;
+                                        break;
+                                }
                             }
                             else
                             {
-                                callOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        callOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        callOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        callOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        callOdds += 10;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            callOdds += 20;
-                            break;
-                    }
-                }
-                if (Player.IsBluffing)
-                {
-                    switch (Player.Personality)
-                    {
-                        case "loose-passive":
-                        case "loose-aggressive":
-                            callOdds += 25;
-                            break;
-                        case "tight-passive":
-                        case "tight-aggressive":
-                            callOdds += 50;
-                            break;
-                        default:
-                            callOdds += 35;
                             break;
                     }
                 }
@@ -1061,7 +2004,7 @@ namespace StonksCasino.classes.poker
             }
         }
 
-        private int CalcRaiseOdds(int topBet, int blindsBet)
+        private int CalcRaiseOdds(int topBet, int blindsBet, string gamestate)
         {
             int raiseOdds = 0;
             if (Player.Balance >= topBet - Player.Bet + blindsBet * 2 * 3)
@@ -1071,7 +2014,7 @@ namespace StonksCasino.classes.poker
                     raiseOdds = 10000;
                     return raiseOdds;
                 }
-                else if (HandStrength > 800 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 400)
+                else if (HandStrength > 800 && (topBet - Player.Bet + (blindsBet * 2 * 3) <= 400 || (Player.IsBluffing && topBet - Player.Bet + (blindsBet * 2 * 3) <= 800)))
                 {
                     switch (Player.Personality)
                     {
@@ -1079,78 +2022,311 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 45;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 55;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 45;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 55;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 45;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
                             {
-                                raiseOdds += 35;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 45;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 35;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
                             {
-                                raiseOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 45;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 250)
                             {
-                                raiseOdds += 25;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 25;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 300)
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 350)
                             {
-                                raiseOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 15;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 10;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                    case "Turn":
+                                        raiseOdds += 100;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 90;
+                                        break;
+                                }
                                 raiseOdds += 90;
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 80;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                    case "Flop":
+                                        raiseOdds += 100;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 90;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 80;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
                             {
-                                raiseOdds += 70;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 100;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 90;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 80;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 70;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
                             {
-                                raiseOdds += 60;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 90;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 80;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 60;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 250)
                             {
-                                raiseOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 80;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 300)
                             {
-                                raiseOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 350)
                             {
-                                raiseOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 30;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            raiseOdds += 30;
                             break;
                     }
                 }
-                else if (HandStrength > 700 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 250)
+                else if (HandStrength > 700 && (topBet - Player.Bet + (blindsBet * 2 * 3) <= 250 || (Player.IsBluffing && topBet - Player.Bet + (blindsBet * 2 * 3) <= 500)))
                 {
                     switch (Player.Personality)
                     {
@@ -1158,54 +2334,202 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 45;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 30;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 25;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 25;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
                             {
-                                raiseOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 15;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 10;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 60;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 90;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 80;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 60;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 80;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
                             {
-                                raiseOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
                             {
-                                raiseOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 30;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            raiseOdds += 30;
                             break;
                     }
                 }
-                else if (HandStrength > 400 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
+                else if (HandStrength > 400 && (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200 || (Player.IsBluffing && topBet - Player.Bet + (blindsBet * 2 * 3) <= 400)))
                 {
                     switch (Player.Personality)
                     {
@@ -1213,46 +2537,164 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 25;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 25;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
                             {
-                                raiseOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 15;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 10;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 50;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 80;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 50;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 40;
+                                        break;
+                                }
                             }
                             else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
                             {
-                                raiseOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 30;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            raiseOdds += 30;
                             break;
                     }
                 }
-                else if (HandStrength > 300 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                else if (HandStrength > 300 && (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150 || (Player.IsBluffing && topBet - Player.Bet + (blindsBet * 2 * 3) <= 300)))
                 {
                     switch (Player.Personality)
                     {
@@ -1260,38 +2702,126 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 35;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
                             else if  (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 15;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 10;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 40;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 70;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 40;
+                                        break;
+                                }
                             }
                             else if  (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
                             {
-                                raiseOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 30;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
-                            break;
-                        default:
-                            raiseOdds += 30;
                             break;
                     }
                 }
-                else if (HandStrength > 200 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 75)
+                else if (HandStrength > 200 && (topBet - Player.Bet + (blindsBet * 2 * 3) <= 75 || (Player.IsBluffing && topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)))
                 {
                     switch (Player.Personality)
                     {
@@ -1299,60 +2829,129 @@ namespace StonksCasino.classes.poker
                         case "tight-passive":
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 15;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 15;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 10;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 25;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 20;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 15;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 10;
+                                        break;
+                                }
                             }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
+                        default:
                             if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
                             {
-                                raiseOdds += 30;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 60;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 30;
+                                        break;
+                                }
                             }
                             else
                             {
-                                raiseOdds += 20;
+                                switch (gamestate)
+                                {
+                                    case "pre-Flop":
+                                        raiseOdds += 50;
+                                        break;
+                                    case "Flop":
+                                        raiseOdds += 40;
+                                        break;
+                                    case "Turn":
+                                        raiseOdds += 30;
+                                        break;
+                                    case "River":
+                                    default:
+                                        raiseOdds += 20;
+                                        break;
+                                }
                             }
                             break;
-                        default:
-                            raiseOdds += 30;
-                            break;
                     }
                 }
-                else if (HandStrength > 100 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                else if (HandStrength > 100 && (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50 || (Player.IsBluffing && topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)))
                 {
                     switch (Player.Personality)
                     {
                         case "loose-passive":
                         case "tight-passive":
-                            raiseOdds += 10;
+                            switch (gamestate)
+                            {
+                                case "pre-Flop":
+                                    raiseOdds += 25;
+                                    break;
+                                case "Flop":
+                                    raiseOdds += 20;
+                                    break;
+                                case "Turn":
+                                    raiseOdds += 15;
+                                    break;
+                                case "River":
+                                default:
+                                    raiseOdds += 10;
+                                    break;
+                            }
                             break;
                         case "loose-aggressive":
                         case "tight-aggressive":
-                            raiseOdds += 20;
-                            break;
                         default:
-                            raiseOdds += 15;
-                            break;
-                    }
-                }
-                if (Player.IsBluffing)
-                {
-                    switch (Player.Personality)
-                    {
-                        case "loose-passive":
-                        case "loose-aggressive":
-                            raiseOdds += 25;
-                            break;
-                        case "tight-passive":
-                        case "tight-aggressive":
-                            raiseOdds += 50;
-                            break;
-                        default:
-                            raiseOdds += 35;
+                            switch (gamestate)
+                            {
+                                case "pre-Flop":
+                                    raiseOdds += 50;
+                                    break;
+                                case "Flop":
+                                    raiseOdds += 40;
+                                    break;
+                                case "Turn":
+                                    raiseOdds += 30;
+                                    break;
+                                case "River":
+                                default:
+                                    raiseOdds += 20;
+                                    break;
+                            }
                             break;
                     }
                 }
@@ -1398,7 +2997,7 @@ namespace StonksCasino.classes.poker
                 }
                 else { RoundsSinceLastBluff++; }
                 // raise if pair or bluff
-                return CalcMoveAction(topBet, blindsBet);
+                return CalcMoveAction(topBet, blindsBet, "pre-Flop");
             }
             else
             {
@@ -1407,10 +3006,10 @@ namespace StonksCasino.classes.poker
             }
         }
 
-        private string CalcMoveAction(int topBet, int blindsBet)
+        private string CalcMoveAction(int topBet, int blindsBet, string gamestate)
         {
             int rngOdds = RNG.Next(1, 101);
-            int raiseOdds = CalcRaiseOdds(topBet, blindsBet);
+            int raiseOdds = CalcRaiseOdds(topBet, blindsBet, gamestate);
             if (raiseOdds >= rngOdds)
             {
                 Player.RaiseBet = blindsBet * 2 * 3;
@@ -1423,7 +3022,7 @@ namespace StonksCasino.classes.poker
             }
             else
             {
-                int callOdds = CalcCallOdds(topBet, blindsBet);
+                int callOdds = CalcCallOdds(topBet, blindsBet, gamestate);
                 if (callOdds >= rngOdds)
                 {
                     return "call";
@@ -1438,7 +3037,7 @@ namespace StonksCasino.classes.poker
         public string CalcMove(ObservableCollection<Card> table, int topBet, string gamestate, int blindsBet)
         {
             CalcHandstrength(table, gamestate);
-            return CalcMoveAction(topBet, blindsBet);
+            return CalcMoveAction(topBet, blindsBet, gamestate);
         }
 
         private void CalcHandstrength(ObservableCollection<Card> table, string gamestate)
