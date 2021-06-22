@@ -417,7 +417,7 @@ namespace StonksCasino.classes.poker
             player.SetHand(cards);
         }
 
-        public void Raise(PokerPlayer player)
+        public async void Raise(PokerPlayer player)
         {
             if (player.RaiseBet <= player.Balance && player.RaiseBet >= (LastRaise + (TopBet - player.Bet)))
             {
@@ -439,7 +439,6 @@ namespace StonksCasino.classes.poker
             EventLog.Add($"{player.PokerName} raised with {LastRaise}");
             ScrollListbox();
             resetCheckedPlayers(player);
-            WagerRound(player);
         }
 
         public void Fold(PokerPlayer player)
@@ -569,8 +568,8 @@ namespace StonksCasino.classes.poker
                 if (player.Busted != true) { eligablePlayers.Add(player); }
             }
             PokerPot MainPot = new PokerPot(eligablePlayers, 0);
-            Pots.Add("MainPot", MainPot);
             string PotName = "MainPot";
+            Pots.Add(PotName, MainPot);
             CurrentPot = PotName;
             foreach (PokerPlayer player in Players)
             {
@@ -711,10 +710,10 @@ namespace StonksCasino.classes.poker
                                 {
                                     case "raise":
                                         Raise(Players[currentPlayer]);
+                                        i = 0;
                                         break;
                                     case "fold":
                                         Fold(Players[currentPlayer]);
-                                        //Call(Players[currentPlayer]);
                                         break;
                                     case "check":
                                         Check(Players[currentPlayer]);

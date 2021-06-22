@@ -259,10 +259,9 @@ namespace StonksCasino.classes.poker
             switch (gameState)
             {
                 case "pre-Flop":
-                    return MyPokerAI.CalcPreFlopMove(table, topBet);
+                    return MyPokerAI.CalcPreFlopMove(topBet, blindsBet);
                 default:
-                    int raisebet = RaiseBet;
-                    return MyPokerAI.CalcMove(table, topBet, gameState, blindsBet, out int raiseBet);
+                    return MyPokerAI.CalcMove(table, topBet, gameState, blindsBet);
             }
         }
 
