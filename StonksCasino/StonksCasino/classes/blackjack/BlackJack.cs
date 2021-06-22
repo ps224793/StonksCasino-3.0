@@ -141,8 +141,8 @@ namespace StonksCasino.classes.blackjack
             {
                 if (MyAantal > 0)
                 {
-                    SetPlayerHand(Players[0]);
                     Deals = false;
+                    SetPlayerHand(Players[0]);
                     Tokendrop = false;
                     Dubbel = true;
                     Splitten = CheckSplit();
