@@ -29,6 +29,15 @@ namespace StonksCasino.classes.poker
             set { _rng = value; }
         }
 
+        private int _handStrength;
+
+        public int HandStrength
+        {
+            get { return _handStrength; }
+            set { _handStrength = value; }
+        }
+
+
         private bool _badCards = false;
 
         public bool BadCards
@@ -659,35 +668,737 @@ namespace StonksCasino.classes.poker
             {
                 playOdds -= 20;
             }
+            switch (Player.Personality)
+            {
+                case "loose-passive":
+                case "loose-aggressive":
+                    playOdds += 45;
+                    break;
+                case "tight-passive":
+                case "tight-aggressive":
+                    playOdds += 15;
+                    break;
+                default:
+                    playOdds += 30;
+                    break;
+            }
+
             if (Player.Bet == topBet && playOdds < 100) { playOdds = 100; }
             return playOdds;
         }
 
-        public string CalcPreFlopMove(ObservableCollection<Card> table, int topBet)
+        private int CalcCallOdds(int topBet, int blindsBet)
+        {
+            int callOdds = 0;
+            if (Player.Balance >= (topBet - Player.Bet))
+            {
+                if (HandStrength >= 10000)
+                {
+                    callOdds = 10000;
+                    return callOdds;
+                }
+                else if (HandStrength > 600 && topBet - Player.Bet <= 500)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 50;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 45;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 40;
+                            }
+                            else if (topBet - Player.Bet <= 200)
+                            {
+                                callOdds += 35;
+                            }
+                            else if (topBet - Player.Bet <= 250)
+                            {
+                                callOdds += 30;
+                            }
+                            else if (topBet - Player.Bet <= 300)
+                            {
+                                callOdds += 25;
+                            }
+                            else if (topBet - Player.Bet <= 350)
+                            {
+                                callOdds += 20;
+                            }
+                            else if (topBet - Player.Bet <= 400)
+                            {
+                                callOdds += 15;
+                            }
+                            else if (topBet - Player.Bet <= 450)
+                            {
+                                callOdds += 10;
+                            }
+                            else
+                            {
+                                callOdds += 5;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 100;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 90;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 80;
+                            }
+                            else if (topBet - Player.Bet <= 200)
+                            {
+                                callOdds += 70;
+                            }
+                            else if (topBet - Player.Bet <= 250)
+                            {
+                                callOdds += 60;
+                            }
+                            else if (topBet - Player.Bet <= 300)
+                            {
+                                callOdds += 50;
+                            }
+                            else if (topBet - Player.Bet <= 350)
+                            {
+                                callOdds += 40;
+                            }
+                            else if (topBet - Player.Bet <= 400)
+                            {
+                                callOdds += 30;
+                            }
+                            else if (topBet - Player.Bet <= 450)
+                            {
+                                callOdds += 20;
+                            }
+                            else
+                            {
+                                callOdds += 10;
+                            }
+                            break;
+                        default:
+                            callOdds += 50;
+                            break;
+                    }
+                }
+                else if (HandStrength > 600 && topBet - Player.Bet <= 450)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 50;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 40;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 35;
+                            }
+                            else if (topBet - Player.Bet <= 200)
+                            {
+                                callOdds += 30;
+                            }
+                            else if (topBet - Player.Bet <= 250)
+                            {
+                                callOdds += 25;
+                            }
+                            else if (topBet - Player.Bet <= 300)
+                            {
+                                callOdds += 20;
+                            }
+                            else if (topBet - Player.Bet <= 350)
+                            {
+                                callOdds += 15;
+                            }
+                            else if (topBet - Player.Bet <= 400)
+                            {
+                                callOdds += 10;
+                            }
+                            else
+                            {
+                                callOdds += 5;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 90;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 80;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 70;
+                            }
+                            else if (topBet - Player.Bet <= 200)
+                            {
+                                callOdds += 60;
+                            }
+                            else if (topBet - Player.Bet <= 250)
+                            {
+                                callOdds += 50;
+                            }
+                            else if (topBet - Player.Bet <= 300)
+                            {
+                                callOdds += 40;
+                            }
+                            else if (topBet - Player.Bet <= 350)
+                            {
+                                callOdds += 30;
+                            }
+                            else if (topBet - Player.Bet <= 400)
+                            {
+                                callOdds += 20;
+                            }
+                            else
+                            {
+                                callOdds += 10;
+                            }
+                            break;
+                        default:
+                            callOdds += 50;
+                            break;
+                    }
+                }
+                else if (HandStrength > 300 && topBet - Player.Bet <= 400)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 40;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 35;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 30;
+                            }
+                            else if (topBet - Player.Bet <= 200)
+                            {
+                                callOdds += 25;
+                            }
+                            else if (topBet - Player.Bet <= 250)
+                            {
+                                callOdds += 20;
+                            }
+                            else if (topBet - Player.Bet <= 300)
+                            {
+                                callOdds += 15;
+                            }
+                            else if (topBet - Player.Bet <= 350)
+                            {
+                                callOdds += 10;
+                            }
+                            else
+                            {
+                                callOdds += 5;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 80;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 70;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 60;
+                            }
+                            else if (topBet - Player.Bet <= 200)
+                            {
+                                callOdds += 50;
+                            }
+                            else if (topBet - Player.Bet <= 250)
+                            {
+                                callOdds += 40;
+                            }
+                            else if (topBet - Player.Bet <= 300)
+                            {
+                                callOdds += 30;
+                            }
+                            else if (topBet - Player.Bet <= 350)
+                            {
+                                callOdds += 20;
+                            }
+                            else
+                            {
+                                callOdds += 10;
+                            }
+                            break;
+                        default:
+                            callOdds += 50;
+                            break;
+                    }
+                }
+                else if (HandStrength > 200 && topBet - Player.Bet <= 200)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 20;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 15;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 10;
+                            }
+                            else
+                            {
+                                callOdds += 5;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 40;
+                            }
+                            else if (topBet - Player.Bet <= 100)
+                            {
+                                callOdds += 30;
+                            }
+                            else if (topBet - Player.Bet <= 150)
+                            {
+                                callOdds += 20;
+                            }
+                            else
+                            {
+                                callOdds += 10;
+                            }
+                            break;
+                        default:
+                            callOdds += 30;
+                            break;
+                    }
+                }
+                else if (HandStrength > 100 && topBet - Player.Bet <= 100)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 10;
+                            }
+                            else
+                            {
+                                callOdds += 5;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet <= 50)
+                            {
+                                callOdds += 20;
+                            }
+                            else
+                            {
+                                callOdds += 10;
+                            }
+                            break;
+                        default:
+                            callOdds += 20;
+                            break;
+                    }
+                }
+                if (Player.IsBluffing)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "loose-aggressive":
+                            callOdds += 25;
+                            break;
+                        case "tight-passive":
+                        case "tight-aggressive":
+                            callOdds += 50;
+                            break;
+                        default:
+                            callOdds += 35;
+                            break;
+                    }
+                }
+                return callOdds;
+            }
+            else
+            {
+                return callOdds;
+            }
+        }
+
+        private int CalcRaiseOdds(int topBet, int blindsBet)
+        {
+            int raiseOdds = 0;
+            if (Player.Balance >= topBet - Player.Bet + blindsBet * 2 * 3)
+            {
+                if (HandStrength >= 10000)
+                {
+                    raiseOdds = 10000;
+                    return raiseOdds;
+                }
+                else if (HandStrength > 800 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 400)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 45;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 40;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                            {
+                                raiseOdds += 35;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
+                            {
+                                raiseOdds += 30;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 250)
+                            {
+                                raiseOdds += 25;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 300)
+                            {
+                                raiseOdds += 20;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 350)
+                            {
+                                raiseOdds += 15;
+                            }
+                            else
+                            {
+                                raiseOdds += 10;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 90;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 80;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                            {
+                                raiseOdds += 70;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
+                            {
+                                raiseOdds += 60;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 250)
+                            {
+                                raiseOdds += 50;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 300)
+                            {
+                                raiseOdds += 40;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 350)
+                            {
+                                raiseOdds += 30;
+                            }
+                            else
+                            {
+                                raiseOdds += 20;
+                            }
+                            break;
+                        default:
+                            raiseOdds += 30;
+                            break;
+                    }
+                }
+                else if (HandStrength > 700 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 250)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 30;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 25;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                            {
+                                raiseOdds += 20;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
+                            {
+                                raiseOdds += 15;
+                            }
+                            else
+                            {
+                                raiseOdds += 10;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 60;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 50;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                            {
+                                raiseOdds += 40;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
+                            {
+                                raiseOdds += 30;
+                            }
+                            else
+                            {
+                                raiseOdds += 20;
+                            }
+                            break;
+                        default:
+                            raiseOdds += 30;
+                            break;
+                    }
+                }
+                else if (HandStrength > 400 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 200)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 25;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 20;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                            {
+                                raiseOdds += 15;
+                            }
+                            else
+                            {
+                                raiseOdds += 10;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 50;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 40;
+                            }
+                            else if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                            {
+                                raiseOdds += 30;
+                            }
+                            else
+                            {
+                                raiseOdds += 20;
+                            }
+                            break;
+                        default:
+                            raiseOdds += 30;
+                            break;
+                    }
+                }
+                else if (HandStrength > 300 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 150)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 20;
+                            }
+                            else if  (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 15;
+                            }
+                            else
+                            {
+                                raiseOdds += 10;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 40;
+                            }
+                            else if  (topBet - Player.Bet + (blindsBet * 2 * 3) <= 100)
+                            {
+                                raiseOdds += 30;
+                            }
+                            else
+                            {
+                                raiseOdds += 20;
+                            }
+                            break;
+                        default:
+                            raiseOdds += 30;
+                            break;
+                    }
+                }
+                else if (HandStrength > 200 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 75)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 15;
+                            }
+                            else
+                            {
+                                raiseOdds += 10;
+                            }
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            if (topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                            {
+                                raiseOdds += 30;
+                            }
+                            else
+                            {
+                                raiseOdds += 20;
+                            }
+                            break;
+                        default:
+                            raiseOdds += 30;
+                            break;
+                    }
+                }
+                else if (HandStrength > 100 && topBet - Player.Bet + (blindsBet * 2 * 3) <= 50)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "tight-passive":
+                            raiseOdds += 10;
+                            break;
+                        case "loose-aggressive":
+                        case "tight-aggressive":
+                            raiseOdds += 20;
+                            break;
+                        default:
+                            raiseOdds += 15;
+                            break;
+                    }
+                }
+                if (Player.IsBluffing)
+                {
+                    switch (Player.Personality)
+                    {
+                        case "loose-passive":
+                        case "loose-aggressive":
+                            raiseOdds += 25;
+                            break;
+                        case "tight-passive":
+                        case "tight-aggressive":
+                            raiseOdds += 50;
+                            break;
+                        default:
+                            raiseOdds += 35;
+                            break;
+                    }
+                }
+                return raiseOdds;
+            }
+            else
+            {
+                return raiseOdds;
+            }
+        }
+
+        private int CalcFoldOdds(int topBet)
+        {
+            int foldOdds = 0;
+
+            switch (Player.Personality)
+            {
+                case "loose-passive":
+                case "loose-aggressive":
+                    foldOdds += 0;
+                    break;
+                case "tight-passive":
+                case "tight-aggressive":
+                    foldOdds += 0;
+                    break;
+                default:
+                    foldOdds += 0;
+                    break;
+            }
+            return foldOdds;
+        }
+
+        public string CalcPreFlopMove(int topBet, int blindsBet)
         {
             int playOdds = CalcPlayOdds(topBet);
-            int rngOdds = RNG.Next(0, 101);
+            int rngOdds = RNG.Next(1, 101);
             if (playOdds >= rngOdds)
             {
-                if (BadCards == true)
+                if (BadCards)
                 {
                     RoundsSinceLastBluff = 0;
                     Player.IsBluffing = true;
                 }
                 else { RoundsSinceLastBluff++; }
                 // raise if pair or bluff
-                if (Player.Bet == topBet)
-                {
-                    return "check";
-                }
-                else if (Player.Bet < topBet && Player.Balance >= (topBet - Player.Bet))
-                {
-                    return "call";
-                }
-                else
-                {
-                    return "all-in";
-                }
+                return CalcMoveAction(topBet, blindsBet);
             }
             else
             {
@@ -696,25 +1407,41 @@ namespace StonksCasino.classes.poker
             }
         }
 
-        public string CalcMove(ObservableCollection<Card> table, int topBet, string gamestate)
+        private string CalcMoveAction(int topBet, int blindsBet)
         {
-            int handStrenght = CalcHandStrenght(table, gamestate);
-            // raise if pair
-            if (Player.Bet == topBet)
+            int rngOdds = RNG.Next(1, 101);
+            int raiseOdds = CalcRaiseOdds(topBet, blindsBet);
+            if (raiseOdds >= rngOdds)
+            {
+                Player.RaiseBet = blindsBet * 2 * 3;
+                if (BadCards) { Player.IsBluffing = true; }
+                return "raise";
+            }
+            else if (Player.Bet == topBet)
             {
                 return "check";
             }
-            else if (Player.Bet < topBet && Player.Balance >= (topBet - Player.Bet))
-            {
-                return "call";
-            }
             else
             {
-                return "all-in";
+                int callOdds = CalcCallOdds(topBet, blindsBet);
+                if (callOdds >= rngOdds)
+                {
+                    return "call";
+                }
+                else
+                {
+                    return "fold";
+                }
             }
         }
 
-        private int CalcHandStrenght(ObservableCollection<Card> table, string gamestate)
+        public string CalcMove(ObservableCollection<Card> table, int topBet, string gamestate, int blindsBet)
+        {
+            CalcHandstrength(table, gamestate);
+            return CalcMoveAction(topBet, blindsBet);
+        }
+
+        private void CalcHandstrength(ObservableCollection<Card> table, string gamestate)
         {
             ObservableCollection<Card> useableCards = new ObservableCollection<Card>();
             switch (gamestate)
@@ -730,37 +1457,37 @@ namespace StonksCasino.classes.poker
                     break;
             }
             PokerHandValue result = PokerHandCalculator.GetHandValue(Player, useableCards.ToList());
-            int handStrenght = 0;
+            HandStrength = 0;
             List<Card> cards = new List<Card>();
             cards.AddRange(result.Hand);
             switch (result.MyPokerHand)
             {
                 case PokerHand.RoyalFlush:
-                    handStrenght = 10000;
+                    HandStrength = 10000;
                     break;
                 case PokerHand.StraightFlush:
-                    handStrenght = 800;
+                    HandStrength = 800;
                     break;
                 case PokerHand.FourOfAKind:
-                    handStrenght = 700;
+                    HandStrength = 700;
                     break;
                 case PokerHand.FullHouse:
-                    handStrenght = 600;
+                    HandStrength = 600;
                     break;
                 case PokerHand.Flush:
-                    handStrenght = 500;
+                    HandStrength = 500;
                     break;
                 case PokerHand.Straight:
-                    handStrenght = 400;
+                    HandStrength = 400;
                     break;
                 case PokerHand.ThreeOfAKind:
-                    handStrenght = 300;
+                    HandStrength = 300;
                     break;
                 case PokerHand.TwoPair:
-                    handStrenght = 200;
+                    HandStrength = 200;
                     break;
                 case PokerHand.Pair:
-                    handStrenght = 100;
+                    HandStrength = 100;
                     break;
                 case PokerHand.HighCard:
                     break;
@@ -770,47 +1497,46 @@ namespace StonksCasino.classes.poker
                 switch (card.Value)
                 {
                     case CardValue.Two:
-                        handStrenght += 2;
+                        HandStrength += 2;
                         break;
                     case CardValue.Three:
-                        handStrenght += 3;
+                        HandStrength += 3;
                         break;
                     case CardValue.Four:
-                        handStrenght += 4;
+                        HandStrength += 4;
                         break;
                     case CardValue.Five:
-                        handStrenght += 5;
+                        HandStrength += 5;
                         break;
                     case CardValue.Six:
-                        handStrenght += 6;
+                        HandStrength += 6;
                         break;
                     case CardValue.Seven:
-                        handStrenght += 7;
+                        HandStrength += 7;
                         break;
                     case CardValue.Eight:
-                        handStrenght += 8;
+                        HandStrength += 8;
                         break;
                     case CardValue.Nine:
-                        handStrenght += 9;
+                        HandStrength += 9;
                         break;
                     case CardValue.Ten:
-                        handStrenght += 10;
+                        HandStrength += 10;
                         break;
                     case CardValue.Jack:
-                        handStrenght += 11;
+                        HandStrength += 11;
                         break;
                     case CardValue.Queen:
-                        handStrenght += 12;
+                        HandStrength += 12;
                         break;
                     case CardValue.King:
-                        handStrenght += 13;
+                        HandStrength += 13;
                         break;
                     case CardValue.Ace:
-                        handStrenght += 14;
+                        HandStrength += 14;
                         break;
                 }
             }
-            return handStrenght;
         }
 
         private ObservableCollection<Card> AddVisibleTableCards(ObservableCollection<Card> table, int numOfVisibleCards)
