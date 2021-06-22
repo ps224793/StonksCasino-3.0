@@ -439,6 +439,7 @@ namespace StonksCasino.classes.poker
             EventLog.Add($"{player.PokerName} raised with {LastRaise}");
             ScrollListbox();
             resetCheckedPlayers(player);
+            if (player.PlayerID == 0) { WagerRound(player); }
         }
 
         public void Fold(PokerPlayer player)
