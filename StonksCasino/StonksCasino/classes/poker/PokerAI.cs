@@ -46,7 +46,6 @@ namespace StonksCasino.classes.poker
             set { _badCards = value; }
         }
 
-
         private int _roundsSinceLastBluff = 0;
 
         public int RoundsSinceLastBluff
@@ -76,6 +75,7 @@ namespace StonksCasino.classes.poker
             Player = player;
             RNG = new Random();
         }
+
         private string CalcPosition(int NumOfActivePlayers, PokerButton button)
         {
             switch (NumOfActivePlayers)
@@ -2988,7 +2988,7 @@ namespace StonksCasino.classes.poker
         {
             int playOdds = CalcPlayOdds(topBet);
             int rngOdds = RNG.Next(1, 101);
-            if (playOdds >= rngOdds)
+            if (playOdds >= rngOdds || Player.IsBluffing)
             {
                 if (BadCards)
                 {
@@ -3023,7 +3023,7 @@ namespace StonksCasino.classes.poker
             else
             {
                 int callOdds = CalcCallOdds(topBet, blindsBet, gamestate);
-                if (callOdds >= rngOdds)
+                if (callOdds >= rngOdds || (gamestate == "pre-Flop" && Player.IsBluffing))
                 {
                     return "call";
                 }

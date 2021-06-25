@@ -97,7 +97,7 @@ namespace StonksCasino.classes.poker
         private bool _checked;
 
         /// <summary>
-        /// Represents if this player is currently all-in
+        /// Represents if this player is done with their turn
         /// </summary>
         public bool Checked
         {
