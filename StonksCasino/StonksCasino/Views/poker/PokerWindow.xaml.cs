@@ -81,7 +81,6 @@ namespace StonksCasino.Views.poker
         private void Raise_Bet(object sender, RoutedEventArgs e)
         {
             Game.Raise(Game.Players[0]);
-            Game.DisablePlayerInput();
         }
 
         private void Higher_Raise(object sender, RoutedEventArgs e)
@@ -103,7 +102,6 @@ namespace StonksCasino.Views.poker
         private void btnFold_Click(object sender, RoutedEventArgs e)
         {
             Game.Fold(Game.Players[0]);
-            Game.DisablePlayerInput();
         }
 
         private void Call_Click(object sender, RoutedEventArgs e)
@@ -121,7 +119,6 @@ namespace StonksCasino.Views.poker
             {
                 Game.Check(Game.Players[0]);
             }
-            Game.DisablePlayerInput();
         }
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
