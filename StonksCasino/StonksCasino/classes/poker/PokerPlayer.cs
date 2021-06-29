@@ -36,7 +36,6 @@ namespace StonksCasino.classes.poker
             set { _personality = value; }
         }
 
-
         private int _playerID;
 
         public int PlayerID
