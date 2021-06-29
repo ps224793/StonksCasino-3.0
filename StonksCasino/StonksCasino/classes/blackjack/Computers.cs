@@ -46,11 +46,56 @@ namespace StonksCasino.classes.blackjack
             Computer.Add(new BlackjackComputer());
         }
 
-        public void ComputerDeal(int player)
+        private BlackJack _gamechanger = new BlackJack();
+
+        public BlackJack Gamechanger
+        {
+            get { return _gamechanger; }
+            set { _gamechanger = value; OnPropertyChanged(); }
+        }
+
+        public void Computerstart()
         {
             SetComputerHand(Computer[0]);
+
+            int infoace = Computer[0].GameScoreFake;
+
+            if (infoace == 11)
+            {
+                if (MessageBox.Show("Je kunt nu verzekeren om niet je hele inzet te verliezen, maar je als wint krijg je alleen je inzet terug!", "Verzekering", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    MessageBox.Show("je hebt verzekerd!");
+                    if (Computer[0].GameScore == 21)
+                    {
+                        Gamechanger.Blackjackcomputerens();
+                        cards[0].Turned = false;
+                        cards[1].Turned = false;
+                        Computer[0].Secondcard = true;
+                    }
+                }
+                else
+                {
+                    if (Computer[0].GameScore == 21)
+                    {
+                        Gamechanger.Blackjackcomputerens();
+                        cards[0].Turned = false;
+                        cards[1].Turned = false;
+                        Computer[0].Secondcard = true;
+                    }
+                }
+            }
+        }
+
+        public void ComputerDeal(int player)
+        {
+            cards[0].Turned = false;
+            cards[1].Turned = false;
+            Computer[0].Test();
+            Computer[0].Secondcard = true;
             Computerhit(player);
         }
+
+
 
         public void Computerhit(int playervalue)
         {
@@ -75,13 +120,19 @@ namespace StonksCasino.classes.blackjack
         public void GameclearComputer()
         {
             Computer[0].GameOver();
+            Computer[0].Secondcard = false;
         }
 
         public void SetComputerHand(BlackjackComputer computer)
         {
-            cards.Add(deck.DrawCard());
-            cards.Add(deck.DrawCard());
-            computer.SetHandC(cards);          
+            CardBlackjack card2 = deck.DrawCard();
+            CardBlackjack card = deck.DrawCard();
+
+            card2.Turned = true;
+            cards.Add(card);
+            cards.Add(card2);
+
+            computer.SetHandC(cards);
         }
     }
 }

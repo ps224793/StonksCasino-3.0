@@ -47,6 +47,14 @@ namespace StonksCasino.Views.blackjack
             set { _cardturned = value; OnPropertyChanged(); }
         }
 
+        private bool _dubbelentrue;
+
+        public bool Dubbelentrue
+        {
+            get { return _dubbelentrue; }
+            set { _dubbelentrue = value; }
+        }
+
         private BlackjackDeck deck = new BlackjackDeck();
 
         private BlackJack _game;
@@ -149,6 +157,7 @@ namespace StonksCasino.Views.blackjack
             Game = new BlackJack();
             Game.Blackjackwindow();
             computertimer.Start();
+            Game.MyAantal = Aantalonthouden;
             Account();
         }
 
@@ -176,6 +185,9 @@ namespace StonksCasino.Views.blackjack
                 if (result)
                 {
                     Game.Deal();
+
+                    ComputerGame.Computerstart();
+
                     await ApiWrapper.GetUserInfo();
                 }
                 else
@@ -190,6 +202,15 @@ namespace StonksCasino.Views.blackjack
             }
             Account();
 
+            int Player = Game.Players[0].Score;
+            if (Player == 21)
+            {
+                MessageBox.Show("BlackJack!!");
+                Game.Stand21();
+                await Task.Delay(TimeSpan.FromSeconds(3));
+                ComputerGame.ComputerDeal(Player);
+                Endresult();
+            }
         }
 
         private void Hit_Click(object sender, RoutedEventArgs e)
@@ -214,6 +235,7 @@ namespace StonksCasino.Views.blackjack
                 if (MyAantal <= User.Tokens)
                 {
                     Game.Dubbelen();
+                    Dubbelentrue = true;
                     Game.Hits();
                     await ApiWrapper.GetUserInfo();
                     int Player = Game.Players[0].Score;
@@ -321,7 +343,7 @@ namespace StonksCasino.Views.blackjack
                     Computersbet();
                     MessageBox.Show("computers beurt");
                     Resultrl();
-                    Endresults();
+                    //Endresults();
                 }
             }
             catch
@@ -434,8 +456,29 @@ namespace StonksCasino.Views.blackjack
             ComputerGame.ComputerDeal(Player);
         }
 
+        private int _aantalonthouden;
+
+        public int Aantalonthouden
+        {
+            get { return _aantalonthouden; }
+            set { _aantalonthouden = value; OnPropertyChanged(); }
+        }
+
         public async void Endresults()
         {
+            if (Dubbelentrue)
+            {
+                Aantalonthouden = Game.MyAantal / 2;
+            }
+            else if (Splitfunction)
+            {
+                Aantalonthouden = Game.MyAantal / 2;
+            }
+            else
+            {
+                Aantalonthouden = Game.MyAantal;
+            }
+
             Game.Gameclear();
             ComputerGame.GameclearComputer();
             await ApiWrapper.GetUserInfo();

@@ -28,6 +28,7 @@ namespace StonksCasino.classes.blackjack
         {
             HandC = new ObservableCollection<CardBlackjack>();
             OnPropertyChanged("ScoreC");
+            OnPropertyChanged("ShowScore");
         }
 
         public void SetHandC(List<CardBlackjack> cards)
@@ -39,12 +40,82 @@ namespace StonksCasino.classes.blackjack
                 HandC.Add(card);
             }
             OnPropertyChanged("ScoreC");
+            OnPropertyChanged("ShowScore");
         }
 
         public void AddCard(CardBlackjack card)
         { 
             HandC.Add(card);
             OnPropertyChanged("ScoreC");
+            OnPropertyChanged("ShowScore");
+        }
+
+        private bool _secondcard;
+
+        public bool Secondcard
+        {
+            get { return _secondcard; }
+            set { _secondcard = value; OnPropertyChanged(); OnPropertyChanged("ShowScore"); }
+        }
+
+        public int ShowScore
+        {
+            get
+            {
+                if (Secondcard)
+                {
+                    return GameScore;
+                }
+                else if (GameScore > 0)
+                {
+                    return GameScoreFake;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public int GameScore
+        {
+            get { return ScoreC; }
+        }
+
+        public int GameScoreFake
+        {
+            get
+            {
+                { return GameScoreFakeValue(); }
+            }
+        }
+
+        public int GameScoreFakeValue()
+        {
+            int score = 0;
+
+            if ((int)HandC[0].Value == 11 || (int)HandC[0].Value == 12 || (int)HandC[0].Value == 13)
+            {
+                score += 10;
+            }
+
+            else if ((int)HandC[0].Value == 1)
+            {
+                if ((score + 11) <= 21)
+                {
+                    score += (int)HandC[0].Value + 10;
+                }
+                else
+                {
+                    score += (int)HandC[0].Value;
+                }
+            }
+            else
+            {
+                score += (int)HandC[0].Value;
+            }
+
+            return score;
         }
 
         private int GetScoreC()
@@ -92,10 +163,16 @@ namespace StonksCasino.classes.blackjack
             return score;
         }
 
+        public void Test()
+        {
+            OnPropertyChanged("ShowScore");
+        }
+
         public void GameOver()
         {
             HandC.Clear();
             OnPropertyChanged("ScoreC");
+            OnPropertyChanged("ShowScore");
         }
     }
 }
