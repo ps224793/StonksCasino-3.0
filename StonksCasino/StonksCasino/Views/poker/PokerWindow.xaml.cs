@@ -145,8 +145,9 @@ namespace StonksCasino.Views.poker
             }
         }
 
-        private void btnBibliotheek_Click(object sender, RoutedEventArgs e)
+        public async void btnBibliotheek_Click(object sender, RoutedEventArgs e)
         {
+            await ApiWrapper.UpdateTokens(Game.Players[0].Balance, Game.Sender);
             back2Library = true;
             this.Close();
 
@@ -154,16 +155,26 @@ namespace StonksCasino.Views.poker
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Game.StartGame();
-            await Task.Delay(1);
-            SetCardWidth();
-            await Task.Delay(800);
-            Storyboard board = (Storyboard)FindResource("sbTableIn");
-            board.Begin();
+            if (User.Tokens >= 500)
+            {
+                await ApiWrapper.UpdateTokens(-500, Game.Sender);
+                await ApiWrapper.GetUserInfo();
+                OnPropertyChanged("Tokens");
+                Game.StartGame();
+                await Task.Delay(1);
+                SetCardWidth();
+                await Task.Delay(800);
+                Storyboard board = (Storyboard)FindResource("sbTableIn");
+                board.Begin();
 
-            await Task.Delay(3000);
+                await Task.Delay(3000);
 
-            Game.StartGame2();
+                Game.StartGame2();
+            }
+            else
+            {
+                MessageBox.Show("U heeft niet genoeg tokens.");
+            }
         }
 
         private void Uitloggen_Click(object sender, RoutedEventArgs e)

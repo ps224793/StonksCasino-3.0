@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using StonksCasino.classes.Api;
 using StonksCasino.classes.Main;
 using StonksCasino.enums.poker;
 using StonksCasino.Views.poker;
@@ -271,6 +272,14 @@ namespace StonksCasino.classes.poker
             set { _player3Color = value; OnPropertyChanged(); }
         }
 
+        private string _sender = "Poker";
+        public string Sender
+        {
+            get { return _sender; }
+            set { _sender = value; }
+        }
+
+
         private string btnStartDinges = "Visible";
 
         public string GameActive
@@ -366,11 +375,15 @@ namespace StonksCasino.classes.poker
             //Players[3].Button = PokerButton.None;
         }
 
-        private void setupNewGame()
+        private async void setupNewGame()
         {
             // pay out winnings
             foreach (PokerPlayer player in Players)
             {
+                if (player.PlayerID == 0 && !player.Busted)
+                {
+                    await ApiWrapper.UpdateTokens(1500, Sender);
+                }
                 player.Balance = 500;
                 player.RaiseBet = 0;
                 player.Bet = 0;
@@ -1479,55 +1492,69 @@ namespace StonksCasino.classes.poker
 
         public async void EndGame()
         {
-            Player0Color = "White";
-            Player1Color = "White";
-            Player2Color = "White";
-            Player3Color = "White";
-            RoundsSinceBlindsRaise++;
-            Pots.Clear();
-            TopBet = 0;
-            NumOfPlayersNotPlaying = 0;
-            NumOfPlayersAllIn = 0;
-            NumSidePots = 0;
-            await ClearTable();
-            int currentDealer = 0;
-            foreach (PokerPlayer player in Players)
+            if (Players[0].Busted)
             {
-                if (!player.Busted)
+
+                foreach (Window window in Application.Current.Windows)
                 {
-                    player.Bet = 0;
-                    if (player.Hand != null)
+                    if (window.GetType() == typeof(PokerWindow))
                     {
-                        player.Hand.Clear();
-                    }
-                    player.Checked = false;
-                    player.Folded = false;
-                    player.IsAllIn = false;
-                    if (player.Balance <= 0)
-                    {
-                        player.Busted = true;
-                        NumOfActivePlayers--;
+                        (window as PokerWindow).btnBibliotheek_Click(null, null);
                     }
                 }
-                if (player.Button == PokerButton.Dealer)
-                {
-                    currentDealer = player.PlayerID;
-                }
-                player.Button = PokerButton.None;
             }
-            switch (NumOfActivePlayers)
+            else
             {
-                case 2:
-                    PassButtons(1, currentDealer);
-                    break;
-                case 3:
-                    PassButtons(2, currentDealer);
-                    break;
-                default:
-                    PassButtons(3, currentDealer);
-                    break;
+                Player0Color = "White";
+                Player1Color = "White";
+                Player2Color = "White";
+                Player3Color = "White";
+                RoundsSinceBlindsRaise++;
+                Pots.Clear();
+                TopBet = 0;
+                NumOfPlayersNotPlaying = 0;
+                NumOfPlayersAllIn = 0;
+                NumSidePots = 0;
+                await ClearTable();
+                int currentDealer = 0;
+                foreach (PokerPlayer player in Players)
+                {
+                    if (!player.Busted)
+                    {
+                        player.Bet = 0;
+                        if (player.Hand != null)
+                        {
+                            player.Hand.Clear();
+                        }
+                        player.Checked = false;
+                        player.Folded = false;
+                        player.IsAllIn = false;
+                        if (player.Balance <= 0)
+                        {
+                            player.Busted = true;
+                            NumOfActivePlayers--;
+                        }
+                    }
+                    if (player.Button == PokerButton.Dealer)
+                    {
+                        currentDealer = player.PlayerID;
+                    }
+                    player.Button = PokerButton.None;
+                }
+                switch (NumOfActivePlayers)
+                {
+                    case 2:
+                        PassButtons(1, currentDealer);
+                        break;
+                    case 3:
+                        PassButtons(2, currentDealer);
+                        break;
+                    default:
+                        PassButtons(3, currentDealer);
+                        break;
+                }
+                MyTable.Clear();
             }
-            MyTable.Clear();
         }
 
         private void PassButtons(int numOfButtons, int currentDealer)

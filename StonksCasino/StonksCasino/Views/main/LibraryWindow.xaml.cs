@@ -117,7 +117,8 @@ namespace StonksCasino.Views.main
             this.Hide();
             roulette.ShowDialog();
             await uitloggencheck();
-
+            await ApiWrapper.GetUserInfo();
+            OnPropertyChanged("Tokens");
         }
 
         private void SlotMachine_click(object sender, RoutedEventArgs e)
