@@ -37,6 +37,14 @@ namespace StonksCasino.classes.poker
             set { _handStrength = value; }
         }
 
+        private bool _playingCards = false;
+
+        public bool PlayingCards
+        {
+            get { return _playingCards; }
+            set { _playingCards = value; }
+        }
+
 
         private bool _badCards = false;
 
@@ -2986,23 +2994,30 @@ namespace StonksCasino.classes.poker
 
         public string CalcPreFlopMove(int topBet, int blindsBet)
         {
-            int playOdds = CalcPlayOdds(topBet);
-            int rngOdds = RNG.Next(1, 101);
-            if (playOdds >= rngOdds || Player.IsBluffing)
+            if (PlayingCards)
             {
-                if (BadCards)
-                {
-                    RoundsSinceLastBluff = 0;
-                    Player.IsBluffing = true;
-                }
-                else { RoundsSinceLastBluff++; }
-                // raise if pair or bluff
                 return CalcMoveAction(topBet, blindsBet, "pre-Flop");
             }
             else
             {
-                RoundsSinceLastBluff++;
-                return "fold";
+                int playOdds = CalcPlayOdds(topBet);
+                int rngOdds = RNG.Next(1, 101);
+                if (playOdds >= rngOdds || Player.IsBluffing)
+                {
+                    if (BadCards)
+                    {
+                        RoundsSinceLastBluff = 0;
+                        Player.IsBluffing = true;
+                    }
+                    else { RoundsSinceLastBluff++; }
+                    // raise if pair or bluff
+                    return CalcMoveAction(topBet, blindsBet, "pre-Flop");
+                }
+                else
+                {
+                    RoundsSinceLastBluff++;
+                    return "fold";
+                }
             }
         }
 
