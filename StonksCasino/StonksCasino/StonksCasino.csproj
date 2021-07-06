@@ -575,5 +575,8 @@
     <Resource Include="Img\Cards\NeonOrangeYellow\TwoHearts.png" />
     <Resource Include="Img\Cards\NeonOrangeYellow\TwoSpades.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\Main\horseracelogo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -136,7 +136,7 @@ namespace StonksCasino.classes.blackjack
 
         public void Deal()
         {
-            
+
             try
             {
                 if (MyAantal > 0)
@@ -159,7 +159,7 @@ namespace StonksCasino.classes.blackjack
             catch
             {
                 MessageBox.Show("U moet minimaal 1 token inzetten om te kunnen spelen!");
-            }        
+            }
         }
 
         public void SetPlayerHand(BlackjackPlayer player)
@@ -167,7 +167,7 @@ namespace StonksCasino.classes.blackjack
             cards.Add(deck.DrawCard());
             cards.Add(deck.DrawCard());
             player.SetHand(cards);
-          
+
             //MyPlayerSplit = 1;
         }
 
@@ -180,6 +180,7 @@ namespace StonksCasino.classes.blackjack
         {
             await ApiWrapper.UpdateTokens(-MyAantal, _sender);
             Dubbel = false;
+            Hit = false;
             MyAantal = MyAantal * 2;
             MessageBox.Show($"Het aantal Tokens is verdubbeld naar: { MyAantal }");
         }
@@ -206,11 +207,13 @@ namespace StonksCasino.classes.blackjack
             {
                 Splitten = false;
                 Hit = true;
+                Dubbel = false;
                 Players[0].AddCard(deck.DrawCard());
             }
             else if (Splitted == true)
             {
                 Hit = true;
+                Dubbel = false;
                 Players[0].AddCard(deck.DrawCard());
             }
         }
@@ -230,6 +233,7 @@ namespace StonksCasino.classes.blackjack
                 {
                     Splitstand();
                     Standing = false;
+                    Hit = false;
                     Deals = true;
                     Tokendrop = true;
                     Splitstands = false;
@@ -240,8 +244,23 @@ namespace StonksCasino.classes.blackjack
                 Splitstand();
                 Deals = true;
                 Tokendrop = true;
+                Standing = false;
                 Hit = false;
             }
+        }
+
+        public void Blackjackcomputerens()
+        {
+            Hit = false;
+            Dubbel = false;
+            Splitten = false;
+        }
+
+        public void Stand21()
+        {
+            Hit = false;
+            Standing = false;
+            Dubbel = false;
         }
 
         public void Splitstand()
@@ -252,7 +271,7 @@ namespace StonksCasino.classes.blackjack
 
         public async void Gamewin()
         {
-            await ApiWrapper.UpdateTokens(MyAantal * 2 , _sender);
+            await ApiWrapper.UpdateTokens(MyAantal * 2, _sender);
         }
 
         public async void Gamedraw()
