@@ -81,7 +81,7 @@
 
             <Image Source="/Img/HorseRace/Finishline.png"  Grid.Column="12" Grid.Row="0" Grid.RowSpan="8" Stretch="Fill" ></Image>
 
-            <TextBox Text="{Binding Game.MyHorseBet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextAlignment="Center" FontSize="20" Grid.Column="1" Grid.Row="10"></TextBox>
+            <TextBox IsEnabled="{Binding Game.MyBetHorse, Mode=OneWay}" Text="{Binding Game.MyHorseBet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextAlignment="Center" FontSize="20" Grid.Column="1" Grid.Row="10"></TextBox>
 
             <Button IsEnabled="{Binding Game.MyHorseone, Mode=TwoWay}" Grid.Column="5" Grid.Row="10" FontSize="20" Content="1" Click="Horse1_Click"/>
             <Button IsEnabled="{Binding Game.MyHorsetwo, Mode=TwoWay}" Grid.Column="7" Grid.Row="10" FontSize="20" Content="2" Click="Horse2_Click"/>
