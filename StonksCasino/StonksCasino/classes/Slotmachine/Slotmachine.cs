@@ -29,10 +29,10 @@ namespace StonksCasino.classes.Slotmachine
 
         public void SetSymbolValues()
         {
-            _symbolValues.Add("Cherry", 50);
-            _symbolValues.Add("Grape", 50);
-            _symbolValues.Add("Melon", 50);
-            _symbolValues.Add("Orange", 50);
+            _symbolValues.Add("Cherry", 100);
+            _symbolValues.Add("Grape", 100);
+            _symbolValues.Add("Melon", 100);
+            _symbolValues.Add("Orange", 100);
             _symbolValues.Add("Seven", 1500);
             _symbolValues.Add("Star", 300);
             _symbolValues.Add("Diamond", 400);
