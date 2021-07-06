@@ -318,7 +318,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Img\Main\blackjacklogo.jpg" />
     <Resource Include="Img\Main\pokerlogo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -577,6 +576,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Img\Main\horseracelogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\Main\blackjacklogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
