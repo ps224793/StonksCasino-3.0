@@ -369,10 +369,6 @@ namespace StonksCasino.classes.poker
             NumSidePots = 0;
             int startingDealer = RNG.Next(0, 4);
             PassButtons(3, startingDealer);
-            //Players[0].Button = PokerButton.Dealer;
-            //Players[1].Button = PokerButton.SmallBlind;
-            //Players[2].Button = PokerButton.BigBlind;
-            //Players[3].Button = PokerButton.None;
         }
 
         private async void setupNewGame()
@@ -398,10 +394,6 @@ namespace StonksCasino.classes.poker
             NumSidePots = 0;
             int startingDealer = RNG.Next(0, 4);
             PassButtons(3, startingDealer);
-            //Players[0].Button = PokerButton.Dealer;
-            //Players[1].Button = PokerButton.SmallBlind;
-            //Players[2].Button = PokerButton.BigBlind;
-            //Players[3].Button = PokerButton.None;
         }
 
         private void SetPlayerHand(PokerPlayer player)
@@ -1280,7 +1272,6 @@ namespace StonksCasino.classes.poker
 
         public void NextRoundButton()
         {
-
             EndGame();
             if (NumOfActivePlayers <= 1) { setupNewGame(); }
             NextRoundGrid = "Hidden";
@@ -1492,69 +1483,55 @@ namespace StonksCasino.classes.poker
 
         public async void EndGame()
         {
-            if (Players[0].Busted)
+            Player0Color = "White";
+            Player1Color = "White";
+            Player2Color = "White";
+            Player3Color = "White";
+            RoundsSinceBlindsRaise++;
+            Pots.Clear();
+            TopBet = 0;
+            NumOfPlayersNotPlaying = 0;
+            NumOfPlayersAllIn = 0;
+            NumSidePots = 0;
+            await ClearTable();
+            int currentDealer = 0;
+            foreach (PokerPlayer player in Players)
             {
-
-                foreach (Window window in Application.Current.Windows)
+                if (!player.Busted)
                 {
-                    if (window.GetType() == typeof(PokerWindow))
+                    player.Bet = 0;
+                    if (player.Hand != null)
                     {
-                        (window as PokerWindow).btnBibliotheek_Click(null, null);
+                        player.Hand.Clear();
+                    }
+                    player.Checked = false;
+                    player.Folded = false;
+                    player.IsAllIn = false;
+                    if (player.Balance <= 0)
+                    {
+                        player.Busted = true;
+                        NumOfActivePlayers--;
                     }
                 }
+                if (player.Button == PokerButton.Dealer)
+                {
+                    currentDealer = player.PlayerID;
+                }
+                player.Button = PokerButton.None;
             }
-            else
+            switch (NumOfActivePlayers)
             {
-                Player0Color = "White";
-                Player1Color = "White";
-                Player2Color = "White";
-                Player3Color = "White";
-                RoundsSinceBlindsRaise++;
-                Pots.Clear();
-                TopBet = 0;
-                NumOfPlayersNotPlaying = 0;
-                NumOfPlayersAllIn = 0;
-                NumSidePots = 0;
-                await ClearTable();
-                int currentDealer = 0;
-                foreach (PokerPlayer player in Players)
-                {
-                    if (!player.Busted)
-                    {
-                        player.Bet = 0;
-                        if (player.Hand != null)
-                        {
-                            player.Hand.Clear();
-                        }
-                        player.Checked = false;
-                        player.Folded = false;
-                        player.IsAllIn = false;
-                        if (player.Balance <= 0)
-                        {
-                            player.Busted = true;
-                            NumOfActivePlayers--;
-                        }
-                    }
-                    if (player.Button == PokerButton.Dealer)
-                    {
-                        currentDealer = player.PlayerID;
-                    }
-                    player.Button = PokerButton.None;
-                }
-                switch (NumOfActivePlayers)
-                {
-                    case 2:
-                        PassButtons(1, currentDealer);
-                        break;
-                    case 3:
-                        PassButtons(2, currentDealer);
-                        break;
-                    default:
-                        PassButtons(3, currentDealer);
-                        break;
-                }
-                MyTable.Clear();
+                case 2:
+                    PassButtons(1, currentDealer);
+                    break;
+                case 3:
+                    PassButtons(2, currentDealer);
+                    break;
+                default:
+                    PassButtons(3, currentDealer);
+                    break;
             }
+            MyTable.Clear();
         }
 
         private void PassButtons(int numOfButtons, int currentDealer)
@@ -1613,7 +1590,7 @@ namespace StonksCasino.classes.poker
             BlindsBet *= 2;
             EventLog.Add($"The Blinds have been raised");
             EventLog.Add($"The Small Blind is now { BlindsBet }");
-            EventLog.Add($"The Big Blind is now {(BlindsBet * 2)}");
+            EventLog.Add($"The Big Blind is now {BlindsBet * 2}");
             ScrollListbox();
         }
     }
