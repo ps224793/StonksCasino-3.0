@@ -133,24 +133,6 @@ namespace StonksCasino.Views.Roulette
         }
         private async Task<bool> Checkingelogd()
         {
-            //bool result = await ApiWrapper.CheckLogin();
-
-            //if (!result)
-            //{
-            //    StonksCasino.Properties.Settings.Default.Username = "";
-            //    StonksCasino.Properties.Settings.Default.Password = "";
-            //    StonksCasino.Properties.Settings.Default.Save();
-            //    User.Username = "";
-            //    User.Tokens = 0;
-
-            //    MainWindow window = new MainWindow();
-
-            //    MessageBox.Show("Er is door iemand anders ingelogd op het account waar u momenteel op speelt. Hierdoor wordt u uitgelogd");
-            //    this.Close();
-            //    window.Show();
-
-            //    return false;
-            //}
             return true;
         }
 
