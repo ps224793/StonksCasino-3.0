@@ -105,11 +105,8 @@ namespace StonksCasino.Views.slotmachine
 
         private void Bibliotheek_Click(object sender, EventArgs e)
         {
-
             back2Library = true;
             this.Close();
-
-
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -172,14 +169,14 @@ namespace StonksCasino.Views.slotmachine
 
         public async void Verhogen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(-50, _sender);
+            await ApiWrapper.UpdateTokens(-100, _sender);
             Account();
             Beurt++;
             Check();
         }
         private async void Verlagen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(50, _sender);
+            await ApiWrapper.UpdateTokens(100, _sender);
             Account();
             Beurt--;
             Check();
