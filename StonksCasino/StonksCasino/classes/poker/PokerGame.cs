@@ -320,7 +320,7 @@ namespace StonksCasino.classes.poker
             for (int i = 0; i < 4; i++)
             {
                 Players.Add(new PokerPlayer());
-                Players[i].Balance = 500;
+                Players[i].Balance = 0;
                 Players[i].RaiseBet = 0;
                 Players[i].Bet = 0;
                 Players[i].PlayerID = i;
@@ -340,38 +340,10 @@ namespace StonksCasino.classes.poker
                         Players[i].PokerName = "MyloBot";
                         break;
                 }
-                if (Players[i].PlayerID == 0)
-                {
-                    Players[i].Personality = "player";
-                }
-                else
-                {
-                    int personality = RNG.Next(1, 101);
-                    if (personality <= 25)
-                    {
-                        Players[i].Personality = "loose-passive";
-                    }
-                    else if (personality > 25 && personality <= 50)
-                    {
-                        Players[i].Personality = "loose-aggressive";
-                    }
-                    else if (personality > 50 && personality <= 75)
-                    {
-                        Players[i].Personality = "tight-passive";
-                    }
-                    else if (personality > 75)
-                    {
-                        Players[i].Personality = "tight-aggressive";
-                    }
-                }
             }
-            NumOfActivePlayers = Players.Count;
-            NumSidePots = 0;
-            int startingDealer = RNG.Next(0, 4);
-            PassButtons(3, startingDealer);
         }
 
-        private async void setupNewGame()
+        public async void setupNewGame()
         {
             // pay out winnings
             foreach (PokerPlayer player in Players)
@@ -385,6 +357,30 @@ namespace StonksCasino.classes.poker
                 player.Bet = 0;
                 player.Button = PokerButton.None;
                 player.Busted = false;
+                if (player.PlayerID == 0)
+                {
+                    player.Personality = "player";
+                }
+                else
+                {
+                    int personality = RNG.Next(1, 101);
+                    if (personality <= 15)
+                    {
+                        player.Personality = "loose-passive";
+                    }
+                    else if (personality > 15 && personality <= 40)
+                    {
+                        player.Personality = "loose-aggressive";
+                    }
+                    else if (personality > 40 && personality <= 65)
+                    {
+                        player.Personality = "tight-passive";
+                    }
+                    else if (personality > 65)
+                    {
+                        player.Personality = "tight-aggressive";
+                    }
+                }
             }
             GameCount = 1;
             EventLog.Clear();
