@@ -66,7 +66,7 @@
                 </ItemsControl>
 
                 <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding ComputerGame.Computer[0].ScoreC, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="50" Height="40" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"></TextBlock>
+                    <TextBlock Text="{Binding ComputerGame.Computer[0].ShowScore, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="50" Height="40" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"></TextBlock>
                     <Border Height="2" Background="Black"></Border>
                     <TextBlock Text="{Binding Game.Players[0].Score, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Game.NoSplitGrid}" Width="50" Height="40" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"></TextBlock>
                 </StackPanel>
