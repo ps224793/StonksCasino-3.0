@@ -332,16 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Img\Slotmachine\Bal.png" />
-    <Resource Include="Img\Slotmachine\Bar.png" />
-    <Resource Include="Img\Slotmachine\bell.png" />
-    <Resource Include="Img\Slotmachine\Cherry.png" />
-    <Resource Include="Img\Slotmachine\Diamond.png" />
-    <Resource Include="Img\Slotmachine\Grape.png" />
     <Resource Include="Img\Slotmachine\Lever.png" />
-    <Resource Include="Img\Slotmachine\Melon.png" />
-    <Resource Include="Img\Slotmachine\Orange.png" />
-    <Resource Include="Img\Slotmachine\Seven.png" />
-    <Resource Include="Img\Slotmachine\Star.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Img\HorseRace\Finishline.png" />
@@ -579,6 +570,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Img\Main\blackjacklogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\Slotmachine\Bar.png" />
+    <Resource Include="Img\Slotmachine\bell.png" />
+    <Resource Include="Img\Slotmachine\Cherry.png" />
+    <Resource Include="Img\Slotmachine\Diamond.png" />
+    <Resource Include="Img\Slotmachine\Grape.png" />
+    <Resource Include="Img\Slotmachine\Melon.png" />
+    <Resource Include="Img\Slotmachine\Orange.png" />
+    <Resource Include="Img\Slotmachine\Seven.png" />
+    <Resource Include="Img\Slotmachine\Star.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

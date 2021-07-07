@@ -50,6 +50,14 @@ namespace StonksCasino.classes.HorseRace
             set { _horsefour = value; OnPropertyChanged(); }
         }
 
+        private bool _bethorse;
+
+        public bool MyBetHorse
+        {
+            get { return _bethorse; }
+            set { _bethorse = value; OnPropertyChanged(); }
+        }
+
         public void HorseBet()
         {
             //MessageBox.Show($"{ MyHorseBet}");
@@ -57,6 +65,7 @@ namespace StonksCasino.classes.HorseRace
             MyHorsetwo = false;
             MyHorsethree = false;
             MyHorsefour = false;
+            MyBetHorse = false;
         }
 
         public void ButtonsHorse()
@@ -65,6 +74,7 @@ namespace StonksCasino.classes.HorseRace
             MyHorsetwo = true;
             MyHorsethree = true;
             MyHorsefour = true;
+            MyBetHorse = true;
         }
     }
 }
