@@ -80,7 +80,7 @@ namespace StonksCasino.Views.poker
 
         private void Raise_Bet(object sender, RoutedEventArgs e)
         {
-            if (Game.Players[0].Balance >= Game.Players[0].RaiseBet)
+            if (Game.Players[0].Balance >= Game.Players[0].RaiseBet && Game.Players[0].Balance >= Game.TopBet)
             {
                 Game.Raise(Game.Players[0]);
             }
@@ -154,7 +154,10 @@ namespace StonksCasino.Views.poker
 
         public async void btnBibliotheek_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(Game.Players[0].Balance, Game.Sender);
+            if (Game.Players[0].Balance > 0)
+            {
+                await ApiWrapper.UpdateTokens(Game.Players[0].Balance, Game.Sender);
+            }
             back2Library = true;
             this.Close();
 
@@ -167,6 +170,7 @@ namespace StonksCasino.Views.poker
                 await ApiWrapper.UpdateTokens(-500, Game.Sender);
                 await ApiWrapper.GetUserInfo();
                 OnPropertyChanged("Tokens");
+                Game.setupNewGame();
                 Game.StartGame();
                 await Task.Delay(1);
                 SetCardWidth();
