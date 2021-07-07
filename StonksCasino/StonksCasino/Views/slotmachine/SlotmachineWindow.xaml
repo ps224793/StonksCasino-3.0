@@ -109,10 +109,10 @@
                         </Button.Resources>
                     </Button>
                     <Button  Click="Verhogen_Click" IsEnabled="{Binding AllowedToClickVH}" Background="Black" Grid.Column="1" Grid.Row="1" Height="60px" Foreground="White">
-                        <TextBlock TextAlignment="Center">Beurten verhogen<LineBreak/>- 50 fiches</TextBlock>
+                        <TextBlock TextAlignment="Center">Beurten verhogen<LineBreak/>- 100 fiches</TextBlock>
                     </Button>
                     <Button Click="Verlagen_Click" IsEnabled="{Binding AllowedToClickVL}" Background="Black" Grid.Column="1" Grid.Row="2" Height="60px" Foreground="White">
-                        <TextBlock TextAlignment="Center">Beurten verlagen<LineBreak/>+ 50 fiches</TextBlock>
+                        <TextBlock TextAlignment="Center">Beurten verlagen<LineBreak/>+ 100 fiches</TextBlock>
                     </Button>
                     <Grid Grid.Row="3" Grid.Column="1" Background="Black">
                         <Grid.RowDefinitions>
