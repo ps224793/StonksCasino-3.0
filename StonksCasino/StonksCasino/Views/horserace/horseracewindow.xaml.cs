@@ -37,6 +37,8 @@ namespace StonksCasino.Views.horserace
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        private const string _sender = "Horserace";
+
         private HorseGame _game;
 
         public HorseGame Game
@@ -140,40 +142,80 @@ namespace StonksCasino.Views.horserace
 
         }
 
-        public void Horse1_Click(object sender, RoutedEventArgs e)
+        public async void Horse1_Click(object sender, RoutedEventArgs e)
         {
-            Game.HorseBet();
-            HorseChosen = 1;
-            HorseTimer.Start();
-            ControllerhorsesPlay();
-            ResizeMode = ResizeMode.NoResize;
+            int MyAantal = Game.MyHorseBet;
+            if (MyAantal <= User.Tokens && MyAantal > 0)
+            {
+                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1, _sender);
+                Game.HorseBet();
+                HorseChosen = 1;
+                HorseTimer.Start();
+                ControllerhorsesPlay();
+                ResizeMode = ResizeMode.NoResize;
+            }
+            else
+            {
+                MessageBox.Show("U heeft niet genoeg tokens om te kunnen spelen!");
+            }
+            Account();
         }
 
-        private void Horse2_Click(object sender, RoutedEventArgs e)
+        private async void Horse2_Click(object sender, RoutedEventArgs e)
         {
-            Game.HorseBet();
-            HorseChosen = 2;
-            HorseTimer.Start();
-            ControllerhorsesPlay();
-            ResizeMode = ResizeMode.NoResize;
+            int MyAantal = Game.MyHorseBet;
+            if (MyAantal <= User.Tokens && MyAantal > 0)
+            {
+                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1, _sender);
+                Game.HorseBet();
+                HorseChosen = 2;
+                HorseTimer.Start();
+                ControllerhorsesPlay();
+                ResizeMode = ResizeMode.NoResize;
+            }
+            else
+            {
+                MessageBox.Show("U heeft niet genoeg tokens om te kunnen spelen!");
+            }
+            Account();
         }
 
-        private void Horse3_Click(object sender, RoutedEventArgs e)
+        private async void Horse3_Click(object sender, RoutedEventArgs e)
         {
-            Game.HorseBet();
-            HorseChosen = 3;
-            HorseTimer.Start();
-            ControllerhorsesPlay();
-            ResizeMode = ResizeMode.NoResize;
+            int MyAantal = Game.MyHorseBet;
+            if (MyAantal <= User.Tokens && MyAantal > 0)
+            {
+                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1, _sender);
+                Game.HorseBet();
+                HorseChosen = 3;
+                HorseTimer.Start();
+                ControllerhorsesPlay();
+                ResizeMode = ResizeMode.NoResize;
+            }
+            else
+            {
+                MessageBox.Show("U heeft niet genoeg tokens om te kunnen spelen!");
+            }
+            Account();
         }
 
-        private void Horse4_Click(object sender, RoutedEventArgs e)
+        private async void Horse4_Click(object sender, RoutedEventArgs e)
         {
-            Game.HorseBet();
-            HorseChosen = 4;
-            HorseTimer.Start();
-            ControllerhorsesPlay();
-            ResizeMode = ResizeMode.NoResize;
+            int MyAantal = Game.MyHorseBet;
+            if (MyAantal <= User.Tokens && MyAantal > 0)
+            {
+                bool result = await ApiWrapper.UpdateTokens(MyAantal * -1, _sender);
+                Game.HorseBet();
+                HorseChosen = 4;
+                HorseTimer.Start();
+                ControllerhorsesPlay();
+                ResizeMode = ResizeMode.NoResize;
+            }
+            else
+            {
+                MessageBox.Show("U heeft niet genoeg tokens om te kunnen spelen!");
+            }
+            Account();
         }
 
         private void HorseTimer_Tick(object sender, EventArgs e)
@@ -199,11 +241,12 @@ namespace StonksCasino.Views.horserace
             else
             {
                 HorseTimer.Stop();
+                HorseActionTime();
                 HorseChecker();
             }
         }
 
-        public void HorseChecker()
+        public async void HorseChecker()
         {
             if (HorseNumber1Total > Line && HorseNumber2Total < Line && HorseNumber3Total < Line && HorseNumber4Total < Line)
             {
@@ -212,6 +255,7 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 1)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
             else if (HorseNumber1Total > HorseNumber2Total && HorseNumber1Total > HorseNumber3Total && HorseNumber1Total > HorseNumber4Total)
@@ -221,6 +265,7 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 1)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
 
@@ -231,6 +276,7 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 2)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
             else if (HorseNumber2Total > HorseNumber1Total && HorseNumber2Total > HorseNumber3Total && HorseNumber2Total > HorseNumber4Total)
@@ -240,6 +286,7 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 2)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
 
@@ -250,6 +297,7 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 3)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
             else if (HorseNumber3Total > HorseNumber1Total && HorseNumber3Total > HorseNumber2Total && HorseNumber3Total > HorseNumber4Total)
@@ -259,6 +307,7 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 3)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
 
@@ -269,6 +318,7 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 4)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
             else if (HorseNumber4Total > HorseNumber1Total && HorseNumber4Total > HorseNumber2Total && HorseNumber4Total > HorseNumber3Total)
@@ -278,8 +328,10 @@ namespace StonksCasino.Views.horserace
                 if (HorseChosen == 4)
                 {
                     MessageBox.Show("Je hebt gewonnen");
+                    await ApiWrapper.UpdateTokens(Game.MyHorseBet * 2, _sender);
                 }
             }
+            Account();
             Game.ButtonsHorse();
             Restart();
         }
@@ -296,7 +348,7 @@ namespace StonksCasino.Views.horserace
             HorseTimer.Tick += HorseTimer_Tick;
         }
 
-        public void HorsePlus()
+        public void HorseActionTime()
         {
             if (HorseNumber1Total > HorseNumber2Total && HorseNumber1Total > HorseNumber3Total && HorseNumber1Total > HorseNumber4Total)
             {
@@ -314,6 +366,11 @@ namespace StonksCasino.Views.horserace
             {
                 ActionTime = "Nummer 4 heeft de leiding!";
             }
+        }
+
+        public void HorsePlus()
+        {
+            HorseActionTime();
 
             Horsetimer1();
             Horsetimer2();
@@ -329,7 +386,7 @@ namespace StonksCasino.Views.horserace
 
             if (stamina1 > 80)
             {
-                HorseNumber1 = rndhorsenumber.Next(20, 100);
+                HorseNumber1 = rndhorsenumber.Next(20, 150);
                 stamina1 -= 10;
             }
             else if (stamina1 > 50)
@@ -343,8 +400,8 @@ namespace StonksCasino.Views.horserace
             }
             else
             {
-                HorseNumber1 = rndhorsenumber.Next(20, 40);
-                stamina1 += 70;
+                HorseNumber1 = rndhorsenumber.Next(20, 50);
+                stamina1 += 60;
             }
             HorseNumber1Total += HorseNumber1;
             Horseracer = HorseNumber1Total;
@@ -360,7 +417,7 @@ namespace StonksCasino.Views.horserace
             }
             else if (stamina2 > 50)
             {
-                HorseNumber2 = rndhorsenumber.Next(20, 60);
+                HorseNumber2 = rndhorsenumber.Next(20, 80);
                 stamina2 -= 10;
             }
             else if (HorseNumber2Total == Line)
@@ -370,7 +427,7 @@ namespace StonksCasino.Views.horserace
             else
             {
                 HorseNumber2 = rndhorsenumber.Next(20, 40);
-                stamina2 += 70;
+                stamina2 += 60;
             }
             HorseNumber2Total += HorseNumber2;
             Horseracer2 = HorseNumber2Total;
@@ -382,7 +439,7 @@ namespace StonksCasino.Views.horserace
 
             if (stamina3 > 80)
             {
-                HorseNumber3 = rndhorsenumber.Next(20, 100);
+                HorseNumber3 = rndhorsenumber.Next(20, 150);
                 stamina3 -= 10;
             }
             else if (stamina3 > 50)
@@ -396,8 +453,8 @@ namespace StonksCasino.Views.horserace
             }
             else
             {
-                HorseNumber3 = rndhorsenumber.Next(20, 40);
-                stamina3 += 70;
+                HorseNumber3 = rndhorsenumber.Next(20, 50);
+                stamina3 += 60;
             }
             HorseNumber3Total += HorseNumber3;
             Horseracer3 = HorseNumber3Total;
@@ -414,7 +471,7 @@ namespace StonksCasino.Views.horserace
             }
             else if (stamina4 > 50)
             {
-                HorseNumber4 = rndhorsenumber.Next(20, 60);
+                HorseNumber4 = rndhorsenumber.Next(20, 80);
                 stamina4 -= 10;
             }
             else if (HorseNumber4Total == Line)
@@ -424,7 +481,7 @@ namespace StonksCasino.Views.horserace
             else
             {
                 HorseNumber4 = rndhorsenumber.Next(20, 40);
-                stamina4 += 70;
+                stamina4 += 60;
             }
             HorseNumber4Total += HorseNumber4;
             Horseracer4 = HorseNumber4Total;
