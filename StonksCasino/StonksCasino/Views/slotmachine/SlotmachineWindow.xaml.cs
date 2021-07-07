@@ -169,14 +169,14 @@ namespace StonksCasino.Views.slotmachine
 
         public async void Verhogen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(-100, _sender);
+            await ApiWrapper.UpdateTokens(-50, _sender);
             Account();
             Beurt++;
             Check();
         }
         private async void Verlagen_Click(object sender, RoutedEventArgs e)
         {
-            await ApiWrapper.UpdateTokens(100, _sender);
+            await ApiWrapper.UpdateTokens(50, _sender);
             Account();
             Beurt--;
             Check();
