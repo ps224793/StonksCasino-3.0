@@ -125,7 +125,7 @@
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -135,24 +135,13 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Button Width="30" Height="30" Grid.Column="1">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Grid>
-                                <Ellipse Fill="Black"/>
-                                <TextBlock Text="?" Foreground="White" TextAlignment="Center" FontSize="20"></TextBlock>
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
                 <TextBox IsEnabled="{Binding Game.Tokendrop, Mode=TwoWay}" Text="{Binding Game.MyAantal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" VerticalContentAlignment="Center" Width="75" Height="35" Grid.Row="1" Background="White" FontSize="16"></TextBox>
                 <Button IsEnabled="{Binding Game.Deals, Mode=TwoWay}"  Click="Deal_click" Width="60" Height="35" Grid.Row="3" Background="White" Content="Deal" FontSize="10"></Button>
                 <Button IsEnabled="{Binding Game.Hit, Mode=TwoWay}" Click="Hit_Click" Width="60" Height="35" Grid.Row="4" Background="White" Content="Hit" FontSize="10"></Button>
             </Grid>
             <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
