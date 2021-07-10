@@ -884,7 +884,7 @@ namespace StonksCasino.classes.poker
             EnablePlayerInput = false;
         }
 
-        private async void SetTable()
+        private void SetTable()
         {
             ObservableCollection<Card> cards = new ObservableCollection<Card>();
             for (int i = 0; i < 5; i++)

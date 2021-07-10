@@ -171,6 +171,7 @@ namespace StonksCasino.Views.poker
                 await ApiWrapper.GetUserInfo();
                 OnPropertyChanged("Tokens");
                 Game.setupNewGame();
+                await Task.Delay(1000);
                 Game.StartGame();
                 await Task.Delay(1);
                 SetCardWidth();
