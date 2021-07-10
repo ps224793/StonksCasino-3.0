@@ -3025,7 +3025,7 @@ namespace StonksCasino.classes.poker
         {
             int rngOdds = RNG.Next(1, 101);
             int raiseOdds = CalcRaiseOdds(topBet, blindsBet, gamestate);
-            if (raiseOdds >= rngOdds)
+            if (raiseOdds >= rngOdds && Player.Balance >= blindsBet * 2 * 3)
             {
                 Player.RaiseBet = blindsBet * 2 * 3;
                 if (BadCards) { Player.IsBluffing = true; }
